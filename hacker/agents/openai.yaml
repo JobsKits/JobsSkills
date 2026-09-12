@@ -1,0 +1,7 @@
+interface:
+  display_name: "Hacker"
+  short_description: "Defensive security repository review workflow"
+  default_prompt: "Use $hacker to review a suspicious security repository for defensive research boundaries."
+
+policy:
+  allow_implicit_invocation: true

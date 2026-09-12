@@ -1,0 +1,4 @@
+interface:
+  display_name: "Jobs Codex 配置审计"
+  short_description: "每周审计 AGENTS 与 Skills，压缩重复但不丢语义"
+  default_prompt: "审计 Jobs Codex 配置源：在不减少能力的前提下去重，检查中文数字顿号、专有名词链接、结构与单向部署一致性。"

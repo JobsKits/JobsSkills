@@ -1,0 +1,4 @@
+interface:
+  display_name: "Jobs Auth Switch Motion"
+  short_description: "JobsAppDoor 登录注册切换动效复刻配方与检查清单"
+  default_prompt: "Use $jobs-auth-switch-motion to build a clean login/register screen that preserves the JobsAppDoor switch animation."

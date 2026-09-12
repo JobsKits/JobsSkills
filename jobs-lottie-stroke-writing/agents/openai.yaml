@@ -1,0 +1,4 @@
+interface:
+  display_name: "Jobs Lottie 笔顺写字"
+  short_description: "按真实汉字笔顺生成未写不显 Lottie 动画"
+  default_prompt: "Use $jobs-lottie-stroke-writing to generate a stroke-order Chinese handwriting Lottie without glyph fade-in."

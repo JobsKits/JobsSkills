@@ -1,0 +1,4 @@
+interface:
+  display_name: "Jobs Obsidian 永久记忆"
+  short_description: "维护 Codex 跨项目永久记忆、长期偏好、规划与工作流决策"
+  default_prompt: "Use $jobs-obsidian-memory to read and maintain my cross-project permanent memory."
