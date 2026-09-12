@@ -309,6 +309,9 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
 
 - 所有 Sourcetree 自定义动作脚本固定采用双位置维护：运行目录为 `/Users/jobs/SourceTree.command`，备灾目录为 `/Users/jobs/Documents/Github/JobsGenesis/SourceTree.command`。新增、修改或重命名脚本包时，必须按相同相对路径同步两边的 `.command`、同名 `README.md` 和脚本行为文档，不能只改其中一处。
 - 双位置同步后必须使用 `cmp` 或内容哈希确认对应文件完全一致；修改 `.command` 时，还必须对运行副本与备灾副本分别执行 `zsh -n`。任一位置缺失、内容不一致或语法校验失败，都不能视为任务完成。
+- 新增或修改 Sourcetree 脚本的默认完成定义必须包含“已经实际挂载到当前用户 Sourcetree 自定义操作”：同时更新脚本包内和 `~/Library/Application Support/SourceTree/actions.plist` 中的动作配置，确保动作目标指向运行副本、仓库动作参数为 `$REPO`，并在 Sourcetree 运行时完成重载验证。只交付脚本、README 或待用户手工配置步骤，一律不能标记完成。
+- Codex 负责动作目标路径、参数、仓库 / 文件动作类型、输出窗口策略、执行权限、双位置脚本副本和配置安装；用户最多只需要在 Sourcetree 中按个人偏好修改菜单显示标题。更新已存在动作时，应按稳定目标路径识别并保留用户当前显示标题；只有用户明确要求时才改名，避免用脚本默认标题覆盖用户定制。
+- 修改任何现行 `actions.plist` 前必须创建带时间戳的可恢复备份；修改后校验 plist 可解档、动作唯一、目标脚本存在且可执行。Sourcetree 正在运行时按安全方式重启或重新加载，再从当前用户配置中反查动作名称、`$REPO` 参数和目标路径，证明菜单已经挂载。
 - `Sourcetree` 自定义动作运行 `.command` 时，环境可能和系统终端双击运行不同：`TERM` 可能为空、`$0` 可能只是脚本名而不是绝对路径、标准输入可能不可交互、输出窗口可能不解析 ANSI 彩色码。
 - 写 `SourceTree.command` 目录下的脚本时，必须显式探测运行环境；只有明确确认由 Sourcetree 发起时，才进入无交互连续执行模式，不要影响用户双击脚本后在系统终端里的正常交互体验。
 - Sourcetree 模式必须从一而终：禁止调用 `read`、`select`、`fzf` 选择、`YES` 确认或任何需要外界输入的交互；所需目标应来自自定义动作参数、当前工作目录、环境变量或安全默认值。必要参数缺失时直接打印错误并退出，不能停在输入等待状态。
