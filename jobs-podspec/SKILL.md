@@ -1,6 +1,6 @@
 ---
 name: jobs-podspec
-description: 当任务涉及 CocoaPods、Podspec、source_files、public_header_files、resource_bundles、xcconfig、JobsPodspecKit.rb 或本地 Pod 发布配置时使用。
+description: 当任务涉及 CocoaPods、Podspec、source_files、public_header_files、resource_bundles、xcconfig、JobsPodspecKit.rb、本地 Pod 发布配置，或 iOS 的 pod install / Xcode 挂载脚本及 README 同步时使用。
 ---
 
 # Jobs CocoaPods Podspec 规范
@@ -144,6 +144,15 @@ description: 当任务涉及 CocoaPods、Podspec、source_files、public_header_
 - `post_install` / `post_integrate` 里如果需要修改 `Pods.xcodeproj`，只能做最小、可回滚、可跳过的增强，不能手写固定 UUID，也不要给根 group 硬塞 `Podfile.deps`、报告文件等非必要引用。历史上这类展示增强可能把 `PBXProject` 根 UUID 覆盖成 `PBXFileReference`，表现为 `pod install` 正常但 Xcode 左侧 Pods 无法展开。
 - 给 `Pods.xcodeproj` 增加展示文件时，必须先查重、确认不会复用 CocoaPods 已生成对象的 UUID，并在保存后立刻重新打开工程验证 `p.root_object.isa == "PBXProject"`。如果验证失败，宁可跳过该展示引用，也不要让 Pods 工程带病进入 Xcode。
 
+
+#### 1.6.2、iOS 安装与构建挂载脚本的 README 强制同步
+
+- 凡新增或修改挂载到 `pod install` 的外援脚本，或 Xcode 编译 / 编译后的挂载脚本，必须在同一任务更新受影响项目根目录的 `README.md`。触发范围包括脚本本体、调用参数、环境变量、开关、执行条件、顺序和挂载配置；不能只改脚本或只更新脚本目录的说明。移除挂载时同步删除或修正文档中的自动执行声明。
+- 固定栏目：Swift 项目写入“项目配置支持”，OC 新、老项目写入“特色一览”，优先合并现有“安装与构建自动挂载脚本”小节。记录当前完整行为，不堆叠变更日志。
+- 每项记录脚本入口与相对路径、实际挂载位置、触发时机、执行行为、产物及覆盖规则、日志位置、依赖与迁移要求、执行 / 跳过条件、同步或异步方式，以及失败是否阻断安装或构建；不存在的能力不得推断补写。
+- 对照 `Podfile`、podspec 的 `script_phase`、`project.pbxproj` 的 Build Phases、共享 Scheme 的 Pre-actions / Post-actions 与脚本实现核实，只检查实际受影响入口。区分安装前置、`post_install`、`post_integrate`、目标构建阶段和整个 Scheme 构建后动作；不能把最后一个 Build Phase 写成“整个项目编译成功后的回调”，也不能把仅存放在目录内的脚本写成已挂载。
+- 共用脚本或跨仓挂载变化必须逐一核对受影响的 Swift、OC 新、OC 老工程，并同步各自 README；保留实际挂载差异，不为文档一致而新增未授权挂载。文档同步不扩大第三方源码修改权限。
+- 交付前完成脚本行为与 README 对账、相对链接存在性及 `git diff --check` 检查，说明更新了哪些 README、做了何种验证。未执行 `pod install` 或构建时如实注明；不得仅为验证文档触发安装、构建或外援脚本副作用。
 
 ### 1.7、`JobsPodspecKit.rb` / 样例 `*.podspec` 蒸馏规则
 

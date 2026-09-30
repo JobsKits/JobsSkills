@@ -1,6 +1,6 @@
 ---
 name: jobs-codex-config-audit
-description: 当任务涉及 Codex 的 AGENTS.md、用户级 Skills、JobsCodexConfigs 配置源、规则去重压缩、语义防回退、中文数字序号、专有名词链接、单向部署一致性或每周配置巡检时使用。
+description: 当任务涉及 Codex 的 AGENTS.md、用户级 Skills、JobsCodexConfigs / JobsSkills 仓库关系、规则去重压缩、语义防回退、中文数字序号、专有名词链接、子模块一致性或每周配置巡检时使用。
 ---
 
 # Jobs Codex 配置审计
@@ -13,36 +13,36 @@ description: 当任务涉及 Codex 的 AGENTS.md、用户级 Skills、JobsCodexC
 
 ## 🔥 <font id=前言>前言</font>
 
-> 本技能维护 Jobs 的 [**Codex**](https://openai.com/codex) 全局指导与专项 Skills。目标是减少重复上下文、修正文档规范漂移并保持源文件与运行态一致；“压缩”只能消除表达重复，不能删除触发条件、工程边界、例外、验证步骤或 Jobs 特征。
+> 本技能维护 Jobs 的 [**Codex**](https://openai.com/codex) 全局指导与专项 Skills。目标是减少重复上下文、修正文档规范漂移，并保持 `JobsCodexConfigs`、`JobsSkills`、子模块指针和用户级运行位置的边界清晰；“压缩”只能消除表达重复，不能删除触发条件、工程边界、例外、验证步骤或 Jobs 特征。
 
 ## 一、唯一配置源与允许范围 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 1.1、只编辑标准源
+### 1.1、分开维护两个标准仓库
 
-唯一允许编辑的配置源：
+全局指导标准源：
 
 ```text
 /Users/jobs/Documents/Github/JobsGenesis/JobsConfigOS/💻JobsCodexConfigs
-├── AGENTS.md
-└── skills/
+└── AGENTS.md
 ```
 
-运行态只接收单向部署：
+用户级 Skills 标准源与现行基准工作树：
 
 ```text
-/Users/jobs/.codex/AGENTS.md
 /Users/jobs/.agents/skills/
 ```
 
-不得把运行态反向复制回配置仓库，也不得把 Obsidian Vault 整体拷进 Skill。
+该工作树的远端必须是 `https://github.com/JobsKits/JobsSkills`。`JobsCodexConfigs/skills` 只是 `JobsSkills` 子模块挂载，父仓只跟踪 `.gitmodules` 和 gitlink；不得把子模块或历史备份反向覆盖现行基准工作树，也不得把 Obsidian Vault 整体拷进 Skill。
 
 ### 1.2、先保护已有工作区
 
 审计开始先执行只读检查：
 
 ```shell
-git status --short
-git diff -- AGENTS.md skills
+git -C /Users/jobs/Documents/Github/JobsGenesis/JobsConfigOS/💻JobsCodexConfigs status --short
+git -C /Users/jobs/Documents/Github/JobsGenesis/JobsConfigOS/💻JobsCodexConfigs diff -- AGENTS.md
+git -C /Users/jobs/.agents/skills status --short
+git -C /Users/jobs/.agents/skills diff
 ```
 
 已有改动属于用户。只修改本任务命中的规则，不回滚、不覆盖、不借审计顺手重写其它 Skill。
@@ -74,7 +74,7 @@ git diff -- AGENTS.md skills
 ### 2.3、禁止以“去重”为名删除
 
 - Jobs 代码所有权边界与第三方排除规则。
-- 单向部署、源目录和运行态目录的方向。
+- `JobsCodexConfigs`、`JobsSkills`、子模块指针和现行基准工作树的方向。
 - `.command` 防误触、自述、日志、安装 / 更新确认和 `main` 入口规则。
 - [**Swift**](https://www.swift.org/) / Objective-C DSL、“一镜到底”和返回对象类型约束。
 - Markdown 首次出现专有名词的固定官方链接。
@@ -118,7 +118,7 @@ git diff -- AGENTS.md skills
 
 ### 3.3、独立文档结构
 
-`AGENTS.md` 和每个 `SKILL.md` 至少检查：
+`AGENTS.md` 和 Jobs 本人维护或已明确接管的每个 `SKILL.md` 至少检查；第三方实体目录与外援软链接只核对清单、来源和 Git 边界，不把 Jobs 文档样式强加给上游内容：
 
 - YAML front matter 仅对 `SKILL.md` 强制，且必须位于第一行。
 - 一级标题、2D 封面、`[toc]`、分隔线和前言顺序正确。
@@ -133,10 +133,10 @@ git diff -- AGENTS.md skills
 先执行本 Skill 自带脚本：
 
 ```shell
-zsh ./skills/jobs-codex-config-audit/scripts/audit_codex_configs.zsh
+zsh ./jobs-codex-config-audit/scripts/audit_codex_configs.zsh
 ```
 
-脚本只读输出结构、中文句号序号、固定链接、防重复候选和源 / 运行态差异；它不会自动删除、修改或部署文件。
+脚本只读输出结构、中文句号序号、固定链接、防重复候选、两个仓库状态和子模块指针差异；它不会自动删除、修改、提交或部署文件。
 
 ### 4.2、人工判断语义重复
 
@@ -162,47 +162,50 @@ zsh ./skills/jobs-codex-config-audit/scripts/audit_codex_configs.zsh
 ### 4.4、验证编辑结果
 
 ```shell
-python3 /Users/jobs/.codex/skills/.system/skill-creator/scripts/quick_validate.py ./skills/jobs-codex-config-audit
-zsh -n ./skills/jobs-codex-config-audit/scripts/audit_codex_configs.zsh
-zsh ./skills/jobs-codex-config-audit/scripts/audit_codex_configs.zsh
+python3 /Users/jobs/.codex/skills/.system/skill-creator/scripts/quick_validate.py ./jobs-codex-config-audit
+zsh -n ./jobs-codex-config-audit/scripts/audit_codex_configs.zsh
+zsh ./jobs-codex-config-audit/scripts/audit_codex_configs.zsh
 ```
 
 再检查：
 
 ```shell
-git diff --check
-git diff -- AGENTS.md skills
+git -C /Users/jobs/.agents/skills diff --check
+git -C /Users/jobs/.agents/skills diff
+git -C /Users/jobs/Documents/Github/JobsGenesis/JobsConfigOS/💻JobsCodexConfigs diff --check
+git -C /Users/jobs/Documents/Github/JobsGenesis/JobsConfigOS/💻JobsCodexConfigs diff -- AGENTS.md .gitmodules skills
 ```
 
 必须人工阅读最终 Diff，确认没有把“减少字数”误当成“完成优化”。
 
-## 五、单向部署与一致性
+## 五、仓库、子模块与注入一致性
 
-### 5.1、部署原则
+### 5.1、维护原则
 
-只从标准源部署到运行态。优先使用配置仓库已有的 `【MacOS】Codex配置注入替换工具.command`；如果当前 Codex 任务不能安全停止并重启自身，可在本轮只对已修改文件做等价单向复制，随后用 `cmp` / `diff -qr` 验证。
+全局规则只在 `JobsCodexConfigs/AGENTS.md` 中维护，专项规则只在现行 `JobsSkills` 工作树中维护。修改 `JobsSkills` 后先单独提交、推送子仓，再在 `JobsCodexConfigs` 中更新 `skills` 子模块指针；不在父仓保留第二份直接跟踪的 Skills 文件。
 
-部署前不得从运行态取内容“补回”标准源。
+配置注入脚本只部署 `AGENTS.md`，并扫描现行 `JobsSkills` 生成受控注册块；不复制、删除或覆盖 `JobsSkills` 工作树。
 
 ### 5.2、部署后验证
 
 ```shell
 cmp ./AGENTS.md /Users/jobs/.codex/AGENTS.md
-diff -qr ./skills /Users/jobs/.agents/skills
+git -C /Users/jobs/.agents/skills remote get-url origin
+git -C /Users/jobs/Documents/Github/JobsGenesis/JobsConfigOS/💻JobsCodexConfigs submodule status -- skills
 ```
 
-运行态可能同时含第三方或插件 Skills，不能因为源目录没有它们就删除；一致性比较按 Jobs 自有同名 Skill 逐项进行。
+子模块检出可以暂时落后于现行 `JobsSkills` 工作树，但必须显式报告两者提交号；不得用落后的子模块反向覆盖现行基准。
 
 ## 六、每周任务的完成定义
 
 ### 6.1、每周审计必须输出
 
-- 配置源 Git 状态和本轮明确修改范围。
+- `JobsCodexConfigs` 与 `JobsSkills` 两个 Git 状态和本轮明确修改范围。
 - 结构违规、中文序号违规和固定链接基线结果。
 - 重复候选及“合并 / 保留为有意重复”的判断。
 - 被修改规则的语义账本和防回退说明。
 - Skill 校验、Shell 语法和 Diff 检查结果。
-- 标准源到运行态的一致性；未部署时说明原因。
+- `AGENTS.md` 部署一致性、`JobsSkills` 远端与子模块指针；未同步时说明原因。
 
 ### 6.2、每周审计不得自动做
 

@@ -8,19 +8,19 @@
 
 ## 🔥 <font id=前言>前言</font>
 
-> 本目录是 [**Codex**](https://openai.com/codex) 用户级 `Skills` 的运行态集合。Jobs 自有 `Skill`、外部安装的 `Skill` 和外援软链接可以同时出现，但必须分清所有权、标准源和 Git 跟踪边界。
+> 本目录是 [**JobsSkills**](https://github.com/JobsKits/JobsSkills) 的现行工作树，同时也是 [**Codex**](https://openai.com/codex) 用户级 `Skills` 的直接运行目录。Jobs 自有 `Skill`、外部安装的 `Skill` 和外援软链接可以同时出现，但必须分清所有权、上游来源和 Git 跟踪边界。
 
-## 一、目录责职 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## 一、目录职责 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-- Jobs 自有 `Skill` 的唯一标准源位于 `~/Documents/Github/JobsGenesis/JobsConfigOS/💻JobsCodexConfigs/skills`。
-- `~/.agents/skills` 只是运行态目录，Jobs 自有内容只允许从标准源单向部署到这里，不反向回写。
+- 唯一标准仓库是 `https://github.com/JobsKits/JobsSkills`，`~/.agents/skills` 是现行、内容最完整的基准工作树。
+- `💻JobsCodexConfigs/skills` 仅作为 `JobsCodexConfigs` 父仓对本仓库的 Git 子模块挂载点，便于父仓记录所使用的 `JobsSkills` 版本；它不是可以反向覆盖现行工作树的备份源。
 - 外援 `Skill` 依旧由其上游仓库管理源码和版本；本仓库只记录来源和运行态链接映射。
 
 ## 二、Git 管理边界
 
 | 类型 | Git 处理 | 信息来源 |
 | --- | --- | --- |
-| Jobs 自有 `Skill` | 在标准源仓库中跟踪完整内容 | `💻JobsCodexConfigs/skills` |
+| Jobs 自有 `Skill` | 在本仓库中跟踪完整内容 | `JobsSkills` |
 | 外部安装的实体目录 | 按各自安装器、锁定文件或上游仓库溯源 | 例如 `~/.agents/.skill-lock.json` |
 | 外援软链接 | 不进入 Git 索引，在 `.gitignore` 中按精确名称忽略 | 本文档的来源和映射表 |
 
@@ -64,6 +64,6 @@ for skill_name in understand understand-chat understand-dashboard understand-dif
 done
 ```
 
-3、链接失效时，先恢复上游仓库，再按本文档映射表重建链接；不把外援源码复制进 Jobs 自有 `Skill` 标准源。
+3、链接失效时，先恢复上游仓库，再按本文档映射表重建链接；软链接不进入本仓库 Git 索引，也不把外援源码复制进 Jobs 自有 `Skill` 内容。
 
 <a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➔点我回到首页</a>

@@ -321,4 +321,9 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
 - Flutter / Unity / CodeGraph / PodspecDependencyReport 这类脚本都按可选增强处理；只有用户明确指定某脚本是强制门禁时，才允许 `raise` 阻塞。
 - 新增脚本入口优先复用 `jobs_run_external_script(...)` 等统一 helper，避免在 `Podfile` 中散落裸 `system(script_path)`。
 
+### 1.11、安装与构建挂载脚本的 README 同步
+
+- Swift 项目新增或修改 `pod install` 外援脚本、Xcode 编译 / 编译后挂载脚本及其调用配置时，必须在同一任务更新项目根 `README.md` 的“项目配置支持”；移除挂载也要修正文档，不能只改脚本或脚本目录 README。
+- 必须加载并执行 [jobs-podspec 的安装与构建脚本同步规则](../jobs-podspec/SKILL.md) 1.6.2 节，核实触发时机、行为、产物、日志、开关与失败边界，并完成受影响工程的文档对账。
+
 <a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>
