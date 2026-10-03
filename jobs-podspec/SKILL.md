@@ -135,15 +135,70 @@ description: 当任务涉及 CocoaPods、Podspec、source_files、public_header_
 - 本地 Pod 修改后，`pod install` 成功只代表 CocoaPods 主流程没有中断，不代表 Pods 工程在 Xcode 里可用。必须继续验证 `Pods/Pods.xcodeproj` 能被 `xcodeproj` 打开、根对象仍是 `PBXProject`、目标 Pod target / scheme 存在、`Development Pods > Pod名` 能展开出 `Core` / `Support` / `Pod` / `Support Files`。如果 Xcode 左侧 Pod 名能看到但没有子项，优先排查 Podfile 脚本或 `JobsPodspecKit.rb` 是否写坏 group / file reference / UUID。
 - 建议把本地 Pod 可见性检查写成固定命令：`ruby -rxcodeproj -e 'p = Xcodeproj::Project.open("Pods/Pods.xcodeproj"); puts [p.root_object.isa, p.targets.find { |t| t.name == "Pod名" }&.name].join(" | ")'`，再用 `xcodebuild -workspace 工程.xcworkspace -list | rg "Pod名"` 验证 scheme。只有这两步都正常，才算解决“pod install 不报错但 Xcode 左侧不可展开”的问题。
 
-#### 1.6.1、`Podfile` / `Podfile.deps` 外部脚本防阻塞
+#### 1.6.1、`Podfile` / `Podfile.deps` 解耦、展示与脚本边界
 
 - `Podfile.deps` 只维护 `pod` 依赖定义，不直接执行外部脚本；需要挂载脚本时统一放在 `Podfile` 的 `pre_install`、`post_install` 或 `post_integrate` 中处理。
+- 依赖清单以直观为先：每个依赖单独写一行 `pod '名称', :path => '实际路径'`；远端依赖直接写名称与版本。可保留 `byJobs` 等分组方法，但不使用 `%w` + `each`、字符串插值或路径推导来压缩声明，方便逐条阅读、注释和调整。
 - `Podfile` 里凡是调用外部脚本、`load` 外部 Ruby 文件、`.command`、`.sh`、`.rb` 或 `ScriptsByPods` 下的工具，都必须先判断文件是否存在。脚本不存在、`chmod +x` 失败或脚本执行失败时，默认只打印告警并 `return` / 跳过，不中断 `pod install` 主流程。
 - 只有用户明确要求某个脚本是强制门禁时，才允许用 `raise` 阻塞；否则依赖报告、CodeGraph、资源清理、Flutter/Unity 辅助脚本都按“可选增强，失败不阻塞”处理。
 - 新增脚本入口时优先封装统一 helper，例如 `jobs_run_external_script(...)` 或 `run_xxx_script`，不要在 Podfile 里散落裸 `system(script_path)`。
-- `post_install` / `post_integrate` 里如果需要修改 `Pods.xcodeproj`，只能做最小、可回滚、可跳过的增强，不能手写固定 UUID，也不要给根 group 硬塞 `Podfile.deps`、报告文件等非必要引用。历史上这类展示增强可能把 `PBXProject` 根 UUID 覆盖成 `PBXFileReference`，表现为 `pod install` 正常但 Xcode 左侧 Pods 无法展开。
-- 给 `Pods.xcodeproj` 增加展示文件时，必须先查重、确认不会复用 CocoaPods 已生成对象的 UUID，并在保存后立刻重新打开工程验证 `p.root_object.isa == "PBXProject"`。如果验证失败，宁可跳过该展示引用，也不要让 Pods 工程带病进入 Xcode。
+- Swift / OC 项目采用 `Podfile` + `Podfile.deps` 解耦时，验收必须同时满足：`Podfile.deps` 在 Xcode 的 Pods 工程根组中与 `Podfile` 相邻正常显示，呈现红色 Ruby 钻石图标及文件引用标识，并能打开编辑真实依赖文件。设置 `explicitFileType = text.script.ruby`，不要使用 Xcode 无法识别的 `sourcecode.ruby`；仅添加文件引用，不加入任何 Build Phase。通过 `Podfile` 的安装 hook 自动维护，重复 `pod install` 后仍保持红钻引用态且无重复引用。必须在 Xcode 实际查看图标与引用态，不能只以文件存在、Ruby 语法通过或安装成功代替验收。
+- 上述展示挂载及其它 `Pods.xcodeproj` 展示增强都必须先查重，通过 `xcodeproj` API 生成唯一 UUID，禁止手写固定 UUID 或复用已有对象 UUID；只修改必要引用，不加入无关报告等文件。保存后立刻重新打开工程，确认 `p.root_object.isa == "PBXProject"`、根 UUID 未变且文件引用唯一。失败时恢复修改前工程、告警并跳过展示，不阻断依赖安装。历史上不安全的引用写入曾覆盖 `PBXProject` 根 UUID，表现为 `pod install` 正常但 Xcode 左侧 Pods 无法展开；可见性与工程完整性必须一起验收。
+- 需要把 `Podfile.deps` 挂进 Xcode Pods 根组时，优先直接复制下面已验证的 hook；不要重新推导 `lastKnownFileType` 或改用手写 PBX UUID。`dependency_path` 固定按 `Pods/Pods.xcodeproj` 相对于 `Podfile.deps` 所在目录设置；已有 `post_install` 时合并到同一个块，保留项目原有逻辑与 Build Settings。本 hook 只添加根组文件引用，不修改 target Build Settings。
 
+  ```ruby
+  require 'fileutils'
+  require 'securerandom'
+
+  post_install do |installer|
+    project_path = installer.pods_project.path
+    backup_path = "#{project_path}.repair-backup-#{SecureRandom.hex(8)}"
+
+    begin
+      FileUtils.cp(project_path, backup_path) if File.file?(project_path)
+      project = installer.pods_project
+      root_uuid = project.root_object.uuid
+      dependency_path = '../Podfile.deps'
+      dependency_refs = project.main_group.files.select do |file|
+        file.path == dependency_path
+      end
+      raise 'Podfile.deps 根组中存在重复引用' if dependency_refs.length > 1
+
+      file_ref = dependency_refs.first
+      file_ref ||= project.main_group.new_file(dependency_path)
+      file_ref.explicit_file_type = 'text.script.ruby'
+      project.save
+
+      reopened = Xcodeproj::Project.open(project_path)
+      dependency_refs = reopened.main_group.files.select do |file|
+        file.path == dependency_path
+      end
+      dependency_ref_found = dependency_refs.length == 1 &&
+        dependency_refs.first.explicit_file_type == 'text.script.ruby'
+      build_phase_refs = reopened.targets.flat_map(&:build_phases).flat_map do |phase|
+        phase.respond_to?(:files_references) ? phase.files_references : []
+      end
+      dependency_ref_in_build_phase = build_phase_refs.any? do |file|
+        file.path == dependency_path && file.explicit_file_type == 'text.script.ruby'
+      end
+      unless reopened.root_object.isa == 'PBXProject' &&
+          reopened.root_object.uuid == root_uuid &&
+          dependency_ref_found &&
+          !dependency_ref_in_build_phase
+        raise 'Podfile.deps 引用写入后核验失败'
+      end
+    rescue StandardError => error
+      begin
+        FileUtils.cp(backup_path, project_path) if File.file?(backup_path)
+      rescue StandardError => restore_error
+        warn "[Podfile.deps] Pods 工程恢复失败：#{restore_error.message}"
+      end
+      warn "[Podfile.deps] Xcode 展示引用维护失败，已跳过：#{error.message}"
+    ensure
+      FileUtils.rm_f(backup_path)
+    end
+  end
+  ```
 
 #### 1.6.2、iOS 安装与构建挂载脚本的 README 强制同步
 

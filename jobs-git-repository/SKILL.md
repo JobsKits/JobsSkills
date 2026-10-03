@@ -51,4 +51,18 @@ description: 当任务涉及 JobsMacEnvVarConfigs、Git 仓库结构、脚本安
 - 区分可独立执行的入口脚本与仅供 `source` 的函数库；入口脚本的 `main()` 必须服从 `jobs-macos-shell` 的“高层步骤集中编排、每个函数调用带职责注释、禁止单次转调包装”规范，函数库不得为了形式统一而强加入口。
 - 批量改写前后都要按脚本真实解释器执行静态语法检查，并单独审计 `main()` 结构；出现既有失败时记录基线，整改不得引入新增失败。
 
+### 1.3、父仓子模块的 Git 元数据集中管理
+
+- 当父仓通过 `.gitmodules` 和 gitlink 管理独立子仓时，Jobs 默认将子仓元数据集中保存在父仓实际 Git 目录（`git rev-parse --git-dir`）下的 `modules/` 中；子仓工作目录根部使用 `.git` 文件指向对应元数据目录。这是子模块的本地管理布局，不改变子仓独立提交历史、远端或分支。
+- 开始整理前，先核对父仓 `.gitmodules`、gitlink、子模块路径和 `git submodule status`，并记录父仓及子仓的工作区状态。仅处理已登记且当前检出存在的子模块；保留已有源码改动、未跟踪文件、提交和远端，不用元数据整理顺带提交、推送或更新子仓。
+- 对已登记但子仓内部仍有 `.git` 文件夹的路径，使用 [**Git**](https://git-scm.com/) 提供的 `git submodule absorbgitdirs` 迁移管理目录，不手工移动或重建 Git 元数据。
+
+  ```shell
+  git submodule absorbgitdirs -- <子模块路径>
+  ```
+
+- 如果父仓 `modules/` 中对应目标目录已存在且非空，Git 会拒绝覆盖。先检查其 `core.worktree`、HEAD、refs 和当前工作树指针；确认属于失效遗留元数据后，完整保留到唯一的隔离备份路径，再让 Git 命令迁移当前子仓。无法确认归属或仍有有效工作树引用时立即停止，不删除、不覆盖、不合并两套元数据。
+- 整理后确认子仓根部 `.git` 是包含有效 `gitdir:` 目标的文件；通过 `git -C <子模块路径> rev-parse --show-toplevel --git-dir --show-superproject-working-tree` 和 `git submodule status` 核对工作目录、元数据位置、父仓关系及提交号，并复查父仓和子仓状态，确保源码、索引和既有改动没有被改变。
+- 未登记为子模块的嵌套独立仓库继续保留自己的 `.git` 文件夹。把它登记成子模块会改变父仓的跟踪关系，必须先得到用户明确要求；登记完成后再按本节整理。链接工作树也可能使用 `.git` 指针文件，但其元数据位于 `worktrees/`，不按子模块方式迁移。
+
 <a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

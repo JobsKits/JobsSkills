@@ -151,7 +151,9 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
           .byTitleColor(JobsCor.white)
           .byEnabled(YES)
           .onTap { [weak self] sender in
-              guard let self else { return }
+              guard let self else {
+                  return
+              }
               self.submit(sender)
           }
   }()
@@ -213,6 +215,12 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
 - 首次创建用 `makeConstraints` / `byAddTo`，仅常量变化用保存的 `Constraint.update`，结构切换才用 `remakeConstraints`。禁止在复用、配置或 `layoutSubviews` 中反复 `makeConstraints` 叠加同义约束。
 - 导航控制器、TabBar 子控制器和自定义 titleView 未获得真实容器尺寸时，不主动强制导航栏布局。根控制器切换先完成 `window.rootViewController` 和 `makeKeyAndVisible`，再刷新依赖真实宽高的 titleView、列表和安全区布局。
 
+#### 1.5.2、主题缺陷的全局修复与回归
+
+- 用户指出任意一处主题切换异常时，按当前工程的共性问题处理：扫描主工程和 Jobs 自维护本地 Pods 的全部页面与主题链路，优先修复公共绑定，再处理剩余个例；不能只修截图中的控件。继续遵守所有权边界，不默认回写未点名的来源工程。
+- 同步检查按钮背景及常态 / 选中 / 禁用 / 高亮文字、图标、导航、列表、输入、弹窗和富文本。`JobsCor` 的语义色写入 `UIButton.Configuration.background` 等值类型时不能假定自动更新；应在对应封装层绑定主题语义。富文本和 `CGColor` 存储已解析颜色，必须在主题中心更新后重新生成；订阅使用弱引用，避免在更新回调中再次注册绑定。
+- 验收覆盖白天、黑夜、跟随系统，已创建 / 新创建控件、进入详情后返回及反复切换；检查文字与背景对比、状态保持和布局日志。页面测试通过真实设置入口切换，不能用同名 UserDefaults 启动参数固定主题后宣称切换成功；保留实际页面截图和必要的颜色回归测试。
+
 ### 1.6、导航栏配置写法
 
 - 导航栏统一使用 Jobs 自己封装的 `jobsSetupGKNav` API；简单页面只关心标题时使用简化配置。
@@ -232,7 +240,9 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
           .byImage("list.bullet".sysImg, for: .normal)
           .byImage("list.bullet".sysImg, for: .selected)
           .onTap { [weak self] sender in
-              guard let self else { return }
+              guard let self else {
+                  return
+              }
               sender.byToggleSelected()
               self.jobsSideDrawer?.toggleDrawer()
           }
@@ -258,7 +268,9 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
               .onTap { sender in
                   sender.byToggleSelected()
                   guard let ws = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                        let win = ws.windows.first else { return }
+                        let win = ws.windows.first else {
+                      return
+                  }
                   win.overrideUserInterfaceStyle =
                       (win.overrideUserInterfaceStyle == .dark) ? .light : .dark
               },
@@ -266,7 +278,9 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
               .byImage("globe".sysImg, for: .normal)
               .byImage("globe".sysImg, for: .selected)
               .onTap { [weak self] sender in
-                  guard let self else { return }
+                  guard let self else {
+                      return
+                  }
                   sender.byToggleSelected()
                   tableView.reloadData()
               }
@@ -275,7 +289,7 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
   ```
 
 - 导航栏按钮事件默认用闭包表达。普通点按用 `.onTap`，追加点按用 `.onTapAppend`，普通长按用 `.onLongPress`，追加长按用 `.onLongPressAppend`。
-- 事件闭包里先处理 `guard let self else { return }`，再写业务逻辑；不要在按钮链式配置里塞过长业务代码，复杂逻辑下沉到独立方法。
+- 事件闭包里先通过 `guard` 解包 `self`，失败时在独立行 `return`，再写业务逻辑；不要在按钮链式配置里塞过长业务代码，复杂逻辑下沉到独立方法。
 
 #### 1.6.1、图标资源规则
 
@@ -291,22 +305,21 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
 - 推荐控制器结构按职责分块：系统导入、本地框架导入、类声明、懒加载属性、生命周期、导航栏配置、UI 装配、事件响应、业务方法。
 - 视图创建、`byAddTo` 约束、`byVisible(YES)` 唤醒、`jobsSetupGKNav` 导航栏配置，应保持 Jobs 项目现有链式风格，除非用户明确要求切换成原生写法。
 
-### 1.8、`return` 收口格式
+### 1.8、可读性优先的提行与缩进
 
-- [**Swift**](https://www.swift.org/) 代码里，只要 `return ...` 紧跟在闭包、控制块、循环块或其它内部代码块的右花括号 `}` 后面，就不单独成行，必须紧跟在上一行右括号后面写成 `};return ...`。`}` 和 `return` 中间的分号不能省略，`}return ...` 是错误写法。这条规则覆盖所有返回值，不只限于 `return self`。
-- 如果后花括号 `}` 所在行出现 `//` 或 `///` 注释，则不应用本节 `};return` 紧凑规则；因为在 [**Xcode**](https://developer.apple.com/xcode) 里 `//` 和 `///` 都是注释，下一行 `return ...` 必须保持单独成行，不能提到注释行后面。
+- OC / Swift 代码以人工阅读和维护为目标，函数 / 方法、条件分支、循环、closure / Block、懒加载和配置代码正常提行、逐层缩进；不把完整实现压到一行，不用分号串联多个动作；多变量声明拆为逐条声明。此规则取代旧的 `};return` 紧凑规则：块结束后 `return` 独立成行；OC 保留语句所需分号，Swift 不为压缩代码添加分号。
+- closure / Block 的参数与捕获列表放在开头，Swift 的 `in` 同行，正文从下一行开始，右花括号独立收口；正文每条语句 / 布局约束独立一行。嵌套分支继续展开，不能只拆最外层却留下紧凑内层。无参数或隐式参数的 closure 同样按块排版。
+- DSL 仍保持同一对象的一条链，但每个配置动作单独一行；链式语义不是把整条链横向挤在一行。纯表达式或长参数按可读性分行，不改变求值顺序、捕获策略、返回类型、异常与生命周期行为。
+- 这是一类全局可读性问题，用户指出一处紧凑写法时，应反扫当前任务归属工程的 Jobs 自维护范围并统一整改，排除外援、生成代码和未点名的来源工程；同步修正相关示例和 CodeSnippets。检索 `};return` / `}return`、同一行多个语句、单行函数 / closure / Block、同一行多个 DSL 配置作为候选，人工剔除字符串、注释及合法语法后修正；使用语法检查和必要构建验证，不靠换行数量宣称完成。
 
   ```swift
-  @discardableResult
-  func byDownloadProgress(_ block: @escaping JobsYTKProgress) -> Self {
-      self.resumableDownloadProgressBlock = { progress in
-          block(progress)
-      };return self
+  search.byAddTo(view) { [unowned self] make in
+      make.top.equalTo(gk_navigationBar.snp.bottom)
+      make.left.right.equalToSuperview()
+      make.height.equalTo(100)
   }
+  return self
   ```
-
-- 这条规则只处理 Jobs 自己维护的 [**Swift**](https://www.swift.org/) 代码；外援 Pod 不处理，包括 `Pods/` 目录和 `JobsByPods/ManualBySwiftPods@Pods/` 目录。
-- 每次写 Swift 代码或批量改 Swift 文件后，如果触碰了 Jobs 自己维护的 `.swift` 文件，必须在目标范围内扫描 `}\nreturn` 和 `}return` 残留；优先使用 `rg -n -U "\\}\\n\\s*return\\b|\\}return\\b" <目标路径>`，命中后按本节规则修正。
 
 ### 1.9、本地 Swift Pod 修改后的工程同步扫描
 
@@ -317,6 +330,7 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
 ### 1.10、Swift 项目 `Podfile` / `Podfile.deps` 脚本边界
 
 - Swift 项目的 `Podfile.deps` 只维护 `pod` 依赖定义，不直接执行外部脚本；外部脚本统一由 `Podfile` 调用，避免依赖清单掺入副作用。
+- 采用或调整 `Podfile` / `Podfile.deps` 解耦时，必须加载 [jobs-podspec 的解耦、展示与脚本边界](../jobs-podspec/SKILL.md) 1.6.1 节，执行逐条依赖声明、Xcode 红钻引用态与工程完整性的共同验收。
 - `Podfile` 中所有 `ScriptsByPods`、`.command`、`.sh`、`.rb` 脚本调用，以及 `load` 外部 Ruby 文件，都必须先判断文件是否存在。脚本不存在、`chmod +x` 失败或脚本执行失败时，默认只打印告警并跳过，不影响 `pod install` 主流程。
 - Flutter / Unity / CodeGraph / PodspecDependencyReport 这类脚本都按可选增强处理；只有用户明确指定某脚本是强制门禁时，才允许 `raise` 阻塞。
 - 新增脚本入口优先复用 `jobs_run_external_script(...)` 等统一 helper，避免在 `Podfile` 中散落裸 `system(script_path)`。
@@ -325,5 +339,13 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
 
 - Swift 项目新增或修改 `pod install` 外援脚本、Xcode 编译 / 编译后挂载脚本及其调用配置时，必须在同一任务更新项目根 `README.md` 的“项目配置支持”；移除挂载也要修正文档，不能只改脚本或脚本目录 README。
 - 必须加载并执行 [jobs-podspec 的安装与构建脚本同步规则](../jobs-podspec/SKILL.md) 1.6.2 节，核实触发时机、行为、产物、日志、开关与失败边界，并完成受影响工程的文档对账。
+
+### 1.12、前端 API 回退、UIButton 空态与远程图片
+
+- Swift 业务 API 请求统一使用 Jobs `JobsNetworking`。业务层不得直接调用 AFNetworking、YTKNetwork 或 Alamofire；JobsNetworking 内部使用的实现库由封装层管理。只在项目明确保留旧兼容适配器时，才显式安装相应依赖，不能让模板依赖无意带入旧网络栈。
+- 数据页面每次进入或刷新都请求真实 API；首屏可先画出本地样例让 UI 立即出现，成功时用服务端响应替换，失败 / 超时 / 解码失败时继续显示本地样例。写操作也先请求服务端，失败后在本地演示模型应用同一业务状态迁移，并清楚标注离线演示。用短且可配置的超时确保未部署服务时页面很快出现。
+- 所有订单、搜索结果等动态列表都提供可见的无数据占位按钮和重新加载动作。复用 `JobsEmptyAuto.Config.defaultProvider()` 创建 UIButton 空态；`UITableView` / `UICollectionView` 使用 `.byEmptyButtonProvider { ... }` 和 `.byReloadEmptyViewAuto()` 自动评估，非表格布局按实际业务状态使用 Jobs UIButton provider 构造空态按钮。
+- 用户明确要求运行时网络图片时，素材仍先从 iconfont 选取；界面先呈现随包本地 Logo，再异步加载远端图片，失败时保留本地 Logo。UIImageView 优先使用 `jobs_setImage(_:fallback:)`；UIButton 使用本地 `byImage` 设置初始兜底，再通过 Jobs `JobsImageLoader` 更新成功下载的图片。
+- README 要说明默认 API 地址、超时、服务端优先 / 本地假数据回退、空态入口、图片来源与本地兜底，以及无服务器时如何直接预览界面。
 
 <a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>
