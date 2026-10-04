@@ -1,6 +1,6 @@
-# Reward Hacking Prevention in RFT
+# <span id="前言">Reward Hacking Prevention in RFT</span>
 
-## What Is Reward Hacking?
+## What Is Reward Hacking? <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The model optimizes for the grader's scoring function rather than the actual task. The training grader becomes a proxy reward that diverges from true quality — the model games the proxy instead of improving.
 
@@ -14,7 +14,7 @@ The model optimizes for the grader's scoring function rather than the actual tas
 
 Misaligned graders are the #1 cause of reward hacking.
 
-## Train-Val Gap Thresholds
+## Train-Val Gap Thresholds <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Train-Val Gap | Status | Action |
 |---------------|--------|--------|
@@ -22,14 +22,14 @@ Misaligned graders are the #1 cause of reward hacking.
 | 0.05–0.10 | ⚠️ Warning | Monitor closely, check outputs qualitatively |
 | > 0.10 | 🛑 Stop | Stop training — reward hacking is likely |
 
-## Pre-Training Checklist
+## Pre-Training Checklist <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. **Baseline the grader**: Run training grader on base model outputs. Record scores as your floor.
 2. **Cross-validate graders**: If training grader ≠ eval grader, generate 50 outputs, score with both, compute Spearman ρ. Proceed only if ρ ≥ 0.8. If ρ < 0.6, fix alignment first.
 3. **Test hackability**: Generate 5 intentionally bad outputs that might score well. If grader scores any > 5/10, redesign it.
 4. **Set gap threshold**: Monitor train-val gap every eval_interval. Stop if > 0.10.
 
-## Grader Iteration Loop
+## Grader Iteration Loop <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When reward hacking is detected:
 
@@ -48,7 +48,7 @@ When reward hacking is detected:
 6. RESTART training with the improved grader
 ```
 
-## Red Flags Checklist
+## Red Flags Checklist <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Investigate immediately if **any** are true:
 
@@ -60,7 +60,7 @@ Investigate immediately if **any** are true:
 - [ ] Conciseness/style scores dropping while correctness climbs
 - [ ] Model produces "template" responses
 
-## Key Principles
+## Key Principles <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Principle | Action |
 |-----------|--------|
@@ -70,3 +70,5 @@ Investigate immediately if **any** are true:
 | Test hackability | Bad outputs should score < 5/10 |
 | Prefer SFT when possible | Use RFT only for verifiable-answer tasks |
 | Iterate graders, not models | Fix grader before restarting training |
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

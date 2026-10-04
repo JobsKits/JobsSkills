@@ -1,6 +1,6 @@
-# Dataset Formats
+# <span id="前言">Dataset Formats</span>
 
-## SFT Format (Supervised Fine-Tuning)
+## SFT Format (Supervised Fine-Tuning) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Standard chat-completion JSONL. Each line: JSON object with `messages` array.
 
@@ -17,7 +17,7 @@ Standard chat-completion JSONL. Each line: JSON object with `messages` array.
 
 **Validation checklist:** `.jsonl` extension, valid JSON per line, every example has `messages`, every message has `role` and `content`, no empty `content`.
 
-## DPO Format (Direct Preference Optimization)
+## DPO Format (Direct Preference Optimization) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Three top-level fields: `input`, `preferred_output`, `non_preferred_output`.
 
@@ -43,7 +43,7 @@ Three top-level fields: `input`, `preferred_output`, `non_preferred_output`.
 }
 ```
 
-## RFT Format (Reinforcement Fine-Tuning)
+## RFT Format (Reinforcement Fine-Tuning) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Chat-completion format with key differences from SFT:
 
@@ -82,8 +82,10 @@ def grade(sample, item):
 - `item.*` → extra JSONL fields
 - Template variables: `{{item.field_name}}` — no spaces inside braces, no array indexing
 
-## Converting Between Formats
+## Converting Between Formats <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **SFT → RFT**: Strip assistant messages (RFT last message must be `user`), add grader reference fields. Use `scripts/convert_dataset.py --format rft`.
 - **SFT → DPO**: Generate rejected responses (run base model on same prompts, intentionally degrade good outputs, or use human ranking).
 - **DPO → SFT**: Extract chosen responses from the preferred output.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

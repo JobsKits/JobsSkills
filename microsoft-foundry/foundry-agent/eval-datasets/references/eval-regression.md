@@ -1,25 +1,25 @@
-# Eval Regression — Automated Regression Detection
+# <span id="前言">Eval Regression — Automated Regression Detection</span>
 
 Automatically detect when evaluation metrics degrade between agent versions. Compare each evaluation run against the baseline and generate pass/fail verdicts with actionable recommendations.
 
-## Prerequisites
+## Prerequisites <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - At least 2 evaluation runs in the same evaluation group
 - Baseline run identified (either the first run or the one tagged as `baseline`)
 
-## Step 1 — Identify Baseline and Treatment
+## Step 1 — Identify Baseline and Treatment <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Automatic Baseline Selection
+### Automatic Baseline Selection <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. Read `.foundry/datasets/manifest.json` and find the dataset tagged `baseline`.
 2. If the baseline dataset entry includes a stored `baselineRunId` (or mapping to one or more `evalRunIds`), use that `baselineRunId` as the baseline run.
 3. If no explicit `baselineRunId` is recorded, select the first (oldest) run in the evaluation group as the baseline.
 
-### Treatment Selection
+### Treatment Selection <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The latest (most recent) run in the evaluation group is the treatment.
 
-## Step 2 — Run Comparison
+## Step 2 — Run Comparison <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use **`evaluation_comparison_create`** to compare baseline vs treatment:
 
@@ -42,7 +42,7 @@ Use **`evaluation_comparison_create`** to compare baseline vs treatment:
 
 Retrieve results with **`evaluation_comparison_get`** using the returned `insightId`.
 
-## Step 3 — Regression Verdicts
+## Step 3 — Regression Verdicts <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 For each evaluator in the comparison results, apply regression thresholds:
 
@@ -54,7 +54,7 @@ For each evaluator in the comparison results, apply regression thresholds:
 | `Inconclusive` | — | ❓ INCONCLUSIVE | Increase sample size and re-run |
 | `TooFewSamples` | — | ❓ INSUFFICIENT DATA | Need more test cases (≥30 recommended) |
 
-### Example Regression Report
+### Example Regression Report <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```
 ╔═══════════════════════════════════════════════════════════════╗
@@ -73,7 +73,7 @@ For each evaluator in the comparison results, apply regression thresholds:
 ╚═══════════════════════════════════════════════════════════════╝
 ```
 
-### Example with Regression
+### Example with Regression <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```
 ╔═══════════════════════════════════════════════════════════════╗
@@ -93,7 +93,7 @@ For each evaluator in the comparison results, apply regression thresholds:
 ╚═══════════════════════════════════════════════════════════════╝
 ```
 
-## Step 4 — Remediation Recommendations
+## Step 4 — Remediation Recommendations <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When regression is detected, provide actionable guidance:
 
@@ -105,7 +105,7 @@ When regression is detected, provide actionable guidance:
 | Task adherence drop | Tool configuration changed | Verify tool definitions, check for missing tools |
 | Across-the-board drop | Dataset drift or model change | Check if evaluation dataset changed, verify model deployment |
 
-## CI/CD Integration
+## CI/CD Integration <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Include regression checks in automated pipelines. See [observe skill CI/CD](../../observe/references/cicd-monitoring.md) for GitHub Actions workflow templates that:
 
@@ -114,8 +114,10 @@ Include regression checks in automated pipelines. See [observe skill CI/CD](../.
 3. Block deployment if any evaluator shows > 5% regression
 4. Alert team via GitHub issue or Slack webhook
 
-## Next Steps
+## Next Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **View full trend history** → [Eval Trending](eval-trending.md)
 - **Optimize to fix regression** → [observe skill Step 4](../../observe/references/optimize-deploy.md)
 - **Roll back if critical** → [deploy skill](../../deploy/deploy.md)
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

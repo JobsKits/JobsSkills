@@ -1,14 +1,14 @@
-# Continuous Evaluation
+# <span id="前言">Continuous Evaluation</span>
 
 Enable, configure, disable, or remove continuous evaluation for a Foundry agent. Continuous evaluation automatically assesses agent responses on an ongoing basis using configured evaluators (e.g., groundedness, coherence, violence detection). This is typically the final step in the [observe loop](../observe.md) after deploying and batch-evaluating an agent — it keeps production quality visible without manual intervention.
 
-## When to Use This Skill
+## When to Use This Skill <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 USE FOR: enable continuous evaluation, disable continuous evaluation, configure continuous eval, set up monitoring evaluators, check continuous eval status, delete continuous eval, update evaluators, change sampling rate, change eval interval, production monitoring, ongoing agent quality.
 
 DO NOT USE FOR: running a one-off batch evaluation (use [observe](../observe.md)), querying traces (use [trace](../../trace/trace.md)), creating evaluator definitions (use [observe](../observe.md) Step 1).
 
-## Quick Reference
+## Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Property | Value |
 |----------|-------|
@@ -17,7 +17,7 @@ DO NOT USE FOR: running a one-off batch evaluation (use [observe](../observe.md)
 | Prerequisite | Agent must exist in the project |
 | Local cache | `.foundry/agent-metadata.yaml` |
 
-## Entry Points
+## Entry Points <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | User Intent | Start At |
 |-------------|----------|
@@ -30,7 +30,7 @@ DO NOT USE FOR: running a one-off batch evaluation (use [observe](../observe.md)
 
 > ⚠️ **Important:** Always run [Before Starting](#before-starting--detect-current-state) to resolve the project endpoint and agent name before calling any MCP tools.
 
-## Before Starting — Detect Current State
+## Before Starting — Detect Current State <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. Resolve the target agent root and environment using the [Common Project Context Resolution](../../../SKILL.md#agent-common-project-context-resolution) workflow.
 2. Extract `projectEndpoint` and `agentName` from the selected environment. If not available in metadata, use `ask_user` to collect them.
@@ -38,7 +38,7 @@ DO NOT USE FOR: running a one-off batch evaluation (use [observe](../observe.md)
 4. Use `continuous_eval_get` to check for existing continuous evaluation configuration.
 5. Jump to the appropriate entry point based on user intent.
 
-## How It Works
+## How It Works <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The tool auto-detects the agent's kind and uses the appropriate backend:
 
@@ -47,7 +47,7 @@ The tool auto-detects the agent's kind and uses the appropriate backend:
 
 The user does not need to choose between these — the tool handles it based on agent kind.
 
-## Behavioral Rules
+## Behavioral Rules <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. **Always resolve context first.** Run [Before Starting](#before-starting--detect-current-state) before calling any MCP tool. Never assume a project endpoint or agent name.
 2. **Check before creating.** Always call `continuous_eval_get` before `continuous_eval_create` to determine whether to create or update. Present existing configuration to the user.
@@ -62,9 +62,9 @@ The user does not need to choose between these — the tool handles it based on 
 11. **Handle invalid evaluator names.** If `continuous_eval_create` returns an invalid evaluator name error, call `evaluator_catalog_get` to list available evaluators and present valid options. Do not retry with the same arguments.
 12. **Handle unexpected empty config.** If `continuous_eval_get` returns an empty list for an agent the user believes has continuous eval configured, verify the agent name and project endpoint match the intended environment in `.foundry/agent-metadata.yaml`. The configuration may exist under a different environment or resolved `agentName`.
 
-## Operations
+## Operations <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Check Current State
+### Check Current State <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Before enabling or modifying, check what's already configured:
 
@@ -80,7 +80,7 @@ Arguments:
 
 > ⚠️ **Empty result is not proof of absence.** If the user expects a config to exist but the list is empty, verify the project endpoint and agent name match the intended environment before concluding it was never set up.
 
-### Enable or Update
+### Enable or Update <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Replace Semantics**: `continuous_eval_create` always creates a new evaluation group with the provided evaluators and points the evaluation rule at it. Always pass the complete desired configuration on every call — omitted evaluators are dropped, not preserved.
 
@@ -111,7 +111,7 @@ Arguments:
 | `maxTraces` | Hosted | Max data points per evaluation run | 1000 |
 | `scenario` | Prompt | Evaluation scenario: `standard` (quality and safety metrics, default) or `business` (business success metrics). An agent can have one of each simultaneously. | `standard` |
 
-### Disable
+### Disable <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 To temporarily disable without changing configuration, pass the configuration currently in use along with `enabled: false`. Because `continuous_eval_create` has replace semantics, omitting parameters will change the configuration when re-enabled. The `continuous_eval_get` response does not include evaluator names directly — they are stored in the linked evaluation group — so retrieve them via `evaluation_get` first. If multiple configurations are returned in the `continuous_eval_get` response, present the list to the user and ask which to target.
 
@@ -143,7 +143,7 @@ Arguments:
   enabled: false
 ```
 
-### Delete
+### Delete <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 To permanently remove continuous evaluation configuration:
 
@@ -157,11 +157,11 @@ Arguments:
 
 Always call `continuous_eval_get` first to retrieve the `id` field of the configuration to delete. If multiple configurations are returned, present the list to the user and ask which to target.
 
-## Acting on Results
+## Acting on Results <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Continuous evaluation generates ongoing scores — but monitoring is only useful when you **act** on what it reveals. This section covers how to consume evaluation results and the remediation loop when scores degrade.
 
-### Step 1: Read Evaluation Scores
+### Step 1: Read Evaluation Scores <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The `continuous_eval_get` response includes an `evalId` that links to the evaluation group. Use this to retrieve actual run results:
 
@@ -187,13 +187,13 @@ Review the run results for score trends. Each run contains scores for every conf
 - **Score degradation over time** — scores that were previously healthy but are trending downward
 - **Safety flags** — any non-zero safety evaluator scores that indicate harmful content
 
-### Step 2: Triage the Regression
+### Step 2: Triage the Regression <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. **Identify the failing evaluators.** From the evaluation runs, note which specific evaluators are scoring low (e.g., `groundedness` dropping from 4.2 to 2.8).
 2. **Correlate with traces.** Use the [trace skill](../../trace/trace.md) to search App Insights for the conversations that triggered low scores. Look for patterns: specific query types, tool-call failures, or grounding gaps.
 3. **Compare to baseline.** If batch eval results exist in `.foundry/results/`, compare continuous eval scores against the last known-good batch run to determine whether this is a new regression or a pre-existing gap.
 
-### Step 3: Remediate via the Observe Loop
+### Step 3: Remediate via the Observe Loop <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Once you understand the failure pattern, use the [observe skill](../observe.md) to fix it:
 
@@ -204,7 +204,7 @@ Once you understand the failure pattern, use the [observe skill](../observe.md) 
 | Grounding failures | Check whether the agent's data sources are still accessible and returning expected results; update knowledge index or tool configuration |
 | Scores fluctuating after a deploy | Run [Step 5: Compare](compare-iterate.md) between the current and previous agent version to isolate the regression |
 
-### Step 4: Verify the Fix
+### Step 4: Verify the Fix <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 After deploying a fix through the observe loop:
 
@@ -214,7 +214,7 @@ After deploying a fix through the observe loop:
 
 > 💡 **Tip:** The continuous eval → observe → deploy → continuous eval cycle is the core production quality loop. Continuous eval detects; observe diagnoses and fixes; continuous eval verifies.
 
-## Response Format
+## Response Format <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 All tools return a unified `ContinuousEvalConfig` shape. The `get` tool returns a list; `create` returns a single object.
 
@@ -234,7 +234,7 @@ All tools return a unified `ContinuousEvalConfig` shape. The `get` tool returns 
 | `createdAt` | Creation timestamp | All |
 | `createdBy` | Creator identity | All |
 
-## Related Skills
+## Related Skills <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | User Intent | Skill |
 |-------------|-------|
@@ -242,3 +242,5 @@ All tools return a unified `ContinuousEvalConfig` shape. The `get` tool returns 
 | "Scores are dropping" / "Diagnose and fix quality regression" | [observe skill](../observe.md) (Steps 3–5) |
 | "Analyze production traces" / "Find flagged conversations" | [trace skill](../../trace/trace.md) |
 | "Deploy my agent" / "Redeploy after fix" | [deploy skill](../../deploy/deploy.md) |
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

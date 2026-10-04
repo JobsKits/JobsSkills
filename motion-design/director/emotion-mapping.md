@@ -1,6 +1,6 @@
-# Emotion-to-Motion Mapping
+# <span id="前言">Emotion-to-Motion Mapping</span>
 
-## Core Table
+## Core Table <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Emotion | Character | Path | Easing | Duration |
 |---------|----------|------|--------|----------|
@@ -15,7 +15,7 @@
 | Curiosity | Exploratory, varied | Mixed, circular | varied | 300-500ms |
 | Tenderness | Soft, gentle | Very subtle curves | soft ease-in-out | 600-1000ms |
 
-## Path as Emotional Language
+## Path as Emotional Language <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Path Type | Connotation |
 |-----------|------------|
@@ -29,7 +29,7 @@
 | Radial outward | Explosion, release |
 | Radial inward | Focus, convergence |
 
-## Emotional Intensity
+## Emotional Intensity <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Intensity | Characteristics | When |
 |-----------|----------------|------|
@@ -37,7 +37,7 @@
 | Medium | Visible but not demanding | Most UI interactions |
 | High | Demands attention, large displacement | Errors, celebrations, onboarding |
 
-## Color Psychology
+## Color Psychology <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Color | Emotion | Animation Pairing |
 |-------|---------|------------------|
@@ -49,13 +49,13 @@
 | Yellow | Optimism, caution | Quick pulses |
 | Teal | Modern, clarity | Clean, snappy transitions |
 
-### Color Transition Rules
+### Color Transition Rules <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Success: transition TO green (don't start with it)
 - Error: flash red then settle (don't sustain)
 - Warning: pulse yellow/amber for urgency
 - Neutral: use opacity rather than color change
 
-## Context-Based Emotion Defaults
+## Context-Based Emotion Defaults <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Context | Default Emotion |
 |---------|----------------|
@@ -69,3 +69,5 @@
 | Dashboard | Calm + Confidence |
 | Purchase complete | Joy + Confidence |
 | Delete/remove | Calm (respectful departure) |
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

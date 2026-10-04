@@ -1,4 +1,4 @@
-# Use Toolbox in a Hosted Agent
+# <span id="前言">Use Toolbox in a Hosted Agent</span>
 
 Hosted agents access Foundry-managed tools through a **Toolbox MCP endpoint**. Unlike prompt agents that wire tools directly, hosted agents connect to a single MCP-compatible endpoint that exposes all configured tools. The platform handles credential injection, token refresh, and policy enforcement.
 
@@ -10,7 +10,7 @@ Hosted agents access Foundry-managed tools through a **Toolbox MCP endpoint**. U
 
 > 💡 **This skill is scoped to *consuming* an existing toolbox from agent code** — endpoint resolution, env-var contract, payload shape gathered before agent runtime, verification, and tracing. **Toolbox and connection CRUD belongs in [Foundry Toolkit (VS Code)](https://code.visualstudio.com/docs/intelligentapps/tool-catalog) or the [Foundry Portal](https://ai.azure.com/)** — those surfaces give you tool browsing, metadata, connection wizards, and validation. Use the imperative `azd ai` CLI only for *operational* tasks (retarget the default version, smoke-test an endpoint).
 
-## ✨ Recommendation: enable Tool Search
+## ✨ Recommendation: enable Tool Search <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Before adding more than ~5 tools to a toolbox, add `{ "type": "toolbox_search_preview" }` to the toolbox.** This replaces the full `tools/list` shown to the model with two meta-tools — `tool_search` (natural-language discovery) and `call_tool` (invoke a discovered tool) — so context cost stays flat as the toolbox grows.
 
@@ -21,7 +21,7 @@ Hosted agents access Foundry-managed tools through a **Toolbox MCP endpoint**. U
 
 Full configuration recipe in [tool-tool-search.md](tool-tool-search.md) and the public [Tool Search (preview) docs](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/tool-search).
 
-## Quick Reference
+## Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Property | Value |
 |----------|-------|
@@ -36,7 +36,7 @@ Full configuration recipe in [tool-tool-search.md](tool-tool-search.md) and the 
 | **C# (.NET) Hosted Agent + toolbox** | https://github.com/microsoft-foundry/foundry-samples/tree/main/samples/csharp/hosted-agents/agent-framework/foundry-toolbox-server-side |
 | **Supported Toolbox Scenarios (sample-side reference)** | https://github.com/microsoft-foundry/foundry-samples/blob/main/samples/python/hosted-agents/SUPPORTED_TOOLBOX_SCENARIOS.md |
 
-## Resolve Toolbox Endpoint
+## Resolve Toolbox Endpoint <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 If the user provides a toolbox name or endpoint URL, or the project already references a toolbox (e.g., in `.env` or `agent.manifest.yaml`) → use it directly.
 
@@ -52,7 +52,7 @@ Once the user supplies the toolbox name/endpoint — either an existing one or a
 
 > **Before printing out any step-by-step guidance** for the Foundry Toolkit (VS Code) path, fetch and read [Use Tool Catalog to connect tools and Toolboxes in Foundry Toolkit](https://code.visualstudio.com/docs/intelligentapps/tool-catalog) first, then summarize the relevant steps for them. Don't paraphrase from memory — the Toolkit UI changes; quote the current doc.
 
-## Available tool types
+## Available tool types <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The full set is documented in [agent-tools.md](agent-tools.md) and — authoritatively — in the public [Toolbox docs (Configure tools)](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/toolbox#configure-tools). At time of writing the supported `type` values are:
 
@@ -74,7 +74,7 @@ The full set is documented in [agent-tools.md](agent-tools.md) and — authorita
 - **Agent Memory** — use the `MemorySearchTool` SDK class on prompt agents; for hosted agents, configure the memory store via the project (separate from the toolbox). See [tool-memory.md](tool-memory.md).
 - **Routines (preview)** — not a tool; an agent **trigger** (`schedule` / `timer` / `github_issue` / `custom`) that invokes an existing agent. See the [public Routines docs](https://learn.microsoft.com/azure/foundry/agents/how-to/use-routines).
 
-## Information to Gather Before Building a Toolbox Payload
+## Information to Gather Before Building a Toolbox Payload <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When the user asks to "add an MCP tool" or similar, **never guess**. Confirm each field before generating any JSON or `azure.yaml` snippet:
 
@@ -88,7 +88,7 @@ When the user asks to "add an MCP tool" or similar, **never guess**. Confirm eac
 | 6 | **Foundry project endpoint** | Where the toolbox is created — read from `PROJECT_ENDPOINT` / `AZURE_AI_PROJECT_ENDPOINT` (avoid `FOUNDRY_`-prefixed names) |
 | 7 | **Many tools planned?** (> ~5) | If yes, also add `{ "type": "toolbox_search_preview" }` so the model uses [Tool Search](#-recommendation-enable-tool-search) instead of seeing the full list. |
 
-### Toolbox payload — MCP with a project connection
+### Toolbox payload — MCP with a project connection <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```json
 {
@@ -106,7 +106,7 @@ When the user asks to "add an MCP tool" or similar, **never guess**. Confirm eac
 }
 ```
 
-### Toolbox payload — public MCP (no auth)
+### Toolbox payload — public MCP (no auth) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```json
 {
@@ -123,7 +123,7 @@ When the user asks to "add an MCP tool" or similar, **never guess**. Confirm eac
 }
 ```
 
-### Toolbox payload — large toolbox with Tool Search
+### Toolbox payload — large toolbox with Tool Search <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```json
 {
@@ -145,7 +145,7 @@ When the user asks to "add an MCP tool" or similar, **never guess**. Confirm eac
 }
 ```
 
-### Declarative path via `azd`
+### Declarative path via `azd` <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 If the project already uses `azd ai agent init`, prefer declaring the toolbox in `azure.yaml` so `azd deploy` provisions it and injects `TOOLBOX_ENDPOINT` automatically:
 
@@ -181,7 +181,7 @@ resources:
 
 See [azd `params` reference](https://learn.microsoft.com/azure/developer/azure-developer-cli/azd-schema#params) for the full parameter syntax.
 
-## Operational helpers via `azd ai` CLI
+## Operational helpers via `azd ai` CLI <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > The `azd ai` CLI also exposes `agent connection create`, `toolbox create`, `toolbox list`, and `toolbox delete`. Prefer **Foundry Toolkit (VS Code)** or the **Foundry Portal** for those — the UI gives you tool browsing, connection wizards, and validation. The two commands below are the ones the skill should still drive directly because they're *operational*, not setup.
 
@@ -191,7 +191,7 @@ See [azd `params` reference](https://learn.microsoft.com/azure/developer/azure-d
 > $PE = "https://<account>.services.ai.azure.com/api/projects/<project>"
 > ```
 
-### Retarget the default version — `azd ai toolbox update`
+### Retarget the default version — `azd ai toolbox update` <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Each toolbox version is **immutable**. The version an agent actually hits is the one marked `*` in `version list` — i.e. the **default version**. Use `update` to point that pointer at any existing version (e.g. rollback to a known-good version after a bad publish).
 
@@ -209,7 +209,7 @@ azd ai toolbox show my-toolbox --project-endpoint $PE
 - `--default-version` is the only field `update` accepts today.
 - Validated: switched `default-tb` from version 21 → 20 → 21; both `show` and the computed MCP endpoint (`.../toolboxes/<name>/versions/<n>/mcp?api-version=v1`) tracked the change immediately.
 
-### End-to-end smoke test
+### End-to-end smoke test <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 After the toolbox is created (via Toolkit / Portal / `azd`), hit the MCP endpoint directly to confirm the tool is reachable before pointing an agent at it:
 
@@ -227,7 +227,7 @@ $body = @{ jsonrpc = "2.0"; id = 1; method = "tools/list"; params = @{} } | Conv
 
 `?api-version=v1` and the `Foundry-Features: Toolboxes=V1Preview` header are both required.
 
-## Code Integration Patterns
+## Code Integration Patterns <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The sample repo provides integration patterns for both Python and C#. Read the sample code and adapt it to the user's project.
 
@@ -257,7 +257,7 @@ The sample repo provides integration patterns for both Python and C#. Read the s
 
 > 💡 **Tip:** If MCP tools have `require_approval: "always"` in `_meta.tool_configuration`, the agent runtime must ask the user for confirmation before invoking. The toolbox endpoint does not enforce this — your agent code is responsible.
 
-## Tracing
+## Tracing <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 All toolbox samples emit OpenTelemetry traces. No code changes are required to enable export to Azure Monitor — it's purely a configuration step.
 
@@ -267,3 +267,5 @@ All toolbox samples emit OpenTelemetry traces. No code changes are required to e
   - `maf` — `main.py` calls `enable_instrumentation()`.
   - `langgraph` / `azd` — auto-instrumented by `azure-ai-agentserver-core[tracing]`.
 - **Viewing traces:** Azure Portal → Application Insights → **Investigate → Transaction search** (per-trace) or **Application map** (dependency graph).
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

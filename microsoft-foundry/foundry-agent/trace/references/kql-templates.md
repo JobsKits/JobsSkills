@@ -1,10 +1,10 @@
-# KQL Templates — GenAI Trace Query Reference
+# <span id="前言">KQL Templates — GenAI Trace Query Reference</span>
 
 Ready-to-use KQL templates for querying GenAI OpenTelemetry traces in Application Insights.
 
 **Table of Contents:** [App Insights Table Mapping](#app-insights-table-mapping) · [Key GenAI OTel Attributes](#key-genai-otel-attributes) · [Span Correlation](#span-correlation) · [Hosted Agent Attributes](#hosted-agent-attributes) · [Response ID Formats](#response-id-formats) · [Common Query Templates](#common-query-templates) · [OTel Reference Links](#otel-reference-links)
 
-## App Insights Table Mapping
+## App Insights Table Mapping <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | App Insights Table | GenAI Data |
 |-------------------|------------|
@@ -14,7 +14,7 @@ Ready-to-use KQL templates for querying GenAI OpenTelemetry traces in Applicatio
 | `traces` | Log events, including GenAI events (input/output messages) |
 | `exceptions` | Error details with stack traces |
 
-## Key GenAI OTel Attributes
+## Key GenAI OTel Attributes <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Stored in `customDimensions` on `dependencies` spans:
 
@@ -48,7 +48,7 @@ Stored in `customDimensions` on `customEvents` (name == `gen_ai.evaluation.resul
 
 > **Correlation:** Eval results do NOT link via id-parentId. Use `gen_ai.conversation.id` and/or `gen_ai.response.id` to join with `dependencies` spans.
 
-## Span Correlation
+## Span Correlation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Field | Purpose |
 |-------|---------|
@@ -56,7 +56,7 @@ Stored in `customDimensions` on `customEvents` (name == `gen_ai.evaluation.resul
 | `id` | Span ID — unique identifier for this span |
 | `operation_ParentId` | Parent span ID — use with `id` to build span trees |
 
-### Operation_Id Join (requests → dependencies)
+### Operation_Id Join (requests → dependencies) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `requests` as the hosted-agent entry point, then carry `operation_Id` forward as the trace key when joining into `dependencies`, `traces`, or `customEvents`:
 
@@ -92,7 +92,7 @@ dependencies
 | order by timestamp desc
 ```
 
-## Hosted Agent Attributes
+## Hosted Agent Attributes <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Stored in `customDimensions` on **both `requests` and `traces`** tables (NOT on `dependencies` spans):
 
@@ -113,7 +113,7 @@ Stored in `customDimensions` on **both `requests` and `traces`** tables (NOT on 
 >
 > **Always start from `requests`** when filtering by the Foundry agent name the user knows.
 
-## Response ID Formats
+## Response ID Formats <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Agent Type | Prefix | Example |
 |------------|--------|---------|
@@ -123,9 +123,9 @@ Stored in `customDimensions` on **both `requests` and `traces`** tables (NOT on 
 
 When searching by response ID, use the appropriate prefix to narrow results. The `gen_ai.response.id` attribute appears on `dependencies` spans (for `chat` operations) and in `customEvents` (for evaluation results).
 
-## Common Query Templates
+## Common Query Templates <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Overview — Conversations in last 24h
+### Overview — Conversations in last 24h <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 ```kql
 dependencies
 | where timestamp > ago(24h)
@@ -140,7 +140,7 @@ dependencies
 | order by timestamp desc
 ```
 
-### Error Rate by Operation
+### Error Rate by Operation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 ```kql
 dependencies
 | where timestamp > ago(24h)
@@ -153,7 +153,7 @@ dependencies
 | order by errorRate desc
 ```
 
-### Token Usage by Model
+### Token Usage by Model <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 ```kql
 dependencies
 | where timestamp > ago(24h)
@@ -168,7 +168,7 @@ dependencies
 | order by totalInput desc
 ```
 
-### Tool Call Details
+### Tool Call Details <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 ```kql
 dependencies
 | where operation_Id == "<operation_id>"
@@ -192,7 +192,7 @@ Key tool attributes:
 | `gen_ai.tool.call.arguments` | JSON arguments passed | `{"query": "latest AI news"}` |
 | `gen_ai.tool.call.result` | Tool output (may be truncated) | `<<ImageDisplayed>>` |
 
-### Evaluation Results by Conversation
+### Evaluation Results by Conversation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 ```kql
 customEvents
 | where timestamp > ago(24h)
@@ -213,9 +213,11 @@ customEvents
 
 > For detailed eval queries by response ID or conversation ID, see [Eval Correlation](eval-correlation.md).
 
-## OTel Reference Links
+## OTel Reference Links <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - [GenAI Spans](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/)
 - [GenAI Agent Spans](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-agent-spans/)
 - [GenAI Events](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-events/)
 - [GenAI Metrics](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-metrics/)
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

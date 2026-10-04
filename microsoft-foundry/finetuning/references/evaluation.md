@@ -1,6 +1,6 @@
-# Evaluation Methodology
+# <span id="前言">Evaluation Methodology</span>
 
-## Principles
+## Principles <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. **Always establish a baseline**: Evaluate the base (un-tuned) model first. Without a baseline, you can't measure improvement.
 2. **Use a held-out test set**: Never evaluate on training or validation data. The model has seen those.
@@ -8,7 +8,7 @@
 4. **Use task-specific graders**: Built-in generic evaluators (Coherence, Fluency) measure general quality and won't detect fine-tuning improvements. Use custom graders (Python, score model, string check) for task-specific evaluation.
 5. **Measure cost alongside accuracy**: Report completion tokens per response when comparing models or checkpoints. A model that achieves the same accuracy with fewer tokens is strictly better — cheaper inference and lower latency.
 
-## Two-Layer Evaluation Strategy
+## Two-Layer Evaluation Strategy <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use the **Azure AI Evaluation SDK** (`azure-ai-evaluation`) for all evaluation.
 
@@ -19,9 +19,9 @@ Use the **Azure AI Evaluation SDK** (`azure-ai-evaluation`) for all evaluation.
 
 Generic built-in evaluators (Coherence, Fluency, TaskAdherence) are guardrails, not metrics — they often show no difference between base and fine-tuned models even when domain-specific evaluation reveals clear improvement.
 
-## Custom Graders (Primary FT Evaluation)
+## Custom Graders (Primary FT Evaluation) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 1. Score Model Grader (LLM judge with task-specific rubric)
+### 1. Score Model Grader (LLM judge with task-specific rubric) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Best for: subjective tasks (summarization, alignment, style).
 
@@ -51,7 +51,7 @@ Return ONLY a number 1-5.""",
 )
 ```
 
-### 2. Python Grader (programmatic/exact-match evaluation)
+### 2. Python Grader (programmatic/exact-match evaluation) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Best for: code generation, math, entity extraction, structured output.
 
@@ -89,7 +89,7 @@ def grade(item, sample):
 )
 ```
 
-### 3. String Check Grader (pattern matching)
+### 3. String Check Grader (pattern matching) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Best for: classification, format compliance, tool calling format.
 
@@ -113,7 +113,7 @@ classification_grader = AzureOpenAIStringCheckGrader(
 )
 ```
 
-## Running an Evaluation
+## Running an Evaluation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The `evaluate()` function runs multiple graders over an entire dataset:
 
@@ -133,13 +133,13 @@ for metric, value in result["metrics"].items():
     print(f"{metric}: {value}")
 ```
 
-## Test Set Design
+## Test Set Design <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **Size**: 30–100 examples is sufficient.
 - **Diversity**: Cover easy/medium/hard, edge cases, and different sub-categories.
 - **Quality**: Reference answers must be gold-standard correct. A wrong reference penalizes correct outputs.
 
-## Interpreting Results
+## Interpreting Results <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Score Type | Range | Meaning |
 |-----------|-------|---------|
@@ -148,14 +148,16 @@ for metric, value in result["metrics"].items():
 
 With 50+ eval examples, a difference of ~0.3 points (on 1–5 scale) is usually meaningful.
 
-## Evaluating RFT Models
+## Evaluating RFT Models <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. **Evaluate with a DIFFERENT rubric than the training grader** — otherwise you measure overfitting to the grader.
 2. Use `F1ScoreEvaluator` for exact-match accuracy.
 3. Use `SimilarityEvaluator` to catch semantically correct but differently formatted answers.
 4. **Compare against the base model**, not just other fine-tunes.
 
-## Reference
+## Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - [Azure AI Evaluation SDK docs](https://learn.microsoft.com/en-us/python/api/overview/azure/ai-evaluation-readme)
 - [Evaluation samples](https://github.com/Azure-Samples/azureai-samples/tree/main/scenarios/evaluate)
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

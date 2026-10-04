@@ -1,15 +1,15 @@
-# Full Pipeline Workflow
+# <span id="前言">Full Pipeline Workflow</span>
 
 End-to-end fine-tuning on Azure AI Foundry in 9 phases.
 
-## Prerequisites
+## Prerequisites <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Azure AI Foundry resource with fine-tuning enabled
 - Python 3.10+ with `openai` and `requests`
 - Azure CLI (`az`) authenticated
 - A clear task definition: what should the model do differently after fine-tuning?
 
-## Phase 1: Define the Task
+## Phase 1: Define the Task <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Answer before touching data or models:
 
@@ -19,29 +19,29 @@ Answer before touching data or models:
 4. **How will you measure success?** Define evaluation dimensions (see `references/grader-design.md`).
 5. **Which base model?** Pick 1-3 candidates from the supported model list.
 
-## Phase 2: Prepare the Dataset
+## Phase 2: Prepare the Dataset <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Option A: You Have Data
+### Option A: You Have Data <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 1. Convert to SFT JSONL format (see `references/dataset-formats.md`)
 2. Split: 80% train, 10% validation, 10% held-out test
 3. Remove or fix low-quality examples
 
-### Option B: Synthetic Data
+### Option B: Synthetic Data <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 1. Generate using LLM prompts (see `workflows/dataset-creation.md`)
 2. Convert to SFT JSONL with `scripts/convert_dataset.py`
 
-### Option C: Hybrid (Seed + Synthetic)
+### Option C: Hybrid (Seed + Synthetic) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 1. Use existing data as seed, generate synthetic variations
 2. Merge, deduplicate, and quality-filter
 
 **Checkpoint**: You should have `training.jsonl`, `validation.jsonl`, and `test.jsonl` (never used for training).
 
-## Phase 3: Establish Baselines
+## Phase 3: Establish Baselines <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. Deploy base model (or use existing deployment)
 2. Record scores — this is your "zero" that every fine-tune must beat
 
-## Phase 4: Choose Training Type
+## Phase 4: Choose Training Type <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 See `references/training-types.md` for the full decision framework.
 
@@ -53,7 +53,7 @@ See `references/training-types.md` for the full decision framework.
 
 Most projects start with SFT. Move to RFT/DPO only if SFT isn't sufficient.
 
-## Phase 5: Upload and Submit Training
+## Phase 5: Upload and Submit Training <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `scripts/submit_training.py` or the API directly. See `references/hyperparameters.md` for starting HP values.
 
@@ -62,20 +62,20 @@ Use `scripts/submit_training.py` or the API directly. See `references/hyperparam
 azd ai finetuning jobs submit -f ./fine-tune-job.yaml
 ```
 
-## Phase 6: Monitor and Analyze
+## Phase 6: Monitor and Analyze <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. Wait for completion or use `scripts/monitor_training.py`
 2. Analyze training curves with `scripts/check_training.py`
 3. Read `references/training-curves.md` to interpret results
 4. Check for overfitting — consider deploying an earlier checkpoint if detected
 
-## Phase 7: Evaluate Fine-Tuned Model
+## Phase 7: Evaluate Fine-Tuned Model <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. Deploy fine-tuned model (see `references/deployment.md` for format/SKU)
 2. Compare against baseline and previous experiments
 3. Delete deployment after evaluation
 
-## Phase 8: Iterate
+## Phase 8: Iterate <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Follow `workflows/iterative-training.md`:
 - Adjust hyperparameters based on training curves
@@ -83,10 +83,12 @@ Follow `workflows/iterative-training.md`:
 - Test different base models
 - Track everything in your leaderboard
 
-## Phase 9: Ship
+## Phase 9: Ship <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When the model convincingly beats baseline:
 1. Deploy with production-appropriate capacity
 2. Monitor with Application Insights
 3. Periodically re-evaluate against test set for regression
 4. Retrain as new data becomes available
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

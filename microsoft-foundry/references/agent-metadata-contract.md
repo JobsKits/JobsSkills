@@ -1,8 +1,8 @@
-# Agent Metadata Contract
+# <span id="前言">Agent Metadata Contract</span>
 
 Use this contract for Microsoft Foundry agent folders. In azd projects, `.foundry/agent-metadata*.yaml` is an overlay/cache, not the source of truth for azd-owned deployment context.
 
-## Local Layout
+## Local Layout <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```text
 <agent-root>/
@@ -19,7 +19,7 @@ Use this contract for Microsoft Foundry agent folders. In azd projects, `.foundr
 - Optional `agent-metadata.<env>.yaml` files can hold a single prod or CI-targeted overlay.
 - `suites/`, `datasets/`, `evaluators/`, and `results/` are local cache/result folders. Ask before overwriting user-edited files.
 
-## Effective Context Model
+## Effective Context Model <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Resolve deployment and evaluation context by layering sources in this order:
 
@@ -36,7 +36,7 @@ Resolve deployment and evaluation context by layering sources in this order:
 
 If azd and metadata both provide the same value and differ, stop and ask which source is authoritative. If they match, use the azd value and omit the duplicate on future metadata rewrites.
 
-## Environment Overlay Model
+## Environment Overlay Model <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Field | Required when | Purpose |
 |-------|---------------|---------|
@@ -50,7 +50,7 @@ If azd and metadata both provide the same value and differ, stop and ask which s
 | `environments.<env>.evaluationSuites[]` | Required after evaluation setup/sync | Remote suite/dataset/evaluator refs plus local cache paths |
 | `environments.<env>.lastEval` | Optional | Last local result summary and result file path |
 
-## Example azd Overlay
+## Example azd Overlay <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```yaml
 defaultEnvironment: dev
@@ -79,7 +79,7 @@ environments:
             definitionFile: .foundry/evaluators/<evaluator>-v1.json
 ```
 
-## Example Manual Overlay
+## Example Manual Overlay <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```yaml
 defaultEnvironment: dev
@@ -96,7 +96,7 @@ environments:
             threshold: 4
 ```
 
-## eval.yaml Mapping
+## eval.yaml Mapping <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When `eval.yaml` exists in the selected agent root, treat it as local evaluation intent, not proof of a Foundry suite.
 
@@ -119,7 +119,7 @@ Legacy `dataset_file`, `dataset_reference`, and `validation_reference` keys may 
 
 Persist eval.yaml-derived suite metadata only after the relevant dataset/evaluator/suite has been registered or found in Foundry. Use `generationSource: eval-yaml` for synced suite entries created from local eval config.
 
-## Workflow Rules
+## Workflow Rules <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. Prefer azd service discovery before `.foundry` discovery when `azure.yaml` has `host: azure.ai.agent`.
 2. Once an agent root is selected, use only that root's `.foundry`, source tree, `agent.yaml`, and `eval.yaml` unless the user switches roots.
@@ -132,16 +132,18 @@ Persist eval.yaml-derived suite metadata only after the relevant dataset/evaluat
 9. On metadata rewrites for azd projects, persist non-derivable overlay/cache state and omit azd-owned deployment duplicates.
 10. Never silently overwrite cache files or metadata. Show a summary before refreshing, pruning duplicate fields, or replacing suite refs.
 
-## Legacy Compatibility
+## Legacy Compatibility <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 If the selected environment has `testSuites[]` but no `evaluationSuites[]`, treat `testSuites[]` as the current suite source and migrate it on the next metadata write. If it has only legacy `testCases[]`, normalize that list the same way.
 
 Preserve `id`, `suiteName`, `suiteVersion`, `generationJobId`, `generationSource`, `dataset`, `datasetVersion`, `datasetFile`, `datasetUri`, `evaluators`, and existing `tags`. Map legacy `priority` to `tags.tier` only when `tags.tier` is missing: `P0` -> `smoke`, `P1` -> `regression`, `P2` -> `coverage`.
 
-## Evaluation Suite Guidance
+## Evaluation Suite Guidance <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `tags` as freeform key/value metadata. Suggested keys: `tier` (`smoke`, `regression`, `coverage`), `purpose` (`baseline`, `safety`, `tools`, `quality`), and `stage` (`local`, `generated`, `traces`, `curated`, `prod`).
 
 Each synced suite should point to one dataset and one or more evaluators with thresholds. Store stable remote names separately from versions, keep local cache filenames versioned, and persist `suiteFile`, `datasetFile`, `datasetContentPath`, `datasetUri`, and evaluator `definitionFile` when available. Local dataset filenames should start with the effective Foundry agent name. Use evaluation-suite IDs in evaluation names, result folders, and regression summaries.
 
 For generated Foundry suites, persist `suiteName`, `suiteVersion`, `generationJobId`, and `generationSource`. `suiteName` must start with a letter (`A-Z` or `a-z`); prefix derived numeric names with an alphabetic label such as `suite-`. A suite with `suiteName` still runs batch eval through `evaluation_agent_batch_eval_create`; use `evaluation_suite_get` only to resolve reviewed dataset/evaluator metadata.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

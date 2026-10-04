@@ -1,6 +1,6 @@
-# Step 2 - Run Evaluation
+# <span id="前言">Step 2 - Run Evaluation</span>
 
-## Prerequisites
+## Prerequisites <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Agent deployed and running in the selected environment
 - Selected `.foundry/agent-metadata*.yaml` file loaded for the active agent root
@@ -8,7 +8,7 @@
 - For generated suites: `suiteName` present and verified with `evaluation_suite_get`
 - For legacy suites: local dataset and evaluator metadata available in `.foundry/`
 
-## Definition of Done — Evaluation Run
+## Definition of Done — Evaluation Run <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 A Step 2 evaluation run is complete only when **every** box below is checked. Do **not** produce a final "evaluation complete" summary, score table, or report link until all items are done. "Status reached `completed`" is **not** a stopping condition — `evaluation_get` returns metadata only.
 
@@ -19,7 +19,7 @@ A Step 2 evaluation run is complete only when **every** box below is checked. Do
 - [ ] Results persisted under `.foundry/results/<env>/<eval-id>/<run-id>.json`
 - [ ] Per-item failures and any `passed: null` / `reason: null` items have been clustered (Step 4) before summarizing
 
-## Run Agent-Target Batch Eval
+## Run Agent-Target Batch Eval <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use **`evaluation_agent_batch_eval_create`** for batch evaluation, even when the selected metadata entry was produced by evaluation-suite generation. Treat the generated suite as the reviewed source of dataset/evaluator metadata, not as the execution API.
 
@@ -40,7 +40,7 @@ Use **`evaluation_agent_batch_eval_create`** for batch evaluation, even when the
 
 Before the run, if the selected suite has `suiteName`, call `evaluation_suite_get(projectEndpoint, suiteName, version)` and confirm it references the expected dataset/evaluators. Use the suite to select evaluator names, thresholds, and local review artifacts, then run `evaluation_agent_batch_eval_create`. Run suites tagged `tier=smoke` first unless the user chooses a broader suite tag or a specific suite.
 
-## Test Data
+## Test Data <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use generated suite datasets for user review and lineage. For the agent-target batch eval tool:
 
@@ -53,7 +53,7 @@ Use generated suite datasets for user review and lineage. For the agent-target b
 
 Before setting `deploymentName`, use `model_deployment_get` to list actual project deployments and choose one that supports chat completions; do **not** assume `gpt-4o` exists.
 
-## Parameter Naming Guardrail
+## Parameter Naming Guardrail <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Tool | Correct Group Parameter | Notes |
 |------|-------------------------|-------|
@@ -65,7 +65,7 @@ Before setting `deploymentName`, use `model_deployment_get` to list actual proje
 
 > ⚠️ **Eval-group immutability:** Reuse an existing eval group only when dataset, evaluator list, and thresholds are unchanged. If evaluator definitions or thresholds change, create a new evaluation group or suite version.
 
-## Auto-Poll for Completion
+## Auto-Poll for Completion <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Immediately after creating the run, poll `evaluation_get` in a background terminal until completion. Use `evalId + isRequestForRuns=true` for run lists. The run ID parameter is `evalRunId` (not `runId`).
 
@@ -75,7 +75,7 @@ Only surface the final result when status reaches `completed`, `failed`, or `can
 
 > 💡 **Mirror IDs to metadata immediately.** Right after `evaluation_agent_batch_eval_create` returns, write `evalId`, `evalRunId`, `runName`, `suiteName`/`suiteVersion`, `agentVersion`, and `startedAt` to the selected environment's `lastEval` block in `.foundry/agent-metadata*.yaml`. This lets a later turn resume polling or downloading without re-reading chat history. The azd `.env` (`LAST_EVAL_ID`, etc.) is azd-internal and should not be relied on by skill flows.
 
-## Background Polling Pattern
+## Background Polling Pattern <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 MCP tools live in the agent's process, so a true detached poller cannot call MCP tools directly. Use one of these concrete patterns instead of saying "ping me later":
 
@@ -83,11 +83,13 @@ MCP tools live in the agent's process, so a true detached poller cannot call MCP
 2. **Batched in-turn polling.** If a sentinel poller is unavailable, batch 2–4 poll calls per turn (60–120s apart, via short `sleep` between MCP calls in the same response) before yielding back to the user. Always explain that polling will continue on the next turn and update the metadata's `lastEval.lastPolledAt` so resumption is obvious.
 3. **Never silently stop.** Returning "ping me later" without updating metadata or spawning a sentinel is a workflow violation — the user has to remember state for you.
 
-## Next Steps
+## Next Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When evaluation completes -> immediately proceed to [Step 3: Analyze Results](analyze-results.md) and download `output_items`. Do not produce a summary first.
 
-## Reference
+## Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - [Azure AI Foundry Cloud Evaluation](https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/develop/cloud-evaluation)
 - [Built-in Evaluators](https://learn.microsoft.com/en-us/azure/foundry/concepts/built-in-evaluators)
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

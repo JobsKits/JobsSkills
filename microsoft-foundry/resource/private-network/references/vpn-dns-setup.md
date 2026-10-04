@@ -1,8 +1,8 @@
-# VPN Gateway & DNS Private Resolver Setup
+# <span id="前言">VPN Gateway & DNS Private Resolver Setup</span>
 
 Post-deployment add-on for private network templates (T10, T15–T19). Creates a point-to-site VPN Gateway and DNS Private Resolver so the user can connect from their dev machine and resolve private DNS zones.
 
-## Assumptions
+## Assumptions <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Property | Value | Rationale |
 |----------|-------|-----------|
@@ -13,7 +13,7 @@ Post-deployment add-on for private network templates (T10, T15–T19). Creates a
 | DNS resolver subnet | /28 minimum | Agent computes from available VNet space |
 | Client address pool | `172.16.201.0/24` | Non-overlapping with VNet |
 
-## Subnet Layout
+## Subnet Layout <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Adds two subnets to the existing VNet. Uses the next available range after the agent and PE subnets.
 
@@ -24,9 +24,9 @@ Adds two subnets to the existing VNet. Uses the next available range after the a
 
 > ⚠️ **Warning:** `GatewaySubnet` is a reserved name — Azure requires this exact name for VPN Gateway.
 
-## Pre-Deployment
+## Pre-Deployment <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 1. Discover Available Subnets
+### 1. Discover Available Subnets <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 List existing subnets to find free address space:
 
@@ -40,7 +40,7 @@ Pick the next unused `/24` for `GatewaySubnet` and the next unused `/28` for `dn
 
 Example: if subnets `.0.0/24`, `.1.0/24`, `.2.0/24` are in use → use `192.168.3.0/24` for GatewaySubnet, `192.168.4.0/28` for dns-resolver-inbound.
 
-### 2. Collect Remaining Inputs
+### 2. Collect Remaining Inputs <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Parameter | Source |
 |-----------|--------|
@@ -52,14 +52,14 @@ Example: if subnets `.0.0/24`, `.1.0/24`, `.2.0/24` are in use → use `192.168.
 | `suffix` | From main deployment (or generate unique) |
 | `aadTenantId` | From `az account show --query tenantId` |
 
-### 3. Check VPN Gateway Quota
+### 3. Check VPN Gateway Quota <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 az network list-usages --location <location> \
   --query "[?name.value=='VirtualNetworkGateways'].{limit:limit,current:currentValue}" -o table
 ```
 
-## Bicep Template
+## Bicep Template <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Template: [vpn-dns-setup.bicep](vpn-dns-setup.bicep)
 
@@ -75,7 +75,7 @@ Template: [vpn-dns-setup.bicep](vpn-dns-setup.bicep)
 
 **Creates:** GatewaySubnet, dns-resolver-inbound subnet, Public IP (zonal), VPN Gateway (VpnGw1AZ, P2S AAD/OpenVPN), DNS Private Resolver with inbound endpoint.
 
-## Deploy
+## Deploy <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 az deployment group create \
@@ -96,9 +96,9 @@ az deployment group show \
   --query "{state:properties.provisioningState}" -o tsv
 ```
 
-## Post-Deployment
+## Post-Deployment <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 1. Get DNS Resolver Inbound IP
+### 1. Get DNS Resolver Inbound IP <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 az network dns-resolver inbound-endpoint show \
@@ -110,7 +110,7 @@ az network dns-resolver inbound-endpoint show \
 
 Save this IP — the VPN client needs it as custom DNS.
 
-### 2. Connect via VPN
+### 2. Connect via VPN <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Provide the user with these instructions (substitute actual resource name and DNS IP):
 
@@ -133,7 +133,7 @@ Use `AskUserQuestion`: **"Let me know when you're connected so I can verify DNS 
 
 > Do NOT proceed to verification until the user confirms they are connected.
 
-### 3. Verify DNS Resolution
+### 3. Verify DNS Resolution <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 After connecting via VPN, verify private DNS zones resolve correctly:
 
@@ -145,11 +145,11 @@ nslookup <storage-account>.blob.core.windows.net
 
 Each should resolve to a private IP (`192.168.x.x`), not a public IP.
 
-### 4. VPN Setup Complete
+### 4. VPN Setup Complete <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 DNS resolves to private IPs — VPN is working. Return to [post-deployment-validation.md](post-deployment-validation.md) **Step 5** to run the end-to-end tests.
 
-## Troubleshooting
+## Troubleshooting <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Problem | Cause | Fix |
 |---------|-------|-----|
@@ -159,3 +159,5 @@ DNS resolves to private IPs — VPN is working. Return to [post-deployment-valid
 | Gateway deployment times out | Normal — VPN GW takes 20-45 min | Wait and re-check with `az deployment group show` |
 | Subnet conflict | CIDR overlaps with existing subnet | Use different CIDRs for `gatewaySubnetCidr` / `dnsResolverSubnetCidr` |
 | DNS resolver queries blocked | NRMS auto-deployed NSG missing DNS rules | Add inbound allow rule for UDP/TCP port 53 from VPN client address pool to the `dns-resolver-inbound` subnet NSG |
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

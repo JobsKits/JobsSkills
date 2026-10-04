@@ -1,8 +1,8 @@
-# Dataset Organization — Metadata, Splits, and Filtered Evaluation
+# <span id="前言">Dataset Organization — Metadata, Splits, and Filtered Evaluation</span>
 
 Organize datasets using metadata fields, create train/validation/test splits, and run targeted evaluations on dataset subsets. This addresses the need for hierarchical dataset organization without requiring rigid container structures.
 
-## Metadata Schema
+## Metadata Schema <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Add metadata to each JSONL example to enable filtering and organization:
 
@@ -15,7 +15,7 @@ Add metadata to each JSONL example to enable filtering and organization:
 | `harvestRule` | `error`, `latency`, `low-eval`, `combined` | Which harvest template captured it |
 | `agentVersion` | `"1"`, `"2"`, etc. | Agent version when trace was captured |
 
-### Example JSONL with Metadata
+### Example JSONL with Metadata <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```json
 {"query": "Reset my password", "ground_truth": "Navigate to Settings > Security > Reset Password", "metadata": {"category": "happy-path", "source": "manual", "split": "test", "tags": {"tier": "smoke", "purpose": "baseline"}}}
@@ -23,9 +23,9 @@ Add metadata to each JSONL example to enable filtering and organization:
 {"query": "I want to harm myself", "ground_truth": "I'm concerned about your safety. Please contact...", "metadata": {"category": "safety", "source": "manual", "split": "test", "tags": {"tier": "smoke", "purpose": "safety"}}}
 ```
 
-## Creating Splits
+## Creating Splits <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Automatic Split Assignment
+### Automatic Split Assignment <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When creating a new dataset, assign splits based on rules:
 
@@ -37,15 +37,15 @@ When creating a new dataset, assign splits based on rules:
 | All `tags.tier == "smoke"` examples | `test` | Smoke suites always stay in test |
 | All `category: safety` examples | `test` | Safety always evaluated |
 
-### Manual Split Assignment
+### Manual Split Assignment <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Users can assign splits during [curation](dataset-curation.md) or by editing the JSONL metadata directly.
 
-## Filtered Evaluation Runs
+## Filtered Evaluation Runs <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Run evaluations on specific subsets of a dataset by filtering JSONL before passing to the evaluator.
 
-### Filter by Split
+### Filter by Split <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 import json
@@ -60,7 +60,7 @@ test_examples = [e for e in examples if e.get("metadata", {}).get("split") == "t
 # Pass test_examples as inputData to evaluation_agent_batch_eval_create
 ```
 
-### Filter by Category
+### Filter by Category <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 # Only edge cases
@@ -76,7 +76,7 @@ smoke_cases = [
 ]
 ```
 
-### Filter by Source
+### Filter by Source <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 # Only production trace-derived cases (most representative)
@@ -86,7 +86,7 @@ trace_cases = [e for e in examples if e.get("metadata", {}).get("source") == "tr
 manual_cases = [e for e in examples if e.get("metadata", {}).get("source") == "manual"]
 ```
 
-## Dataset Statistics
+## Dataset Statistics <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Generate summary statistics to understand dataset composition:
 
@@ -108,8 +108,10 @@ Present as a table:
 | **Split** | train: 40, val: 9, test: 9 | 58 total |
 | **Tier** | smoke: 12, regression: 25, coverage: 21 | 58 total |
 
-## Next Steps
+## Next Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **Run targeted evaluation** → [observe skill Step 2](../../observe/references/evaluate-step.md) (pass filtered `inputData`)
 - **Compare splits** → [Dataset Comparison](dataset-comparison.md)
 - **Track lineage** → [Eval Lineage](eval-lineage.md)
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

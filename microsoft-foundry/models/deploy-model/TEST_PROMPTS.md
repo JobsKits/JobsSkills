@@ -1,8 +1,8 @@
-# Deploy Model — Test Prompts
+# <span id="前言">Deploy Model — Test Prompts</span>
 
 Test prompts for the unified `deploy-model` skill with router, preset, customize, and capacity sub-skills.
 
-## Preset Mode (Quick Deploy)
+## Preset Mode (Quick Deploy) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | # | Prompt | Expected |
 |---|--------|----------|
@@ -11,7 +11,7 @@ Test prompts for the unified `deploy-model` skill with router, preset, customize
 | 3 | I need a text-embedding-ada-002 deployment | Preset — non-chat model |
 | 4 | Deploy gpt-4o to the best region | Preset — region scan, no capacity target |
 
-## Customize Mode (Guided Flow)
+## Customize Mode (Guided Flow) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | # | Prompt | Expected |
 |---|--------|----------|
@@ -20,7 +20,7 @@ Test prompts for the unified `deploy-model` skill with router, preset, customize
 | 7 | Set up a PTU deployment for gpt-4o | Customize — PTU requires SKU selection |
 | 8 | Deploy gpt-4o with a specific content filter | Customize — RAI policy flow |
 
-## Capacity Discovery
+## Capacity Discovery <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | # | Prompt | Expected |
 |---|--------|----------|
@@ -28,7 +28,7 @@ Test prompts for the unified `deploy-model` skill with router, preset, customize
 | 10 | Which regions have o3-mini available? | Capacity — run script, show table |
 | 11 | Check if I have enough quota for gpt-4o with 500K TPM | Capacity — high target, some regions may not qualify |
 
-## Chained (Capacity → Deploy)
+## Chained (Capacity → Deploy) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | # | Prompt | Expected |
 |---|--------|----------|
@@ -36,7 +36,7 @@ Test prompts for the unified `deploy-model` skill with router, preset, customize
 | 13 | Deploy o3-mini with 200K TPM to whatever region has it | Capacity → Preset |
 | 14 | I want to deploy gpt-4o with 50K capacity and choose my own settings | Capacity → Customize |
 
-## Negative / Edge Cases
+## Negative / Edge Cases <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | # | Prompt | Expected |
 |---|--------|----------|
@@ -47,7 +47,7 @@ Test prompts for the unified `deploy-model` skill with router, preset, customize
 | 19 | List my current deployments | Should NOT trigger deploy-model |
 | 20 | Deploy gpt-4o to mars-region-1 | Fail gracefully — invalid region |
 
-## Project Selection
+## Project Selection <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | # | Prompt | Expected |
 |---|--------|----------|
@@ -55,7 +55,7 @@ Test prompts for the unified `deploy-model` skill with router, preset, customize
 | 22 | Deploy gpt-4o (no PROJECT_RESOURCE_ID) | Ask user to pick a project |
 | 23 | Deploy gpt-4o to project my-special-project | Use named project directly |
 
-## Ambiguous / Routing Stress
+## Ambiguous / Routing Stress <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | # | Prompt | Expected |
 |---|--------|----------|
@@ -64,7 +64,7 @@ Test prompts for the unified `deploy-model` skill with router, preset, customize
 | 26 | Can you configure a deployment? | Customize — "configure" keyword, should ask which model |
 | 27 | What's the best way to deploy gpt-4o with 100K? | Capacity → Preset |
 
-## Automated Test Results (2026-02-09)
+## Automated Test Results (2026-02-09) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 All 18 tests passed. Deployments created during testing were cleaned up.
 
@@ -76,3 +76,5 @@ All 18 tests passed. Deployments created during testing were cleaned up.
 | Chained | 1/1 | ✅ |
 | Negative | 5/5 | ✅ |
 | Ambiguous | 4/4 | ✅ |
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

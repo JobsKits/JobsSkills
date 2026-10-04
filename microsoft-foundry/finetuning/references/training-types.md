@@ -1,6 +1,6 @@
-# Training Types: SFT vs DPO vs RFT
+# <span id="前言">Training Types: SFT vs DPO vs RFT</span>
 
-## Decision Matrix
+## Decision Matrix <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Factor | SFT | DPO | RFT |
 |--------|-----|-----|-----|
@@ -12,27 +12,27 @@
 | **Typical improvement** | 5–30% on task metrics | Subtle style/safety shifts | 0–15% on reasoning tasks |
 | **Supported models** | Most models | Select models | o4-mini |
 
-## When to Use Each
+## When to Use Each <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### SFT (Supervised Fine-Tuning)
+### SFT (Supervised Fine-Tuning) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - You have high-quality input–output pairs
 - Task is well-defined (code generation, classification, extraction, summarization)
 - You want reliable, repeatable outputs in a specific format or style
 - **Key insight**: 300–500 high-quality examples often outperforms 1,500+ lower-quality ones
 
-### DPO (Direct Preference Optimization)
+### DPO (Direct Preference Optimization) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - You want to adjust tone, verbosity, safety, or style
 - You have examples of "good" and "bad" outputs for the same input
 - SFT already works but outputs need refinement
 - DPO-specific params: `beta` (default 0.1), `l2_multiplier` (default 0.1)
 
-### RFT (Reinforcement Fine-Tuning)
+### RFT (Reinforcement Fine-Tuning) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Task has objectively verifiable answers (code execution, math, logic)
 - You can write a programmatic or LLM-based grader
 - You want to improve the model's reasoning, not just its outputs
 - **Critical**: RFT is extremely sensitive to grader quality. Train–val gap should be ≤ 0.05.
 
-## Choosing a Path
+## Choosing a Path <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```
 ├─ Do you have labeled input–output pairs?
@@ -47,7 +47,7 @@ After SFT:
 └─ Reasoning needs improvement? → RFT (if model supports it)
 ```
 
-## Model Compatibility (Azure AI Foundry)
+## Model Compatibility (Azure AI Foundry) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Model | SFT | DPO | RFT | Vision FT |
 |-------|-----|-----|-----|-----------|
@@ -68,3 +68,5 @@ DPO can be applied on top of an already SFT-fine-tuned model. Vision fine-tuning
 > ⚠️ **Feature flags**: GPT-5 RFT and agentic RFT with tool calling require access requests. Contact your Microsoft account team or request access through the Azure AI Foundry portal. o4-mini RFT without tools is generally available.
 
 *Check Azure AI Foundry docs for the latest model availability.*
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

@@ -1,6 +1,6 @@
-# Timing & Easing Tables
+# <span id="前言">Timing & Easing Tables</span>
 
-## Duration by Element Type
+## Duration by Element Type <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Element | Duration |
 |---------|----------|
@@ -13,14 +13,14 @@
 | Dramatic reveal | 600-1200ms |
 | Ambient | 2000-20000ms |
 
-## Distance-Duration Scaling
+## Distance-Duration Scaling <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 50px=0.8x | 100px=1.0x | 200px=1.3x | 300px=1.5x | 400px=1.6x | Full screen=1.8-2.0x
 
-## Enter vs. Exit
+## Enter vs. Exit <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 Entrance = base (100%). Exit = 65-75% of entrance.
 
-## Interactive Feedback
+## Interactive Feedback <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Interaction | Max Latency |
 |------------|-------------|
@@ -31,7 +31,7 @@ Entrance = base (100%). Exit = 65-75% of entrance.
 | Long press | 500-800ms |
 | Drag start | <50ms |
 
-## Duration by Personality
+## Duration by Personality <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Personality | Quick | Standard | Slow |
 |------------|-------|----------|------|
@@ -40,11 +40,11 @@ Entrance = base (100%). Exit = 65-75% of entrance.
 | Corporate | 200ms | 300ms | 450ms |
 | Energetic | 100ms | 180ms | 300ms |
 
-## Easing: Directional Rules
+## Easing: Directional Rules <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Entrance=ease-out | Exit=ease-in | On-screen=ease-in-out | Looping=sine | Rotation/progress=linear
 
-## Easing: Industry Standards
+## Easing: Industry Standards <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Name | Cubic Bezier | Use |
 |------|-------------|-----|
@@ -59,7 +59,7 @@ Entrance=ease-out | Exit=ease-in | On-screen=ease-in-out | Looping=sine | Rotati
 | Bounce settle | (0.175, 0.885, 0.32, 1.275) | Playful |
 | Elastic snap | (0.68, -0.55, 0.265, 1.55) | Dramatic |
 
-## Material-Based Easing
+## Material-Based Easing <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Material | Duration Scale | Overshoot |
 |----------|---------------|-----------|
@@ -70,7 +70,7 @@ Entrance=ease-out | Exit=ease-in | On-screen=ease-in-out | Looping=sine | Rotati
 | Gas (smoke) | 2.0x | 0% |
 | Glass | 0.9x | 0% |
 
-## Spring Parameters
+## Spring Parameters <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Feel | Stiffness | Damping |
 |------|-----------|---------|
@@ -82,7 +82,7 @@ Entrance=ease-out | Exit=ease-in | On-screen=ease-in-out | Looping=sine | Rotati
 
 Damping: <1.0=oscillates, 1.0=fastest no-oscillation, >1.0=slow settle.
 
-## Stagger Patterns
+## Stagger Patterns <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Pattern | Delay | Budget |
 |---------|------|--------|
@@ -95,7 +95,7 @@ Direction: top-to-bottom (lists) | L-to-R (horizontal) | center-out (hero) | ran
 
 Total stagger MUST stay <500ms.
 
-## Overshoot Budget
+## Overshoot Budget <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Context | Overshoot |
 |---------|-----------|
@@ -104,3 +104,5 @@ Total stagger MUST stay <500ms.
 | Feedback | 2-5% |
 | Celebration | 15-25% |
 | Premium | 0% |
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

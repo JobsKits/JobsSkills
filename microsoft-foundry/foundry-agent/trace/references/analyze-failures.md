@@ -1,8 +1,8 @@
-# Analyze Failures — Find and Cluster Failing Traces
+# <span id="前言">Analyze Failures — Find and Cluster Failing Traces</span>
 
 Identify failing agent traces, group them by root cause, and produce a prioritized action table.
 
-## Step 1 — Find Failing Traces
+## Step 1 — Find Failing Traces <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > ⚠️ **Hosted agents:** `gen_ai.agent.name` on `dependencies` holds the **code-level class name** (e.g., `BingSearchAgent`), NOT the Foundry agent name. To filter by Foundry name, use the [Hosted Agent Variant](#hosted-agent-variant--failures) below.
 
@@ -22,7 +22,7 @@ dependencies
 | take 100
 ```
 
-## Step 2 — Cluster by Error Type
+## Step 2 — Cluster by Error Type <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```kql
 dependencies
@@ -41,7 +41,7 @@ dependencies
 | order by count desc
 ```
 
-## Step 3 — Prioritized Action Table
+## Step 3 — Prioritized Action Table <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Present results as:
 
@@ -54,7 +54,7 @@ Present results as:
 
 **Prioritization:** P0 = highest count or most severe (5xx), then by count × recency.
 
-## Step 4 — Drill Into Specific Failure
+## Step 4 — Drill Into Specific Failure <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When the user selects a cluster, show individual failing traces:
 
@@ -84,7 +84,7 @@ exceptions
 
 Offer to view the full conversation for any trace via [Conversation Detail](conversation-detail.md).
 
-## Hosted Agent Variant — Failures
+## Hosted Agent Variant — Failures <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 For hosted agents, the Foundry agent name lives on `requests`, not `dependencies`. Use a two-step join:
 
@@ -107,3 +107,5 @@ dependencies
 | order by timestamp desc
 | take 100
 ```
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

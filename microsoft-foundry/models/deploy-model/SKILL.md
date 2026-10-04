@@ -7,13 +7,13 @@ metadata:
   version: "1.0.0"
 ---
 
-# Deploy Model
+# <span id="前言">Deploy Model</span>
 
 > **Scope — read this first.** This skill creates model deployments **out-of-band** via Azure CLI / MCP / portal. For azd-managed Foundry projects (those scaffolded from `azd-ai-starter-basic` or via `azd ai agent init`), declare deployments in `azure.yaml services.<name>.config.deployments[]` instead — `azd ai agent init` writes the entry from the sample manifest and `azd provision` creates the deployment through Bicep. See [foundry-agent/create/create-hosted.md](../../foundry-agent/create/create-hosted.md) for the Golden Path. Use this skill only for: (a) Foundry projects not managed by an azd project, (b) ad-hoc deployments outside the azd lifecycle.
 
 Unified entry point for all Azure OpenAI model deployment workflows. Analyzes user intent and routes to the appropriate deployment mode.
 
-## Quick Reference
+## Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Mode | When to Use | Sub-Skill |
 |------|-------------|-----------|
@@ -21,7 +21,7 @@ Unified entry point for all Azure OpenAI model deployment workflows. Analyzes us
 | **Customize** | Full control: version, SKU, capacity, RAI policy | [customize/SKILL.md](customize/SKILL.md) |
 | **Capacity Discovery** | Find where you can deploy with specific capacity | [capacity/SKILL.md](capacity/SKILL.md) |
 
-## Intent Detection
+## Intent Detection <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Analyze the user's prompt and route to the correct mode:
 
@@ -49,7 +49,7 @@ User Prompt
        └─> CAPACITY DISCOVERY first → then PRESET or CUSTOMIZE
 ```
 
-### Routing Rules
+### Routing Rules <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Signal in Prompt | Route To | Reason |
 |------------------|----------|--------|
@@ -61,7 +61,7 @@ User Prompt
 | "PTU", "provisioned throughput" | **Customize** | PTU requires SKU selection |
 | "optimal region", "best region" (no capacity target) | **Preset** | Region optimization is preset's specialty |
 
-### Multi-Mode Chaining
+### Multi-Mode Chaining <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Some prompts require two modes in sequence:
 
@@ -74,17 +74,17 @@ When a user specifies a capacity requirement AND wants deployment:
 
 > 💡 **Tip:** If unsure which mode the user wants, default to **Preset** (quick deployment). Users who want customization will typically use explicit keywords like "custom", "configure", or "with specific settings".
 
-## Project Selection (All Modes)
+## Project Selection (All Modes) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Before any deployment, resolve which project to deploy to. This applies to **all** modes (preset, customize, and after capacity discovery).
 
-### Resolution Order
+### Resolution Order <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. **Check `PROJECT_RESOURCE_ID` env var** — if set, use it as the default
 2. **Check user prompt** — if user named a specific project or region, use that
 3. **If neither** — query the user's projects and suggest the current one
 
-### Confirmation Step (Required)
+### Confirmation Step (Required) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Always confirm the target before deploying.** Show the user what will be used and give them a chance to change it:
 
@@ -112,7 +112,7 @@ Projects in <region>:
 
 > ⚠️ **Never deploy without showing the user which project will be used.** This prevents accidental deployments to the wrong resource.
 
-## Pre-Deployment Validation (All Modes)
+## Pre-Deployment Validation (All Modes) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Before presenting any deployment options (SKU, capacity), always validate both of these:
 
@@ -132,15 +132,17 @@ Before presenting any deployment options (SKU, capacity), always validate both o
 
 > 💡 **Quota management:** For quota increase requests, usage monitoring, and troubleshooting quota errors, defer to the [quota skill](../../quota/quota.md) instead of duplicating that guidance inline.
 
-## Prerequisites
+## Prerequisites <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 All deployment modes require:
 - Azure CLI installed and authenticated (`az login`)
 - Active Azure subscription with deployment permissions
 - Azure AI Foundry project resource ID (or agent will help discover it via `PROJECT_RESOURCE_ID` env var)
 
-## Sub-Skills
+## Sub-Skills <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **[preset/SKILL.md](preset/SKILL.md)** — Quick deployment to optimal region with sensible defaults
 - **[customize/SKILL.md](customize/SKILL.md)** — Interactive guided flow with full configuration control
 - **[capacity/SKILL.md](capacity/SKILL.md)** — Discover available capacity across regions and projects
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

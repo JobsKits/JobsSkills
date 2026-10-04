@@ -1,8 +1,8 @@
-# Customize Workflow — Detailed Phase Instructions
+# <span id="前言">Customize Workflow — Detailed Phase Instructions</span>
 
 > Reference for: `models/deploy-model/customize/SKILL.md`
 
-## Phase 1: Verify Authentication
+## Phase 1: Verify Authentication <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 az account show --query "{Subscription:name, User:user.name}" -o table
@@ -18,7 +18,7 @@ az account set --subscription <subscription-id>
 
 ---
 
-## Phase 2: Get Project Resource ID
+## Phase 2: Get Project Resource ID <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Check `PROJECT_RESOURCE_ID` env var. If not set, prompt user.
 
@@ -26,7 +26,7 @@ Check `PROJECT_RESOURCE_ID` env var. If not set, prompt user.
 
 ---
 
-## Phase 3: Parse and Verify Project
+## Phase 3: Parse and Verify Project <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Parse ARM resource ID to extract components:
 
@@ -48,7 +48,7 @@ az cognitiveservices account show \
 
 ---
 
-## Phase 4: Get Model Name
+## Phase 4: Get Model Name <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 List available models if not provided:
 ```bash
@@ -80,7 +80,7 @@ echo "Model format: $MODEL_FORMAT"
 
 ---
 
-## Phase 5: List and Select Model Version
+## Phase 5: List and Select Model Version <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 az cognitiveservices account list-models \
@@ -93,7 +93,7 @@ Recommend latest version (first in list). Default to `"latest"` if no versions f
 
 ---
 
-## Phase 6: List and Select SKU
+## Phase 6: List and Select SKU <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > ⚠️ **Warning:** Never hardcode SKU lists — always query live data.
 
@@ -119,7 +119,7 @@ Quota key pattern: `OpenAI.<SKU>.<model-name>`. Calculate `available = limit - c
 
 ---
 
-## Phase 7: Configure Capacity
+## Phase 7: Configure Capacity <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > ⚠️ **Non-OpenAI models (MaaS):** If `MODEL_FORMAT != "OpenAI"`, capacity is always `1` (pay-per-token billing). Skip capacity configuration and set `DEPLOY_CAPACITY=1`. Proceed to Phase 7c (Anthropic) or Phase 8.
 
@@ -141,7 +141,7 @@ Filter result for `properties.skuName == $SELECTED_SKU`. Read `properties.availa
 
 Validate user input: must be >= min, <= max, multiple of step. On invalid input, explain constraints.
 
-### Phase 7b: Cross-Region Fallback
+### Phase 7b: Cross-Region Fallback <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 If no capacity in current region, query ALL regions:
 ```bash
@@ -166,7 +166,7 @@ If no region has capacity: fail with guidance to request quota increase, check e
 
 ---
 
-## Phase 7c: Anthropic Model Provider Data (Anthropic models only)
+## Phase 7c: Anthropic Model Provider Data (Anthropic models only) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > ⚠️ **Only execute this phase if `MODEL_FORMAT == "Anthropic"`.** For OpenAI and other models, skip to Phase 8.
 
@@ -227,7 +227,7 @@ Store `COUNTRY_CODE` and `ORG_NAME` for use in Phase 13.
 
 ---
 
-## Phase 8: Select RAI Policy (Content Filter)
+## Phase 8: Select RAI Policy (Content Filter) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > ⚠️ **Note:** RAI policies only apply to OpenAI models. Skip this phase if `MODEL_FORMAT != "OpenAI"` (Anthropic, Meta-Llama, Mistral, Cohere, etc. do not use RAI policies).
 
@@ -240,7 +240,7 @@ Default: `Microsoft.DefaultV2`.
 
 ---
 
-## Phase 9: Configure Advanced Options
+## Phase 9: Configure Advanced Options <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Options are SKU-dependent:
 
@@ -265,7 +265,7 @@ az cognitiveservices account deployment list \
 
 ---
 
-## Phase 10: Configure Version Upgrade Policy
+## Phase 10: Configure Version Upgrade Policy <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > ⚠️ **Note:** Version upgrade policies only apply to OpenAI models. Skip this phase if `MODEL_FORMAT != "OpenAI"`.
 
@@ -279,7 +279,7 @@ Default: `OnceNewDefaultVersionAvailable`.
 
 ---
 
-## Phase 11: Generate Deployment Name
+## Phase 11: Generate Deployment Name <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 List existing deployments to avoid conflicts:
 ```bash
@@ -293,7 +293,7 @@ Auto-generate: use model name as base, append `-2`, `-3` etc. if taken. Allow cu
 
 ---
 
-## Phase 12: Review Configuration
+## Phase 12: Review Configuration <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Display summary of all selections for user confirmation before proceeding:
 - Model, version, deployment name
@@ -306,11 +306,11 @@ User confirms or cancels.
 
 ---
 
-## Phase 13: Execute Deployment
+## Phase 13: Execute Deployment <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > 💡 `MODEL_FORMAT` was already detected in Phase 4. Use the stored value here.
 
-### Standard CLI deployment (non-Anthropic models):
+### Standard CLI deployment (non-Anthropic models): <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Create deployment:**
 ```bash
@@ -327,7 +327,7 @@ az cognitiveservices account deployment create \
 
 > 💡 **Note:** For non-OpenAI MaaS models, `$DEPLOY_CAPACITY` is `1` (set in Phase 7).
 
-### Anthropic model deployment (requires modelProviderData):
+### Anthropic model deployment (requires modelProviderData): <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The Azure CLI does not support `--model-provider-data`. Use the ARM REST API directly.
 
@@ -388,7 +388,7 @@ az rest --method PUT `
 
 > 💡 **Note:** Anthropic models use `capacity: 1` (MaaS billing model), not TPM-based capacity. RAI policy is not applicable for Anthropic models.
 
-### Monitor deployment status:
+### Monitor deployment status: <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 ```bash
 az cognitiveservices account deployment show \
   --name $ACCOUNT_NAME \
@@ -408,3 +408,5 @@ az cognitiveservices account show \
 ```
 
 On success, display deployment name, model, version, SKU, capacity, region, RAI policy, rate limits, endpoint, and Azure AI Foundry portal link.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

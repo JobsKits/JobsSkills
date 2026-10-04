@@ -17,13 +17,13 @@ description: 当任务涉及 CocoaPods、Podspec、source_files、public_header_
 
 ## 一、[**CocoaPods**](https://cocoapods.org/) Podspec 文件（`*.podspec`） <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 1.1、适用范围
+### 1.1、适用范围 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 本规范来自 `~/Documents/JobsOCBaseConfigDemo/JobsByPods` 下 69 个 `*.podspec` 的现有写法。
 - 适用于 Jobs 本地管理的 [**Objective-C**](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html) Pods、`Extra` 扩展 Pods、聚合 Pods，以及 `ManualByOCPods@Pods` 下手动托管的第三方 Pods。
 - 新增或升级 podspec 时，先看同类 Pod 的现有写法，再按本规范收口。不要凭空换一套 [**CocoaPods**](https://cocoapods.org/) 风格。
 
-### 1.2、整体结构
+### 1.2、整体结构 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 自研 Pod / Extra Pod 优先使用同目录 `JobsPodspecKit.rb`：
 
@@ -54,7 +54,7 @@ description: 当任务涉及 CocoaPods、Podspec、source_files、public_header_
   spec.source           = { :path => '.' }
   ```
 
-### 1.3、基础信息与 source
+### 1.3、基础信息与 source <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 自研 Pod 的 `homepage` 可以使用 `https://example.local/PodName`；已经有真实 Git 地址的 Pod 保留真实地址。
 - 自研 Pod 作者默认：`spec.author = { 'Jobs' => 'lg295060456@gmail.com' }`。
@@ -65,7 +65,7 @@ description: 当任务涉及 CocoaPods、Podspec、source_files、public_header_
 - 需要模拟远程 tag 或聚合仓库时，才使用：`spec.source = { :git => "file://#{__dir__}", :tag => spec.version.to_s }`。
 - 第三方 Manual Pod 如果保留上游源码声明，可以继续使用：`spec.source = { :git => 'https://github.com/owner/repo.git', :tag => spec.version.to_s }`。
 
-### 1.4、入口头文件 / Core / Support
+### 1.4、入口头文件 / Core / Support <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 有根入口头文件时，根层暴露入口头，并让真实 `Core/` 目录在根级直接参与源码 / 公开头声明：
 
@@ -93,7 +93,7 @@ description: 当任务涉及 CocoaPods、Podspec、source_files、public_header_
 - `Core` 依赖 `Support` 时，如果使用 subspec，优先使用 `JobsPodspecKitForPodName.add_dynamic_support_dependencies(ss, spec, support_context)`；如果根级直接映射 `Core/`，则把需要的 `Support` 依赖加在 `spec` 根级。
 - 如果某个 Support 子路径必须显式依赖，可以只补最小必要项，例如 `ss.dependency 'JobsOCDefs/Support/UIKit'`。
 
-### 1.5、资源、排除与依赖
+### 1.5、资源、排除与依赖 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 源码扩展默认覆盖 `h,m,mm`。
 - 资源扩展默认覆盖 `png,jpg,jpeg,gif,webp,svg,pdf,json,plist,bundle,xib,nib,storyboard,xcassets,strings,stringsdict,ttf,otf,mp4,aiff`。
@@ -105,7 +105,7 @@ description: 当任务涉及 CocoaPods、Podspec、source_files、public_header_
 - 依赖优先一行一个，放在 `frameworks` 后或对应 subspec 内。有版本约束时使用 [**CocoaPods**](https://cocoapods.org/) 原生写法，例如 `spec.dependency 'lottie-ios', '~> 2.5.3'`。
 - 聚合 Pod 依赖很多时，可以先定义 `common_dependencies`，再用 lambda 统一添加。
 
-### 1.6、xcconfig 与校验
+### 1.6、xcconfig 与校验 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 自研 Pod 默认使用 `JobsPodspecKitForPodName.apply_standard_xcconfig(spec)`。
 - 标准配置应包含 `DEFINES_MODULE`、`HEADER_SEARCH_PATHS`、`CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES`。
@@ -135,7 +135,7 @@ description: 当任务涉及 CocoaPods、Podspec、source_files、public_header_
 - 本地 Pod 修改后，`pod install` 成功只代表 CocoaPods 主流程没有中断，不代表 Pods 工程在 Xcode 里可用。必须继续验证 `Pods/Pods.xcodeproj` 能被 `xcodeproj` 打开、根对象仍是 `PBXProject`、目标 Pod target / scheme 存在、`Development Pods > Pod名` 能展开出 `Core` / `Support` / `Pod` / `Support Files`。如果 Xcode 左侧 Pod 名能看到但没有子项，优先排查 Podfile 脚本或 `JobsPodspecKit.rb` 是否写坏 group / file reference / UUID。
 - 建议把本地 Pod 可见性检查写成固定命令：`ruby -rxcodeproj -e 'p = Xcodeproj::Project.open("Pods/Pods.xcodeproj"); puts [p.root_object.isa, p.targets.find { |t| t.name == "Pod名" }&.name].join(" | ")'`，再用 `xcodebuild -workspace 工程.xcworkspace -list | rg "Pod名"` 验证 scheme。只有这两步都正常，才算解决“pod install 不报错但 Xcode 左侧不可展开”的问题。
 
-#### 1.6.1、`Podfile` / `Podfile.deps` 解耦、展示与脚本边界
+#### 1.6.1、`Podfile` / `Podfile.deps` 解耦、展示与脚本边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - `Podfile.deps` 只维护 `pod` 依赖定义，不直接执行外部脚本；需要挂载脚本时统一放在 `Podfile` 的 `pre_install`、`post_install` 或 `post_integrate` 中处理。
 - 依赖清单以直观为先：每个依赖单独写一行 `pod '名称', :path => '实际路径'`；远端依赖直接写名称与版本。可保留 `byJobs` 等分组方法，但不使用 `%w` + `each`、字符串插值或路径推导来压缩声明，方便逐条阅读、注释和调整。
@@ -200,7 +200,7 @@ description: 当任务涉及 CocoaPods、Podspec、source_files、public_header_
   end
   ```
 
-#### 1.6.2、iOS 安装与构建挂载脚本的 README 强制同步
+#### 1.6.2、iOS 安装与构建挂载脚本的 README 强制同步 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 凡新增或修改挂载到 `pod install` 的外援脚本，或 Xcode 编译 / 编译后的挂载脚本，必须在同一任务更新受影响项目根目录的 `README.md`。触发范围包括脚本本体、调用参数、环境变量、开关、执行条件、顺序和挂载配置；不能只改脚本或只更新脚本目录的说明。移除挂载时同步删除或修正文档中的自动执行声明。
 - 固定栏目：Swift 项目写入“项目配置支持”，OC 新、老项目写入“特色一览”，优先合并现有“安装与构建自动挂载脚本”小节。记录当前完整行为，不堆叠变更日志。
@@ -209,7 +209,7 @@ description: 当任务涉及 CocoaPods、Podspec、source_files、public_header_
 - 共用脚本或跨仓挂载变化必须逐一核对受影响的 Swift、OC 新、OC 老工程，并同步各自 README；保留实际挂载差异，不为文档一致而新增未授权挂载。文档同步不扩大第三方源码修改权限。
 - 交付前完成脚本行为与 README 对账、相对链接存在性及 `git diff --check` 检查，说明更新了哪些 README、做了何种验证。未执行 `pod install` 或构建时如实注明；不得仅为验证文档触发安装、构建或外援脚本副作用。
 
-### 1.7、`JobsPodspecKit.rb` / 样例 `*.podspec` 蒸馏规则
+### 1.7、`JobsPodspecKit.rb` / 样例 `*.podspec` 蒸馏规则 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - `JobsPodspecKit.rb` 不是普通工具脚本，而是本地 Pod 的 podspec 基座。新增 Pod 时优先复制同类 Pod 的 `JobsPodspecKit.rb`，并把模块名改成当前 Pod 对应的 `JobsPodspecKitForPodName`，不要把多个 Pod 的模块名混用。
 - `build_support_context` 负责扫描 `Support` 真实磁盘目录，把每一级有效文件夹收集成 `Support` subspec 路径，并跳过隐藏目录、`Pods`、Demo / Example / Test、文档截图、构建产物、`__MACOSX`、`.bundle`、`.xcassets` 等不该成为 subspec 的目录。

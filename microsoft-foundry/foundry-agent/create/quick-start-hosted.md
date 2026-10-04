@@ -1,14 +1,14 @@
-# Quick Start: Hosted Foundry Agent
+# <span id="前言">Quick Start: Hosted Foundry Agent</span>
 
 Opinionated happy-path for first-time users creating their first hosted Foundry agent. Safe defaults, minimal decisions.
 
 > **Scope:** Defaults below are applied automatically when the user is silent. The user may override the language or sample explicitly; new-vs-existing Foundry project is handled inline. For anything not covered here, stop and read [create-hosted.md](create-hosted.md).
 
-## When to Use This Skill
+## When to Use This Skill <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use this when the request is to create a new hosted Foundry agent end-to-end — scaffold, provision, deploy, and smoke-test. Common overrides (language, region, sample, topic, existing project, existing model) are fine; bounce to [create-hosted.md](create-hosted.md) for anything else.
 
-## Quick Reference
+## Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Property | Default (when user is silent) | Override |
 |----------|-------------------------------|----------|
@@ -21,11 +21,11 @@ Use this when the request is to create a new hosted Foundry agent end-to-end —
 | Deploy mode | `code` (no Docker, no ACR build) | — |
 | Stops at | Deployed agent + remote smoke invoke + eval generation submitted | — |
 
-## Workflow
+## Workflow <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Walk through every step in order. **Before Step 2**, scan the user's original prompt for any of these values: project name, language, subscription, region, existing Foundry project endpoint or ARM ID, existing model deployment name, agent topic/purpose. **Do not ask** for anything already supplied.
 
-### Step 1 — Verify the environment
+### Step 1 — Verify the environment <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Run the bundled script:
 
@@ -39,7 +39,7 @@ Act on prefixes: `[OK]` continue; `[WARN]` continue; `[ACTION]` resolve first.
 - Missing `azure.ai.agents` extension → `azd extension install azure.ai.agents`.
 - Not logged in → STOP. Ask the user to run `azd auth login`. Never run `azd auth login` yourself.
 
-### Step 2 — Collect remaining inputs (one batch)
+### Step 2 — Collect remaining inputs (one batch) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 For any values **not** already in the prompt, ask the rest in a single `AskUserQuestion` round:
 
@@ -61,7 +61,7 @@ If the user supplied only a **Foundry project endpoint** (not an ARM ID), resolv
 
 Use the returned `id` value. Never guess or construct the ARM ID from the endpoint.
 
-### Step 3 — Pick the sample
+### Step 3 — Pick the sample <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 azd ai agent sample list --featured-only --language <lang> --output json
@@ -79,14 +79,14 @@ Step 6 needs `--runtime` and `--entry-point` values. These are CLI args, **not**
 | .NET | `dotnet_10` | `MyAgent.dll` |
 | Node | `node_22` | `index.js` |
 
-### Step 4 — Create the project directory
+### Step 4 — Create the project directory <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 mkdir <project-name>
 cd <project-name>
 ```
 
-### Step 5 — Pre-bootstrap with core `azd init`
+### Step 5 — Pre-bootstrap with core `azd init` <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 This step writes `AZURE_SUBSCRIPTION_ID` + `AZURE_LOCATION` into the azd env *before* `azd ai agent init` runs, which prevents init from deferring model resolution and leaving the `{{AZURE_AI_MODEL_DEPLOYMENT_NAME}}` placeholder in `agent.yaml`.
 
@@ -100,7 +100,7 @@ azd init -t Azure-Samples/azd-ai-starter-basic . \
 
 Use env name `<project>-<random6>` as the **default** to avoid collisions with stuck "Deleting"-state resource groups from prior runs. Use bare `<project>` only when you're confident the name has never been used in this subscription.
 
-### Step 6 — Scaffold the agent
+### Step 6 — Scaffold the agent <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 azd ai agent init --no-prompt \
@@ -122,7 +122,7 @@ If using an existing Foundry project, add `--project-id "<arm-id>"`.
 
 `init` writes `azure.yaml` (appending the service), `src/<project>/agent.yaml`, `src/<project>/.agentignore`, and the sample source files under `src/<project>/`.
 
-### Step 7 — Customize the scaffolded sample (per user's original intent)
+### Step 7 — Customize the scaffolded sample (per user's original intent) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The scaffold is a generic working sample. Edit only what the user's original prompt asked for — touch tools, dependencies, or model config only when the user explicitly asked for external actions, APIs, tools, connectors, data lookup, or a specific model.
 
@@ -139,7 +139,7 @@ Only when the user explicitly asked for it:
 
 If the user's original prompt was generic (no specific agent purpose described), skip customization and ship the sample as-is.
 
-### Step 8 — Sanity-check the scaffold
+### Step 8 — Sanity-check the scaffold <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Verify all four before continuing. If any check fails, pick **one** recovery path, then re-verify:
 
@@ -160,7 +160,7 @@ Never `azd env set AI_PROJECT_DEPLOYMENTS '[...]'` (single-escaped JSON breaks B
 
 If recovery still fails → escape to [create-hosted.md](create-hosted.md).
 
-### Step 9 — Provision Azure resources
+### Step 9 — Provision Azure resources <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 azd provision --no-prompt
@@ -168,7 +168,7 @@ azd provision --no-prompt
 
 ⏳ May take time — creates the resource group, Foundry account + project, model deployment, App Insights, Log Analytics. Wait for the prompt to return; do not interrupt.
 
-### Step 10 — Wire local env vars
+### Step 10 — Wire local env vars <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 azd env get-values
@@ -188,7 +188,7 @@ azd env set AZURE_AI_PROJECT_ENDPOINT "<endpoint>"
 azd env set AZURE_AI_MODEL_DEPLOYMENT_NAME "<deployment-name>"
 ```
 
-### Step 11 — Local smoke test
+### Step 11 — Local smoke test <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Set up a venv with `uv` installed first. `azd ai agent run` installs Python dependencies on first start; with an activated venv that has `uv` available, it uses `uv` (seconds) instead of plain `pip` (minutes).
 
@@ -229,7 +229,7 @@ azd ai agent invoke --local "<short representative prompt for the agent's purpos
 
 Stop the local server via the managed session's stop primitive before continuing — a lingering process holds files in the project and breaks later cleanup.
 
-### Step 12 — Deploy
+### Step 12 — Deploy <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 azd deploy --no-prompt
@@ -237,7 +237,7 @@ azd deploy --no-prompt
 
 ⏳ May take time — zips `src/<project>/` (respecting `.agentignore`), uploads to Foundry, builds runtime remotely, registers agent version. Wait for the prompt to return; do not interrupt.
 
-### Step 13 — Verify + remote smoke
+### Step 13 — Verify + remote smoke <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 azd ai agent show --output json
@@ -253,7 +253,7 @@ azd ai agent invoke "<short representative prompt>"
 
 `azd ai agent invoke` has **no `--force` flag**. If the command succeeds, read the response. If it surfaces a confirmation prompt or message, summarize the cost implication for the user (*"this will call the deployed agent and incur model usage charges"*), get explicit consent, and re-run — do **not** invent flags.
 
-### Step 14 — Submit eval suite generation (async, fire-and-forget)
+### Step 14 — Submit eval suite generation (async, fire-and-forget) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > ⚠️ **Pre-summary gate.** Do not write the Step 15 final summary until this step has been submitted. The eval suite is part of the deployment artifact; skipping it ships an incomplete result.
 
@@ -278,7 +278,7 @@ Generation runs server-side and takes several minutes. Tell the user:
 
 > *"Eval suite generation submitted. Run `azd ai agent eval run` whenever you're ready — it'll wait for generation to finish and execute the eval in one step."*
 
-### Step 15 — Final summary
+### Step 15 — Final summary <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Produce a concise summary covering: agent name/version/status/endpoints, a Playground link, the resources created, and the three follow-up commands below. Construct the Playground URL from `azd env get-values` (or read `playground_url` directly from `azd ai agent show --output json` if present):
 
@@ -300,7 +300,7 @@ azd ai agent eval run                       # finalize + run the eval suite (Ste
 azd down                                    # tear down all resources when done
 ```
 
-## Error Handling
+## Error Handling <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Symptom | Fix |
 |---------|-----|
@@ -313,8 +313,9 @@ azd down                                    # tear down all resources when done
 | `azd ai agent invoke ... --force` returns `unknown flag: --force` | `--force` is not a valid flag for invoke. Re-run without it. |
 | Anything else | Escape to [create-hosted.md](create-hosted.md). |
 
-## Escape Hatch
+## Escape Hatch <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 If any step fails in a way not covered above, the output looks unexpected, or the user's request drifts outside what this quickstart covers → **stop improvising**. Read [create-hosted.md](create-hosted.md) and follow its full workflow.
 
 
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

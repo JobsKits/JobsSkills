@@ -17,7 +17,7 @@ description: 当任务涉及 Python 跨端图形软件、主题切换、脚本�
 
 ## 一、[**Python**](https://www.python.org/) 写作规范 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 1.1、Python 工具目录结构
+### 1.1、Python 工具目录结构 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Python 工具如果需要同时面向 Windows / macOS 独立打包，外层交付目录优先采用“外层入口 + 内层 Python 工程”的结构：
 
@@ -43,7 +43,7 @@ description: 当任务涉及 Python 跨端图形软件、主题切换、脚本�
 - 外层脚本只负责环境检查、进入内层 Python 工程、启动源码或触发构建；业务逻辑应留在 Python 包内，避免把核心逻辑写进 `.bat` / `.command`。
 - 移动目录后必须同步修正脚本中的项目根路径、`PYTHONPATH`、`pyproject.toml` 路径、构建输出路径、日志说明和 README 里的目录树。
 
-### 1.2、跨平台打包边界
+### 1.2、跨平台打包边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - macOS 安装包在 macOS 本机生成，Windows EXE 在 Windows 本机生成；不要默认从 macOS 交叉生成 Windows EXE。
 - 打包脚本生成的 `.app` / `.dmg` / `.exe` 应包含 Python 运行时和项目依赖；普通用户运行成品时不应再要求手动安装 Python 包。
@@ -58,13 +58,13 @@ description: 当任务涉及 Python 跨端图形软件、主题切换、脚本�
 - 打包成功并确认本机产物存在后，最后依次完成两个动作：1、打开产物的磁盘位置（Windows 使用资源管理器，macOS 使用 Finder）；2、启动本次生成的软件（Windows EXE / macOS APP）。成功结尾不再等待回车或 `pause`；失败时不启动旧包，错误和日志保留可见。打开 DMG 不能代替启动 APP，源码运行不能代替运行打包成品。
 - 上述行为同时落实到实际构建器、外层入口自述和 README；直接调用内层构建入口也必须遵守，保留构建开始前的防误触确认。
 
-### 1.3、代码与验证
+### 1.3、代码与验证 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Python 代码优先使用 `pathlib`、`argparse` 或项目既有 CLI 框架处理路径和参数；不要用脆弱字符串拼接处理文件路径。
 - 修改 Python 包结构后，至少执行 `python -m compileall` 或项目测试；依赖缺失导致无法跑完整测试时，说明未执行原因。
 - 修改 `.command` 后执行 `zsh -n`；修改 `.bat` 后至少做路径和变量静态审查，能在 Windows 环境验证时再实际运行。
 
-### 1.4、跨端图形软件主题
+### 1.4、跨端图形软件主题 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 使用 Python 编写的跨端图形软件必须提供可发现的主题切换入口，包含“白天 / 黑夜 / 跟随系统”三种模式；纯命令行工具不要求图形主题入口。
 - 默认跟随系统，保存用户选择并在重启后恢复；跟随系统模式必须监听系统外观变化并即时刷新，手动白天 / 黑夜模式不被系统变化覆盖。

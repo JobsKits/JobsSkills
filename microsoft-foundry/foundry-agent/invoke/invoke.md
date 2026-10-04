@@ -1,8 +1,8 @@
-# Invoke Foundry Agent
+# <span id="前言">Invoke Foundry Agent</span>
 
 Invoke deployed agents in Azure AI Foundry. Manage sessions and file operations for hosted agents.
 
-## Quick Reference
+## Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Property | Value |
 |----------|-------|
@@ -14,14 +14,14 @@ Invoke deployed agents in Azure AI Foundry. Manage sessions and file operations 
 | Session support | Managed sessions for hosted agents (via `session_create`) |
 | Protocols | `responses` (OpenAI-compatible), `invocations` (custom payloads) |
 
-## When to Use This Skill
+## When to Use This Skill <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Send messages to a deployed agent (single or multi-turn)
 - Create/manage sessions for hosted agents
 - Upload/download files to/from hosted agent sessions
 - Test agent behavior after creation or deployment
 
-## MCP Tools
+## MCP Tools <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Tool | Description | Parameters |
 |------|-------------|------------|
@@ -35,7 +35,7 @@ Invoke deployed agents in Azure AI Foundry. Manage sessions and file operations 
 
 For session file operation tools (`session_file_upload`, `session_file_download`, `session_file_list`, `session_file_delete`, `session_file_stat`, `session_file_mkdir`), see [File Operations](references/file-operations.md).
 
-## Protocols
+## Protocols <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Hosted agents support three protocols declared at deployment time. They are distinct contracts — pick per use case (an agent may declare more than one and serve them from the same container):
 
@@ -51,13 +51,13 @@ Key difference: `responses` takes a natural language `inputText` message with pl
 
 > 💡 **Tip:** The `agent_invoke` MCP tool supports both `responses` and `invocations` protocols. Set `protocol: 'invocations'` when targeting an invocations-protocol agent.
 
-## Workflow
+## Workflow <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Step 1: Verify Agent Readiness
+### Step 1: Verify Agent Readiness <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `agent_get` to verify the agent exists. For hosted agents, also verify the targeted version is `active`.
 
-### Step 2: Fast smoke test for azd-deployed agents
+### Step 2: Fast smoke test for azd-deployed agents <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When the current folder is an azd agent project and deployment just completed, prefer the azd CLI first:
 
@@ -71,7 +71,7 @@ If `azd ai agent invoke` returns a `confirmation_required` envelope, summarize t
 
 For a post-deploy smoke test, invoke once unless the user explicitly asked to validate multi-turn/session behavior. If that single invoke returns a successful response, the smoke test passes;
 
-### Step 3: Create Session (Hosted Agents)
+### Step 3: Create Session (Hosted Agents) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 For hosted agents, create a session before invoking using `session_create` with `projectEndpoint` and `agentName`. Optionally provide a `sessionId` (must match `^[A-Za-z0-9_-]{8,128}$`). Store the returned `sessionId` for subsequent calls.
 
@@ -79,7 +79,7 @@ For hosted agents, create a session before invoking using `session_create` with 
 
 For full session lifecycle details, see [Session Management](references/session-management.md).
 
-### Step 4: Invoke Agent
+### Step 4: Invoke Agent <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use the project endpoint and agent name from the project context. Use `agent_invoke` with:
 - `projectEndpoint`, `agentName`, `inputText` (required)
@@ -102,21 +102,21 @@ agent_invoke(projectEndpoint, agentName, inputText: "{\"message\":\"hello\"}", p
 
 See [Invocations Protocol Guide](references/invocations-protocol.md) for full details and examples.
 
-### Step 5: Multi-Turn Conversations
+### Step 5: Multi-Turn Conversations <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Responses protocol** → Pass `conversationId` from previous response to continue the thread. Platform manages history.
 
 **Invocations protocol** → Reuse same `sessionId`; conversation state is agent-managed via `$HOME`. Do **not** pass `conversationId` — it has no effect for invocations.
 
-### Step 6: File Operations (Hosted Agents)
+### Step 6: File Operations (Hosted Agents) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Upload/download files to pass data to and retrieve results from agents. All file operations require an active session. See [File Operations](references/file-operations.md).
 
-### Step 7: Clean Up
+### Step 7: Clean Up <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `session_delete` to release compute resources when done. Undeleted sessions expire per platform policies.
 
-## Agent Type Differences
+## Agent Type Differences <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Behavior | Prompt Agent | Hosted Agent |
 |----------|--------------|--------------|
@@ -126,7 +126,7 @@ Use `session_delete` to release compute resources when done. Undeleted sessions 
 | File operations | ❌ | ✅ via session file tools |
 | Protocol | `responses` only | `responses` or `invocations` |
 
-## Error Handling
+## Error Handling <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Error | Cause | Resolution |
 |-------|-------|------------|
@@ -142,9 +142,11 @@ Use `session_delete` to release compute resources when done. Undeleted sessions 
 | Permission error | Missing RBAC | Follow [troubleshoot skill](../troubleshoot/troubleshoot.md) |
 | Rate limit exceeded | Too many requests | Implement backoff and retry |
 
-## Additional Resources
+## Additional Resources <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - [Session Management](references/session-management.md)
 - [File Operations](references/file-operations.md)
 - [Foundry Hosted Agents](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/hosted-agents?view=foundry)
 - [Foundry Samples](https://github.com/azure-ai-foundry/foundry-samples)
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

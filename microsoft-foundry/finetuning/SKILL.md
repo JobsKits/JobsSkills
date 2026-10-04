@@ -7,11 +7,11 @@ metadata:
   version: "0.0.0-placeholder"
 ---
 
-# Fine-Tuning on Azure AI Foundry
+# <span id="前言">Fine-Tuning on Azure AI Foundry</span>
 
 Fine-tune models using SFT (supervised), DPO (preference), or RFT (reinforcement with graders). Covers dataset prep, training, deployment, and evaluation.
 
-## When to Use
+## When to Use <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use this sub-skill when the user asks about:
 - Fine-tuning a model (SFT, DPO, or RFT)
@@ -26,7 +26,7 @@ Use this sub-skill when the user asks about:
 
 **Do NOT use for:** General model deployment without fine-tuning (use deploy-model), agent creation (use agents), prompt optimization without training (use prompt-optimizer).
 
-## Workflows
+## Workflows <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Stage | Guide |
 |-------|-------|
@@ -36,7 +36,7 @@ Use this sub-skill when the user asks about:
 | **Iterate** | [workflows/iterative-training.md](workflows/iterative-training.md) |
 | **Diagnose** | [workflows/diagnose-poor-results.md](workflows/diagnose-poor-results.md) |
 
-## References
+## References <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Topic | File |
 |-------|------|
@@ -53,7 +53,7 @@ Use this sub-skill when the user asks about:
 | Large file uploads | [references/large-file-uploads.md](references/large-file-uploads.md) |
 | Platform gotchas | [references/platform-gotchas.md](references/platform-gotchas.md) |
 
-## Scripts
+## Scripts <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Script | Purpose |
 |--------|---------|
@@ -69,7 +69,7 @@ Use this sub-skill when the user asks about:
 | `scripts/cleanup.py` | Delete old files and deployments |
 | `scripts/validate/` | Data validators (SFT, DPO, RFT) + stats |
 
-## Rules
+## Rules <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. **Always baseline first** — evaluate the base model before fine-tuning
 2. **Validate data** before submitting — run `scripts/validate/validate_sft.py`
@@ -77,7 +77,7 @@ Use this sub-skill when the user asks about:
 4. **Evaluate checkpoints** — don't blindly deploy the final one
 5. **Measure token cost** alongside accuracy when comparing models
 
-## Quick Reference
+## Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Task | Command |
 |------|---------|
@@ -88,7 +88,7 @@ Use this sub-skill when the user asks about:
 | Deploy model | `python scripts/deploy_model.py --model-id ft:gpt-4.1-mini:... --name my-eval` |
 | Evaluate model | `python scripts/evaluate_model.py --deployment-name my-eval --test-file test.jsonl` |
 
-## Error Handling
+## Error Handling <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Error | Cause | Fix |
 |-------|-------|-----|
@@ -97,3 +97,5 @@ Use this sub-skill when the user asks about:
 | Job stuck in post-training eval | Under-provisioned tool endpoint (RFT) | Scale to S2+, enable Always On |
 | "DeploymentNotReady" after ARM succeeds | ARM/data-plane race condition | Delete and recreate deployment, wait 5 min |
 | Content safety block at deployment | PII-dense training data | Remove problematic document types |
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

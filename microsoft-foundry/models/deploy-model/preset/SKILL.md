@@ -7,11 +7,11 @@ metadata:
   version: "1.0.1"
 ---
 
-# Deploy Model to Optimal Region
+# <span id="前言">Deploy Model to Optimal Region</span>
 
 Automates intelligent Azure OpenAI model deployment by checking capacity across regions and deploying to the best available option.
 
-## What This Skill Does
+## What This Skill Does <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. Verifies Azure authentication and project scope
 2. Checks capacity in current project's region
@@ -21,7 +21,7 @@ Automates intelligent Azure OpenAI model deployment by checking capacity across 
 6. Deploys model with GlobalStandard SKU
 7. Monitors deployment progress
 
-## Prerequisites
+## Prerequisites <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Azure CLI installed and configured
 - Active Azure subscription with Cognitive Services read/create permissions
@@ -29,15 +29,15 @@ Automates intelligent Azure OpenAI model deployment by checking capacity across 
   - Format: `/subscriptions/{sub-id}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/projects/{project}`
   - Found in: Azure AI Foundry portal → Project → Overview → Resource ID
 
-## Quick Workflow
+## Quick Workflow <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Fast Path (Current Region Has Capacity)
+### Fast Path (Current Region Has Capacity) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 ```
 1. Check authentication → 2. Get project → 3. Check current region capacity
 → 4. Deploy immediately
 ```
 
-### Alternative Region Path (No Capacity)
+### Alternative Region Path (No Capacity) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 ```
 1. Check authentication → 2. Get project → 3. Check current region (no capacity)
 → 4. Query all regions → 5. Show alternatives → 6. Select region + project
@@ -46,7 +46,7 @@ Automates intelligent Azure OpenAI model deployment by checking capacity across 
 
 ---
 
-## Deployment Phases
+## Deployment Phases <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Phase | Action | Key Commands |
 |-------|--------|-------------|
@@ -62,7 +62,7 @@ For detailed step-by-step instructions, see [workflow reference](references/work
 
 ---
 
-## Error Handling
+## Error Handling <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Error | Symptom | Resolution |
 |-------|---------|------------|
@@ -75,7 +75,7 @@ For detailed step-by-step instructions, see [workflow reference](references/work
 
 ---
 
-## Advanced Usage
+## Advanced Usage <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 # Custom capacity
@@ -88,16 +88,18 @@ az cognitiveservices account deployment show --name <acct> --resource-group <rg>
 az cognitiveservices account deployment delete --name <acct> --resource-group <rg> --deployment-name <name>
 ```
 
-## Notes
+## Notes <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **SKU:** GlobalStandard only — **API Version:** 2024-10-01 (GA stable)
 
 ---
 
-## Related Skills
+## Related Skills <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **microsoft-foundry** - Parent skill for Azure AI Foundry operations
 - **[quota](../../../quota/quota.md)** — For quota viewing, increase requests, and troubleshooting quota errors, defer to this skill
 - **azure-quick-review** - Review Azure resources for compliance
 - **azure-cost-estimation** - Estimate costs for Azure deployments
 - **azure-validate** - Validate Azure infrastructure before deployment
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

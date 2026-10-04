@@ -1,14 +1,14 @@
-# Search Traces — Conversation-Level Search
+# <span id="前言">Search Traces — Conversation-Level Search</span>
 
 Search agent traces at the conversation level. Returns summaries grouped by conversation or operation, not individual spans.
 
-## Prerequisites
+## Prerequisites <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - App Insights resource resolved (see [trace.md](../trace.md) Before Starting)
 - Selected agent root, environment, effective context source, and metadata overlay confirmed
 - Time range confirmed with user (default: last 24 hours)
 
-## Search by Conversation ID
+## Search by Conversation ID <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Keep the selected environment visible in the summary, and add the selected agent name or environment tag filters when the telemetry emits them.
 
@@ -25,7 +25,7 @@ dependencies
 | order by timestamp asc
 ```
 
-## Search by Response ID
+## Search by Response ID <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Auto-detect the response ID format to determine agent type:
 - `caresp_...` → Hosted agent (AgentServer)
@@ -67,7 +67,7 @@ dependencies
 
 Also check for eval results: see [Eval Correlation](eval-correlation.md).
 
-## Search by Agent Name
+## Search by Agent Name <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > **Note:** For hosted agents, `gen_ai.agent.name` in `dependencies` refers to *sub-agents* (e.g., `BingSearchAgent`), not the top-level hosted agent. See "Search by Hosted Agent Name" below.
 
@@ -91,7 +91,7 @@ dependencies
 | take 50
 ```
 
-## Search by Hosted Agent Name
+## Search by Hosted Agent Name <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 For hosted agents, the Foundry agent name (e.g., `hosted-agent-022-001`) appears on `requests` and `traces` — NOT on `dependencies`. Use `requests` as the preferred entry point, materialize the matching request rows, then join downstream spans on `operation_Id`:
 
@@ -134,7 +134,7 @@ dependencies
 
 If `gen_ai.agent.id` does not contain `:`, continue using the requests-scoped name fields for filtering and treat `agentVersion` as optional enrichment rather than a required key.
 
-## Conversation Summary Table
+## Conversation Summary Table <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Present results in this format:
 
@@ -145,7 +145,7 @@ Present results in this format:
 
 Highlight rows with errors in the summary. Offer to drill into any conversation via [Conversation Detail](conversation-detail.md).
 
-## Free-Text Search
+## Free-Text Search <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When the user provides a general search term (e.g., agent name, error message):
 
@@ -158,6 +158,8 @@ union dependencies, requests, exceptions, traces
 | take 20
 ```
 
-## After Successful Query
+## After Successful Query <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > 📝 **Reminder:** If this is the first trace query in this session, ensure App Insights connection info was persisted to the selected metadata file for the selected environment (see [trace.md — Before Starting](../trace.md#before-starting--resolve-app-insights-connection)).
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

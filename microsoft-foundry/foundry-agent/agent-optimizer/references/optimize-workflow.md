@@ -1,8 +1,8 @@
-# Optimize Workflow
+# <span id="前言">Optimize Workflow</span>
 
 Use this after azd setup and scaffold review are complete.
 
-## 1. Prepare context
+## 1. Prepare context <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. Resolve the hosted agent with [azd Setup](azd-setup.md).
 2. If SDK wiring or `.agent_configs/baseline/` is missing, run [Scaffold Workflow](scaffold.md) first.
@@ -17,7 +17,7 @@ azd ai agent eval generate --dataset <path-to-jsonl>
 azd ai agent eval generate --reset-defaults
 ```
 
-## 2. Run optimize
+## 2. Run optimize <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Run from the azd project/agent root:
 
@@ -27,7 +27,7 @@ azd ai agent optimize --optimize-model <allowed-optimizer-model-deployment-name>
 
 If multiple services are detected, let azd prompt or ask the user which service to use. If `eval.yaml` exists or was generated, use it when it matches the selected agent; otherwise ask before regenerating or ignoring it.
 
-## 3. Monitor
+## 3. Monitor <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use these when the job is long-running or the user asks:
 
@@ -39,7 +39,7 @@ azd ai agent optimize cancel <operation-id>
 
 Capture the operation ID, portal URL, scores, and candidate IDs from output.
 
-## 4. Apply locally
+## 4. Apply locally <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Recommend the best candidate, then ask before applying:
 
@@ -49,7 +49,7 @@ azd ai agent optimize apply --candidate <candidate-id>
 
 After apply, show the source diff and summarize changed files, prompts, model/temperature, tools, and skills.
 
-## 5. Deploy after review
+## 5. Deploy after review <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 In azd environments, prefer local apply plus:
 
@@ -58,3 +58,5 @@ azd deploy
 ```
 
 Do not use `azd ai agent optimize deploy --candidate <candidate-id>` unless the user explicitly requests it. Local apply keeps optimized changes visible for source control review.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

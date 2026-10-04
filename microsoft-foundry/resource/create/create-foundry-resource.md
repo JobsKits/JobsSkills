@@ -12,7 +12,7 @@ compatibility:
     - azure-portal: "any"
 ---
 
-# Create Foundry Resource
+# <span id="前言">Create Foundry Resource</span>
 
 This sub-skill orchestrates creation of Azure AI Services multi-service resources using Azure CLI.
 
@@ -22,7 +22,7 @@ This sub-skill orchestrates creation of Azure AI Services multi-service resource
 
 **Table of Contents:** [Quick Reference](#quick-reference) · [When to Use](#when-to-use) · [Prerequisites](#prerequisites) · [Core Workflows](#core-workflows) · [Important Notes](#important-notes) · [Additional Resources](#additional-resources)
 
-## Quick Reference
+## Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Property | Value |
 |----------|-------|
@@ -32,7 +32,7 @@ This sub-skill orchestrates creation of Azure AI Services multi-service resource
 | **Resource Type** | `Microsoft.CognitiveServices/accounts` (kind: `AIServices`) |
 | **Resource Kind** | `AIServices` (multi-service) |
 
-## When to Use
+## When to Use <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use this sub-skill when you need to:
 
@@ -47,7 +47,7 @@ Use this sub-skill when you need to:
 - Managing RBAC permissions (use `microsoft-foundry:rbac`)
 - Monitoring resource usage (use `microsoft-foundry:quota`)
 
-## Prerequisites
+## Prerequisites <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **Azure subscription** - Active subscription ([create free account](https://azure.microsoft.com/pricing/purchase-options/azure-account))
 - **Azure CLI** - Version 2.0 or later installed
@@ -62,13 +62,13 @@ Use this sub-skill when you need to:
 
 > **Need RBAC help?** See [microsoft-foundry:rbac](../../rbac/rbac.md) for permission management.
 
-## Core Workflows
+## Core Workflows <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 1. Create Resource Group
+### 1. Create Resource Group <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Command Pattern:** "Create a resource group for my Foundry resources"
 
-#### Steps
+#### Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. **Ask user preference**: Use existing or create new resource group
 2. **If using existing**: List and let user select from available groups (0-4: show all, 5+: show 5 most recent with "Other" option)
@@ -87,11 +87,11 @@ See [Detailed Workflow Steps](./references/workflows.md) for complete instructio
 
 ---
 
-### 2. Create Foundry Resource
+### 2. Create Foundry Resource <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Command Pattern:** "Create a new Azure AI Services resource"
 
-#### Steps
+#### Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. **Verify prerequisites**: Check Azure CLI, authentication, and provider registration
 2. **Choose location**: Always ask user to select region (don't assume resource group location)
@@ -119,7 +119,7 @@ See [Detailed Workflow Steps](./references/workflows.md) for complete instructio
 
 ---
 
-### 3. Register Resource Provider
+### 3. Register Resource Provider <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Command Pattern:** "Register Cognitive Services provider"
 
@@ -137,7 +137,7 @@ See [Detailed Workflow Steps](./references/workflows.md) for complete instructio
 
 ---
 
-## Important Notes
+## Important Notes <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **Resource kind must be `AIServices`** for multi-service Foundry resources
 - **SKU must be S0** (Standard) - F0 free tier not available for AIServices
@@ -145,8 +145,10 @@ See [Detailed Workflow Steps](./references/workflows.md) for complete instructio
 
 ---
 
-## Additional Resources
+## Additional Resources <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - [Common Patterns](./references/patterns.md) - Quick setup patterns and command reference
 - [Troubleshooting](./references/troubleshooting.md) - Common errors and solutions
 - [Azure AI Services documentation](https://learn.microsoft.com/en-us/azure/ai-services/multi-service-resource?pivots=azcli)
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

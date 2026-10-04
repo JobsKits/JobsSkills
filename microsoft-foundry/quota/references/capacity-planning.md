@@ -1,10 +1,10 @@
-# Capacity Planning Guide
+# <span id="前言">Capacity Planning Guide</span>
 
 Comprehensive guide for planning Azure AI Foundry capacity, including cost analysis, model selection, and workload calculations.
 
 **Table of Contents:** [Cost Comparison: TPM vs PTU](#cost-comparison-tpm-vs-ptu) · [Production Workload Examples](#production-workload-examples) · [Model Selection and Deployment Type Guidance](#model-selection-and-deployment-type-guidance)
 
-## Cost Comparison: TPM vs PTU
+## Cost Comparison: TPM vs PTU <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > **Official Pricing Sources:**
 > - [Azure OpenAI Service Pricing](https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/) - Official pay-per-token rates
@@ -54,7 +54,7 @@ Scenario: 1M requests/day, average 1,000 tokens per request
 
 ---
 
-## Production Workload Examples
+## Production Workload Examples <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 To estimate quota requirements, use real-world production scenarios with capacity calculations for gpt-4, version 0613 (from Azure Foundry Portal calculator):
 
@@ -90,7 +90,7 @@ For the combined workload (40 calls/min, 135K tokens/min total), use **200 PTU**
 
 ---
 
-## Model Selection and Deployment Type Guidance
+## Model Selection and Deployment Type Guidance <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > **Official Documentation:**
 > - [Choose the Right AI Model for Your Workload](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/choose-ai-model) - Microsoft Architecture Center
@@ -128,3 +128,5 @@ To calculate and estimate your capacity requirements:
 5. **Compare costs**: Evaluate Standard (TPM) vs Provisioned (PTU) using the official pricing calculator
 
 > **Note**: Microsoft does not publish specific "X requests/day = Y TPM" recommendations as capacity requirements vary significantly based on prompt size, response length, cache hit rates, and model choice. Use the built-in capacity planner with your actual workload characteristics.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

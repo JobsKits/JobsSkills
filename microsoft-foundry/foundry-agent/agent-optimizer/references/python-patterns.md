@@ -1,8 +1,8 @@
-# Python Agent Optimizer in Foundry Patterns
+# <span id="前言">Python Agent Optimizer in Foundry Patterns</span>
 
 Use the Azure SDK optimization package and a local baseline folder. The baseline is file-based; call `load_config()` without code-level fallback parameters.
 
-## Install and Import
+## Install and Import <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Add `azure-ai-agentserver-optimization` to `requirements.txt` or the project dependency file:
 
@@ -16,7 +16,7 @@ Import from the SDK namespace:
 from azure.ai.agentserver.optimization import load_config
 ```
 
-## Baseline Folder
+## Baseline Folder <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Create `.agent_configs/baseline/` beside `agent.yaml`:
 
@@ -45,7 +45,7 @@ tool_file: tools.json
 
 Choose a `model` value that already exists as a model deployment in the target Foundry project. Do not assume `gpt-4o` is available.
 
-## Tools File
+## Tools File <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use OpenAI function-calling tool objects under top-level `tools`. Currently, only function tool definition optimization is supported:
 
@@ -72,7 +72,7 @@ Use OpenAI function-calling tool objects under top-level `tools`. Currently, onl
 }
 ```
 
-## Runtime Wiring
+## Runtime Wiring <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Call `load_config()` with no defaults:
 
@@ -113,7 +113,7 @@ from azure.ai.agentserver.optimization import load_skills_from_dir
 skills = load_skills_from_dir(Path(config.skills_dir)) if config.skills_dir else []
 ```
 
-## Target Selection
+## Target Selection <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use evaluator and dataset goals to decide what belongs in the baseline:
 
@@ -126,11 +126,11 @@ Use evaluator and dataset goals to decide what belongs in the baseline:
 
 For multi-agent apps, scaffold the target role's instructions and related skills/tools. Do not merge unrelated role prompts into one baseline.
 
-## Runtime Config
+## Runtime Config <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The SDK reads optimization context from supported runtime sources. Keep `.agent_configs/baseline/` present so default `load_config()` startup has a local baseline. Use `load_config(config_dir="my_configs")` only for non-default local config directories, and `load_config(required=False)` only when the app can intentionally run without optimization config.
 
-## Verification Checklist
+## Verification Checklist <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Dependency file includes `azure-ai-agentserver-optimization`
 - `from azure.ai.agentserver.optimization import load_config` succeeds
@@ -138,3 +138,5 @@ The SDK reads optimization context from supported runtime sources. Keep `.agent_
 - `load_config()` is called without defaults unless using an intentional `config_dir` or `required=False`
 - Changed Python files compile and preserve the hosting adapter/protocol
 - User is asked to review before deployment
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

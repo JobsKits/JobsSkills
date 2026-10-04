@@ -38,14 +38,14 @@ description: >
 
 ## 四、方案一：Morphing Panel <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 4.1、静态结构
+### 4.1、静态结构 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 一个 `contentPanel` 同时承载登录与注册。
 - 一个竖向 `switchRail`，宽度约 `64pt`，登录态贴右边，注册态贴左边。
 - 登录输入框只有账号、密码两项；注册态复用这两个输入框，再追加确认密码、手机号、验证码等输入框。
 - 标题、提交按钮、返回首页按钮都在同一个面板里根据状态改文案和位置。
 
-### 4.2、登录态
+### 4.2、登录态 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - `contentPanel.frame = loginFrame`，高度较短。
 - `switchRail.frame = right edge`，文案是“新用户注册”一类竖排入口。
@@ -54,7 +54,7 @@ description: >
 - 记住密码、忘记密码等登录辅助项 `alpha = 1`。
 - 提交按钮文案为登录，底部位置按登录面板高度计算。
 
-### 4.3、注册态
+### 4.3、注册态 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - `contentPanel.frame = registerFrame`，高度明显变高。
 - `switchRail.frame = left edge`，文案改成“返回登录”一类竖排入口。
@@ -63,7 +63,7 @@ description: >
 - 注册额外输入框首次创建在账号/密码下方，以 `inputHeight + verticalGap` 逐项堆叠；后续切换只恢复 `alpha = 1`。
 - 登录辅助项 `alpha = 0`；提交按钮文案为注册，底部位置按注册面板高度计算。
 
-### 4.4、动画事务
+### 4.4、动画事务 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 把以下变化放进同一个动画事务，父容器和子面板都要参与同一帧提交：
 
@@ -77,28 +77,28 @@ description: >
 
 ## 五、方案二：Sliding Cards <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 5.1、静态结构
+### 5.1、静态结构 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - `loginCard` 和 `registerCard` 是两个独立内容视图，尺寸可以不同。
 - 初始：`loginCard.x = 20` 左右边距内居中；`registerCard.x = screenWidth + 20`，放在屏幕右侧外。
 - 两张卡片 `y` 一致，约在屏幕高度 `1/4`；注册卡片高度大于登录卡片。
 - `customerServiceButton` 不属于卡片内部，放在当前卡片下方 `8pt` 左右，并在切换时跟随当前卡片底部。
 
-### 5.2、切到注册
+### 5.2、切到注册 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 先设置当前页为注册。
 - `loginCard` 退出：滑到屏幕左侧外，目标 `x = -(card.width + card.x)`，`y` 回到初始 y。
 - `registerCard` 进入：`centerX = screenWidth / 2`，`centerY` 可按传入 offset 微调，默认 offset 为 `0`。
 - `customerServiceButton.y = registerCard.top + registerCard.height + 8`。
 
-### 5.3、切回登录
+### 5.3、切回登录 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 先设置当前页为登录。
 - `registerCard` 按同样方式退出到屏幕左侧外。
 - `loginCard` 从当前屏幕外位置回到中心。
 - `customerServiceButton.y = loginCard.top + loginCard.height + 8`。
 
-### 5.4、动画事务
+### 5.4、动画事务 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 卡片进出和客服按钮跟随都使用同一组弹簧参数：
 

@@ -1,15 +1,15 @@
-# Eval Trending — Metrics Over Time
+# <span id="前言">Eval Trending — Metrics Over Time</span>
 
 Track evaluation metrics across multiple runs and versions to visualize improvement trends and detect regressions. This addresses the gap of understanding how agent quality changes over time.
 
-## Prerequisites
+## Prerequisites <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - At least 2 evaluation runs in the same evaluation group (same `evaluationId` when created)
 - Project endpoint and selected environment resolved from azd or the selected metadata overlay
 
 > ⚠️ **Eval-group immutability:** Trend a group only when its evaluator set and thresholds stayed fixed across runs. If either changed, start a new evaluation group and track that history separately.
 
-## Step 1 — Retrieve Evaluation History
+## Step 1 — Retrieve Evaluation History <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use **`evaluation_get`** to list all evaluation groups:
 
@@ -28,7 +28,7 @@ Then retrieve all runs within the target evaluation group:
 
 > ⚠️ **Parameter guardrail:** evaluation_get expects `evalId`, not `evaluationId`, even if the runs were grouped earlier with `evaluationId`.
 
-## Step 2 — Build Metrics Timeline
+## Step 2 — Build Metrics Timeline <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 For each run, extract per-evaluator scores and build a timeline:
 
@@ -39,7 +39,7 @@ For each run, extract per-evaluator scores and build a timeline:
 | run-003 | v3 | 2025-02-01 | 4.1 | 4.4 | 4.0 | 4.2 | 3.8 | 0.96 |
 | run-004 | v4 | 2025-02-08 | 4.0 | 4.5 | 3.6 | 4.1 | 3.9 | 0.98 |
 
-## Step 3 — Trend Analysis
+## Step 3 — Trend Analysis <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Calculate trends for each evaluator:
 
@@ -52,7 +52,7 @@ Calculate trends for each evaluator:
 | Task Adherence | +1.4 (+56%) | ↑ Improving | ✅ |
 | Safety | +0.03 (+3%) | → Stable | ✅ |
 
-### Detecting Regressions
+### Detecting Regressions <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Flag any evaluator where the latest run scored **lower** than the previous run:
 
@@ -62,7 +62,7 @@ Flag any evaluator where the latest run scored **lower** than the previous run:
 
 > ⚠️ **Regression detected:** Relevance dropped 10% from v3 to v4. Investigate prompt changes or dataset drift. See [Eval Regression](eval-regression.md) for automated analysis.
 
-### Trend Visualization (Text-based)
+### Trend Visualization (Text-based) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```
 Coherence   ████████████████████████████████░░░░░░ 4.0/5.0  ↑ +25%
@@ -73,13 +73,13 @@ Task Adh.   ██████████████████████�
 Safety      ████████████████████████████████████████ 0.98     → Stable
 ```
 
-## Step 4 — Cross-Version Summary
+## Step 4 — Cross-Version Summary <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Present an executive summary:
 
 *"Over 4 agent versions (v1→v4), your agent has improved significantly across all quality metrics. The biggest gain is Task Adherence (+56%). However, Relevance showed a 10% regression from v3 to v4 — recommend investigating recent prompt changes. Safety remains stable at 98%."*
 
-## Recommended Thresholds
+## Recommended Thresholds <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Severity | Threshold | Action |
 |----------|-----------|--------|
@@ -88,8 +88,10 @@ Present an executive summary:
 | 🔴 Regression | > 5% drop from previous run | Block deployment, investigate |
 | 🔴 Critical | Below baseline (v1) on any metric | Rollback to last known good version |
 
-## Next Steps
+## Next Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **Investigate regression** → [Eval Regression](eval-regression.md)
 - **Compare specific versions** → [Dataset Comparison](dataset-comparison.md)
 - **Set up automated monitoring** → [observe skill CI/CD](../../observe/references/cicd-monitoring.md)
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

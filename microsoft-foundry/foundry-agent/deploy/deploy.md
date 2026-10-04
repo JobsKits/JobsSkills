@@ -1,4 +1,4 @@
-# Deploy a Foundry Agent
+# <span id="前言">Deploy a Foundry Agent</span>
 
 Provision Azure resources when needed, deploy the agent, and smoke-test it.
 
@@ -6,7 +6,7 @@ For **hosted agents** (custom container or code), use `azd deploy`. Prefer **dir
 
 For **prompt agents** (LLM + instructions, no custom code), use the Foundry MCP `agent_update` tool.
 
-## Quick Reference
+## Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Property | Value |
 |----------|-------|
@@ -17,12 +17,12 @@ For **prompt agents** (LLM + instructions, no custom code), use the Foundry MCP 
 | Endpoint-only patch | `azd ai agent endpoint update` (no new version) |
 | Local dev | [create-hosted](../create/create-hosted.md), [local-run](../create/references/local-run.md) |
 
-## Hosted vs Prompt
+## Hosted vs Prompt <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Shipping Python / .NET / Node code -> **Hosted** (azd workflow below).
 - Updating only model / instructions / tools -> **Prompt** (MCP workflow below).
 
-## Deployment Method Selection -- Hosted agents
+## Deployment Method Selection -- Hosted agents <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Before running `azd deploy`, inspect `<service-dir>/agent.yaml`.
 
@@ -42,11 +42,11 @@ code_configuration:
 
 Default to direct code for standard hosted-agent code. If `azd deploy` prints `Packaging container` for an agent that does not need container-specific behavior, add or fix `code_configuration` and retry. Use the container path when the agent depends on Dockerfile behavior, system packages, or a pre-built image.
 
-## Workflow -- Hosted agent (azd)
+## Workflow -- Hosted agent (azd) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > Prerequisite: project scaffolded with `azd ai agent init`. If not, start at [create-hosted](../create/create-hosted.md).
 
-### Step 1 -- Resolve azd environment
+### Step 1 -- Resolve azd environment <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 If the user provided an existing project endpoint, project ARM ID, or model deployment, set those values before deploy. Then verify the azd environment with `azd env get-values`.
 
@@ -68,7 +68,7 @@ Branch on output: `not_deployed` -> Step 2. `active` / `deployed` -> redeploy (s
 
 > **Important:** Before deploy, also make sure `agent.yaml` and the azd environment are aligned with the user's provided configuration values.
 
-### Step 2 -- Provision Azure resources (one-time per env)
+### Step 2 -- Provision Azure resources (one-time per env) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Skip `azd provision` when the user gave you an existing `AZURE_AI_PROJECT_ENDPOINT` or `FOUNDRY_PROJECT_ENDPOINT` and the workflow only needs to deploy the agent into that project.
 
@@ -90,7 +90,7 @@ This is a core `azd` command. Skip provision when the user gave you an existing 
 
 After provision completes for a new project, run `azd env get-values` and set missing required azd env values, especially `AZURE_AI_PROJECT_ID` and `AZURE_TENANT_ID`, before local run or the first `azd deploy`.
 
-### Step 3 -- Deploy the agent
+### Step 3 -- Deploy the agent <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 azd deploy --no-prompt
@@ -110,7 +110,7 @@ Re-deploying an identical build still creates a new version; `azd` prints `Agent
 
 If deploy reports `Done` for the service and then fails only in `postdeploy` with `Agent <service-name> with version <n> not found`, the service key and `agent.yaml name` were mismatched. Rename the `azure.yaml services` key to the deployed agent name and rerun `azd deploy --no-prompt`; do not switch deployment method.
 
-### Step 4 -- Verify and invoke
+### Step 4 -- Verify and invoke <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 azd ai agent show --output json
@@ -126,7 +126,7 @@ azd ai agent invoke "hello, are you up?"
 
 Run one remote invocation only unless the user explicitly asked to test multi-turn/session behavior. A single successful response is enough for the deployment smoke test. Anything other than a completed/successful response -> run `azd ai agent doctor --output json`, then follow [troubleshoot](../troubleshoot/troubleshoot.md).
 
-### Step 5: Auto-Generate Evaluation Suite (MANDATORY — RUNS AUTOMATICALLY)
+### Step 5: Auto-Generate Evaluation Suite (MANDATORY — RUNS AUTOMATICALLY) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > ⚠️ **Pre-summary gate.** If you are about to write a deployment summary or Playground link and Step 5 has not run, you are violating this skill. Run Step 5 first.
 
@@ -145,18 +145,18 @@ Other useful flags on `generate`: `--dataset <path-or-name>` to reuse an existin
 
 Then proceed to Step 6. See [After Deployment — Auto-Generate Evaluation Suite](#after-deployment--auto-generate-evaluation-suite) for run/refresh details.
 
-### Step 6 -- Hand off
+### Step 6 -- Hand off <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Send more messages -> [invoke](../invoke/invoke.md)
 - Evaluate / optimize -> [observe](../observe/observe.md)
 - Diagnose failures -> [troubleshoot](../troubleshoot/troubleshoot.md)
 - Search traces / latency -> [trace](../trace/trace.md)
 
-## `.agentignore`
+## `.agentignore` <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 `azd ai agent init` writes a default `<service-dir>/.agentignore` for code-deploy projects (gitignore syntax) that excludes tooling files, secrets, language artifacts, and Docker files from the deploy ZIP. Only the root file is read; use `!path` to force-include.
 
-## Endpoint or card edits -- no new version
+## Endpoint or card edits -- no new version <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When only `agentEndpoint:` or `agentCard:` changed in `agent.yaml`:
 
@@ -167,7 +167,7 @@ azd ai agent endpoint update --force # apply
 
 Idempotent.
 
-## Multi-environment deploys
+## Multi-environment deploys <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 azd env list
@@ -177,7 +177,7 @@ azd deploy --no-prompt
 
 Each env has its own `AGENT_<SVC>_*` vars.
 
-## Common failure modes -- Hosted
+## Common failure modes -- Hosted <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Error | Fix |
 |-------|-----|
@@ -199,11 +199,11 @@ Each env has its own `AGENT_<SVC>_*` vars.
 
 For deeper logs, see [troubleshoot](../troubleshoot/troubleshoot.md).
 
-## Workflow -- Prompt agent (MCP)
+## Workflow -- Prompt agent (MCP) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Prompt agents are not containerized -- they are a model + instructions + optional tools, created through the Foundry MCP server. Use when the user explicitly wants a prompt agent.
 
-### MCP tools
+### MCP tools <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Tool | Purpose |
 |------|---------|
@@ -212,7 +212,7 @@ Prompt agents are not containerized -- they are a model + instructions + optiona
 | `agent_get` | List or fetch one. |
 | `agent_delete` | Delete an agent. |
 
-### Steps
+### Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. **Collect config** -- resolve endpoint from `azd env get-values` or ask. Then ask for **agent name**, **model deployment** (e.g. `gpt-4o`), and optional **instructions**, **temperature**, **tools**.
 2. **Get schema** -- `agent_definition_schema_get` with `schemaType: "prompt"`.
@@ -221,7 +221,7 @@ Prompt agents are not containerized -- they are a model + instructions + optiona
 5. **Auto-generate evaluation suite** -- see [Step 5: Auto-Generate Evaluation Suite (Prompt)](#step-5-auto-generate-evaluation-suite-prompt-mandatory--runs-automatically) below.
 6. **Hand off** -- evaluate via [observe](../observe/observe.md); clone via `agent_update` + `isCloneRequest`; delete via `agent_delete`.
 
-### Step 5: Auto-Generate Evaluation Suite (Prompt) (MANDATORY — RUNS AUTOMATICALLY)
+### Step 5: Auto-Generate Evaluation Suite (Prompt) (MANDATORY — RUNS AUTOMATICALLY) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > ⚠️ **Pre-summary gate.** If you are about to write a deployment summary or Playground link and Step 5 has not run, you are violating this skill. Run Step 5 first.
 
@@ -236,7 +236,7 @@ This step runs automatically after deploy. Ask the user which source to use and 
 | (c) Existing `eval.yaml` | Skip `generate`. | Tell the user: *"Using existing `eval.yaml`. Run `azd ai agent eval run` when ready."* |
 | (d) No / later | Skip. | Tell the user: *"You can run `azd ai agent eval generate` (and then `eval run`) anytime."* |
 
-## Common failure modes -- Prompt
+## Common failure modes -- Prompt <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Error | Fix |
 |-------|-----|
@@ -245,7 +245,7 @@ This step runs automatically after deploy. Ask the user which source to use and 
 | Permission denied | User needs `Foundry User` role on the project. |
 | Model not found | Deploy the model first via [models/deploy-model](../../models/deploy-model/SKILL.md). |
 
-## Display agent details (both flows)
+## Display agent details (both flows) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 After a successful deploy, show the agent's name, version, status, and endpoints in a table. Include a Playground link:
 
@@ -261,18 +261,18 @@ python -c "import base64,uuid;print(base64.urlsafe_b64encode(uuid.UUID('<SUBSCRI
 
 For hosted agents, `playground_url` is in `azd ai agent show --output json`.
 
-## After Deployment — Auto-Generate Evaluation Suite
+## After Deployment — Auto-Generate Evaluation Suite <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > Reference for Step 5 options (a) and (b) — start `generate` right after deploy so its server-side generation overlaps with invoke/test steps and finishes faster. Options (c) and (d) skip `generate` and go straight to section 3 (run) or stop.
 
-### 1. Inspect existing eval.yaml
+### 1. Inspect existing eval.yaml <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Check the selected agent root for `eval.yaml`:
 
 - **Exists and matches the selected agent** → skip `generate`; go to step 3 (run).
 - **Missing or stale** → continue to step 2.
 
-### 2. Submit generation (asynchronous, server-side)
+### 2. Submit generation (asynchronous, server-side) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Run `azd ai agent eval generate --no-wait` with the user's chosen flags (see the Step 5 table). The command:
 
@@ -285,7 +285,7 @@ No skill-side polling, terminal handle, or later-turn re-check is needed. `azd a
 
 If the user wants to wait synchronously instead (e.g., to inspect `eval.yaml` before running), drop `--no-wait` — `generate` will then submit the jobs, wait for completion, download review artifacts, and write the finalized `eval.yaml` before returning (typically several minutes).
 
-### 3. Run the suite
+### 3. Run the suite <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 azd ai agent eval run
@@ -293,11 +293,11 @@ azd ai agent eval run
 
 Use `azd ai agent eval show -O results.json` to inspect run details, or `azd ai agent eval list` to see history.
 
-### 4. Refresh datasets/evaluators (later)
+### 4. Refresh datasets/evaluators (later) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When local files under `datasets/<suite>/` or `evaluators/<suite>/` change, run `azd ai agent eval update --dataset-only` or `--evaluator-only` to upload new versions. azd bumps the `version` fields in `eval.yaml`.
 
-### 5. Prompt User
+### 5. Prompt User <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 *"Your agent is deployed and evaluation suite generation is **submitted server-side** (still running, takes several minutes). Would you like to run an evaluation now? `azd ai agent eval run` will wait for generation to finish, then execute the eval."*
 
@@ -305,7 +305,9 @@ When local files under `datasets/<suite>/` or `evaluators/<suite>/` change, run 
 - **No** → stop. The user can return later via `azd ai agent eval run` — it will pick up wherever the pending generation is.
 - **Production trace analysis** → follow the [trace skill](../trace/trace.md).
 
-## Non-Interactive / YOLO Mode
+## Non-Interactive / YOLO Mode <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Hosted: always pass `--no-prompt`. If `azd ai agent invoke` prints a `confirmation_required` envelope, summarize `changes[]` and re-run with `--force` after the user consents -- never auto-append `--force`.
 - Prompt: all required values (project endpoint, agent name, model deployment) must come from the user message or `azd env get-values`; missing values should fail loudly rather than prompt.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

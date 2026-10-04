@@ -1,12 +1,12 @@
-# Customize Guides — Selection Guides & Advanced Topics
+# <span id="前言">Customize Guides — Selection Guides & Advanced Topics</span>
 
 > Reference for: `models/deploy-model/customize/SKILL.md`
 
 **Table of Contents:** [Selection Guides](#selection-guides) · [Advanced Topics](#advanced-topics)
 
-## Selection Guides
+## Selection Guides <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### How to Choose SKU
+### How to Choose SKU <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | SKU | Best For | Cost | Availability |
 |-----|----------|------|--------------|
@@ -24,7 +24,7 @@ Do you need guaranteed throughput?
         └─ No → Standard
 ```
 
-### How to Choose Capacity
+### How to Choose Capacity <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **For TPM-based SKUs (GlobalStandard, Standard):**
 
@@ -48,7 +48,7 @@ Use the PTU calculator based on:
 - Enable dynamic quota for flexibility
 - Consider spillover for peak loads
 
-### How to Choose RAI Policy
+### How to Choose RAI Policy <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Policy | Filtering Level | Use Case |
 |--------|----------------|----------|
@@ -60,9 +60,9 @@ Use the PTU calculator based on:
 
 ---
 
-## Advanced Topics
+## Advanced Topics <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### PTU (Provisioned Throughput Units) Deployments
+### PTU (Provisioned Throughput Units) Deployments <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **What is PTU?**
 - Reserved capacity with guaranteed throughput
@@ -98,7 +98,7 @@ az cognitiveservices account deployment create \
   --sku-capacity 100  # PTU units
 ```
 
-### Spillover Configuration
+### Spillover Configuration <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Spillover Workflow:**
 1. Primary deployment receives requests
@@ -112,7 +112,7 @@ az cognitiveservices account deployment create \
 - Monitor both deployments
 - Test failover behavior
 
-### Priority Processing
+### Priority Processing <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **What is Priority Processing?**
 - Prioritizes your requests during high load
@@ -124,3 +124,5 @@ az cognitiveservices account deployment create \
 - Mission-critical applications
 - SLA requirements
 - High-concurrency scenarios
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

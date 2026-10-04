@@ -1,16 +1,16 @@
-# File Operations
+# <span id="前言">File Operations</span>
 
 Manage files within a hosted agent session. All file operations require an active session with a running sandbox.
 
-## Overview
+## Overview <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Hosted agent sessions provide a persistent filesystem rooted at `$HOME` (`/home/session`). Files written to this path survive across requests within the same session. Use the session file tools to upload input data, download outputs, and manage the session filesystem externally.
 
 > ⚠️ **Warning:** All file paths are relative to `$HOME`. For example, `filePath: '/data/input.csv'` maps to `/home/session/data/input.csv` inside the container.
 
-## MCP Tool Details
+## MCP Tool Details <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Upload File
+### Upload File <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `session_file_upload` to write a file into the session:
 
@@ -24,7 +24,7 @@ Use `session_file_upload` to write a file into the session:
 
 > 💡 **Tip:** For text files, encode the content to base64 before passing it. For binary files (images, PDFs), read the raw bytes and base64-encode them.
 
-### Download File
+### Download File <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `session_file_download` to retrieve a file from the session:
 
@@ -37,7 +37,7 @@ Use `session_file_download` to retrieve a file from the session:
 
 Returns: File content as a base64-encoded string.
 
-### List Files
+### List Files <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `session_file_list` to browse the session filesystem:
 
@@ -50,7 +50,7 @@ Use `session_file_list` to browse the session filesystem:
 
 Returns: List of files and directories with metadata.
 
-### Delete File
+### Delete File <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `session_file_delete` to remove a file or directory:
 
@@ -64,7 +64,7 @@ Use `session_file_delete` to remove a file or directory:
 
 > ⚠️ **Warning:** Non-recursive delete on a non-empty directory will fail. Use `recursive: true` for directories with contents.
 
-### Get File Metadata
+### Get File Metadata <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `session_file_stat` to inspect a file or directory:
 
@@ -77,7 +77,7 @@ Use `session_file_stat` to inspect a file or directory:
 
 Returns: File name, size, whether it is a directory, and last modified time.
 
-### Create Directory
+### Create Directory <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `session_file_mkdir` to create directories:
 
@@ -90,9 +90,9 @@ Use `session_file_mkdir` to create directories:
 | `createParents` | ❌ | Create parent directories if needed (default `true`) |
 | `mode` | ❌ | Unix permission mode (e.g., `755`). Uses system default if omitted |
 
-## Common Patterns
+## Common Patterns <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Upload Input → Invoke → Download Output
+### Upload Input → Invoke → Download Output <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```text
 1. session_create       → get sessionId
@@ -104,7 +104,7 @@ Use `session_file_mkdir` to create directories:
 7. session_delete       → clean up when done
 ```
 
-### Check Agent-Generated Files
+### Check Agent-Generated Files <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```text
 1. session_file_list    → browse $HOME to see what the agent created
@@ -112,12 +112,12 @@ Use `session_file_mkdir` to create directories:
 3. session_file_download → retrieve files of interest
 ```
 
-## Storage Limits
+## Storage Limits <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Maximum `$HOME` size: **10 GiB** per session
 - Files outside `$HOME` (e.g., `/tmp`) are ephemeral and may be cleared between requests
 
-## Error Handling
+## Error Handling <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Error | Cause | Resolution |
 |-------|-------|------------|
@@ -125,3 +125,5 @@ Use `session_file_mkdir` to create directories:
 | File not found | Invalid path or file does not exist | Use `session_file_list` to verify the path |
 | Directory not empty | Non-recursive delete on a directory with contents | Use `recursive: true` |
 | Storage limit exceeded | `$HOME` exceeds 10 GiB | Delete unnecessary files with `session_file_delete` |
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

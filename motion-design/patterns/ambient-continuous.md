@@ -1,8 +1,8 @@
-# Ambient & Continuous Patterns
+# <span id="前言">Ambient & Continuous Patterns</span>
 
 Ambient amplitude: 10-20% of primary motion. Never compete for attention.
 
-## Breathing / Pulse
+## Breathing / Pulse <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Scale oscillation 0.98-1.02, sine ease-in-out, 2000-4000ms/cycle
 - Alt: opacity oscillation 0.7-1.0
@@ -16,7 +16,7 @@ Ambient amplitude: 10-20% of primary motion. Never compete for attention.
 
 Pulsing >±5% scale becomes attention-demanding.
 
-## Floating / Hovering
+## Floating / Hovering <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Y position ±5-15px, sine ease-in-out, 3000-5000ms/cycle
 - Optional: slight rotation ±2-3°, offset 30% of position cycle
@@ -26,13 +26,13 @@ Pulsing >±5% scale becomes attention-demanding.
 - Element 2: 5500ms, ±8px (offset 30%)
 - Element 3: 3500ms, ±12px (offset 60%)
 
-## Gradient Shift
+## Gradient Shift <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Background-position or gradient angle shift
 - Duration: 8000-20000ms/cycle; range: ±10-20% position or ±15° angle
 - Easing: linear or sine; should be imperceptible at a glance
 
-## Parallax
+## Parallax <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Layer | Speed Ratio | Content |
 |-------|------------|---------|
@@ -44,7 +44,7 @@ Pulsing >±5% scale becomes attention-demanding.
 **Scroll-driven**: total displacement <100px; avoid on mobile; never parallax text
 **Mouse-driven**: foreground 10-20px max, background 5-10px opposite direction, 100-200ms interpolation
 
-## Continuous Rotation
+## Continuous Rotation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Spinners: linear easing, 1000-2000ms/revolution
 
@@ -55,22 +55,22 @@ Pulsing >±5% scale becomes attention-demanding.
 | Orbital | 5-15s/rev | Space/science theme |
 | Wobble | 2-4s/cycle, sine | Playful idle |
 
-## Shimmer / Gleam
+## Shimmer / Gleam <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Gradient sweep left-to-right, 1500-2500ms/sweep
 - Pause 2000-5000ms between sweeps
 - Opacity gradient: 0%→30%→0%
 - Use for: skeleton loading, premium accents, "new" badges
 
-## Particle Ambient
+## Particle Ambient <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Snow/Falling: 10-20 elements, 20-60px/s down, ±10-20px drift, 3-8px, 30-70% opacity
-### Dust/Motes: 5-10 elements, 10-30px/s mixed, 2-5px, 20-50% opacity
-### Sparkle/Stars: 8-15 elements, opacity pulse 0→100%→0, 500-1500ms/sparkle, random stagger
+### Snow/Falling: 10-20 elements, 20-60px/s down, ±10-20px drift, 3-8px, 30-70% opacity <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Dust/Motes: 5-10 elements, 10-30px/s mixed, 2-5px, 20-50% opacity <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Sparkle/Stars: 8-15 elements, opacity pulse 0→100%→0, 500-1500ms/sparkle, random stagger <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Performance**: <20 ambient elements, transform+opacity only, larger/fewer over small/numerous
 
-## Combining Ambient Layers
+## Combining Ambient Layers <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Layer | Type | Example |
 |-------|------|---------|
@@ -79,3 +79,5 @@ Pulsing >±5% scale becomes attention-demanding.
 | Foreground | Breathing or shimmer | Subtle pulse on content |
 
 Total ambient: max 20% of primary motion's visual energy.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

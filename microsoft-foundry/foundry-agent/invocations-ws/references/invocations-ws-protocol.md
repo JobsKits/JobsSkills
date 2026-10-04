@@ -1,8 +1,8 @@
-# Invocations WebSocket Protocol Guide
+# <span id="前言">Invocations WebSocket Protocol Guide</span>
 
 The `invocations_ws` protocol is a **duplex WebSocket pass-through**. After the platform authenticates the upgrade request and routes it to your container, every frame in both directions is forwarded as-is. The agent developer defines the wire format, the framing model, and the streaming semantics. Unlike `responses` (OpenAI-compatible, platform-managed history) and `invocations` (single HTTP request/response, bytes in / bytes out), `invocations_ws` is a long-lived bidirectional channel under full container control.
 
-## Input/Output Contract
+## Input/Output Contract <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Aspect | `responses` | `invocations` | `invocations_ws` |
 |--------|-------------|---------------|------------------|
@@ -14,7 +14,7 @@ The `invocations_ws` protocol is a **duplex WebSocket pass-through**. After the 
 | **Streaming** | `stream: true` (SSE) | Agent-controlled (SSE-over-HTTP, etc.) | Native — duplex by definition |
 | **History** | Platform via `conversationId` | Agent-managed | Agent-managed; keyed by `agent_session_id` |
 
-## URL and Headers
+## URL and Headers <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```
 wss://{account}.services.ai.azure.com
@@ -41,7 +41,7 @@ The container receives the upgrade on path `/invocations_ws`. Inside the contain
 
 > ⚠️ **Browsers cannot set the `Authorization` header on a `WebSocket`.** Browser clients must connect through a thin server-side proxy that adds the header before forwarding. This is a browser API limitation, not a Foundry requirement.
 
-## Pass-Through Semantics
+## Pass-Through Semantics <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The platform is a transparent relay:
 
@@ -50,7 +50,7 @@ The platform is a transparent relay:
 - **No history.** Nothing is persisted by Foundry between connections. Use the container filesystem or an external store, keyed by `agent_session_id`, if you need continuity.
 - **No platform-managed turn taking.** There is no concept of "request" vs "response" — both sides may send frames at any time. Implement your own request/reply correlation if you need it (e.g. include an `id` field in each JSON frame).
 
-## Common Framing Patterns
+## Common Framing Patterns <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 These are protocols developers build **on top of** the raw WebSocket. The platform does not require, parse, or validate any of them; they are listed for orientation only.
 
@@ -62,11 +62,11 @@ These are protocols developers build **on top of** the raw WebSocket. The platfo
 | **Pure JSON signaling** | Out-of-band media transports (WebRTC offer/answer/ICE, SFU join tokens) | One JSON object per frame; FIFO request/reply if the protocol is purely turn-based |
 | **SSE-style event stream** | One-way server push of events | Text frames; the WS is effectively used as a richer SSE |
 
-## Discovering the Expected Wire Format
+## Discovering the Expected Wire Format <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > ⚠️ **Do not guess.** The platform exposes no OpenAPI / AsyncAPI surface for `invocations_ws` agents. The contract lives in the container code.
 
-### 1. Inspect the WebSocket Handler
+### 1. Inspect the WebSocket Handler <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Look at the function decorated with `@app.ws_handler` on an `InvocationAgentServerHost` (the `azure-ai-agentserver-invocations` SDK). The handler determines:
 
@@ -75,11 +75,11 @@ Look at the function decorated with `@app.ws_handler` on an `InvocationAgentServ
 - The control vocabulary (start, stop, mute, hangup, etc.)
 - The response cadence (turn-based vs free-running)
 
-### 2. Ask the User or Author
+### 2. Ask the User or Author <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 If the handler isn't available, ask the agent author for the framing spec before connecting.
 
-## Examples
+## Examples <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Connect from a Python client (no browser proxy):**
 
@@ -103,7 +103,7 @@ async with websockets.connect(url, additional_headers={"Authorization": f"Bearer
 
 **Connect from a browser** — terminate a local WebSocket in a server-side proxy that injects the token, then forward frames pass-through to the upstream `wss://`.
 
-## Error Handling
+## Error Handling <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Error | Cause | Resolution |
 |-------|-------|------------|
@@ -113,3 +113,5 @@ async with websockets.connect(url, additional_headers={"Authorization": f"Bearer
 | Frames silently dropped | Wire-format mismatch (binary vs text, wrong schema) | Confirm both ends agree on framing — the platform performs no transcoding |
 | State lost on reconnect | Different `agent_session_id` used | Reuse the same `agent_session_id` to land on the same logical state inside the container |
 | Browser fails with `1006 abnormal closure` | Browser tried to connect directly with no `Authorization` | Route through a server-side proxy that adds the header |
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

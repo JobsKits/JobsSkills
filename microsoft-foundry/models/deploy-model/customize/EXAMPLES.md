@@ -1,37 +1,37 @@
-# customize Examples
+# <span id="前言">customize Examples</span>
 
-## Example 1: Basic Deployment with Defaults
+## Example 1: Basic Deployment with Defaults <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Scenario:** Deploy gpt-4o accepting all defaults for quick setup.
 **Config:** gpt-4o / GlobalStandard / 10K TPM / Dynamic Quota enabled
 **Result:** Deployment `gpt-4o` created in ~2-3 min with auto-upgrade enabled.
 
-## Example 2: Production Deployment with Custom Capacity
+## Example 2: Production Deployment with Custom Capacity <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Scenario:** Deploy gpt-4o for production with high throughput.
 **Config:** gpt-4o / GlobalStandard / 50K TPM / Dynamic Quota / Name: `gpt-4o-production`
 **Result:** 50K TPM (500 req/10s). Suitable for moderate-to-high traffic production apps.
 
-## Example 3: PTU Deployment for High-Volume Workload
+## Example 3: PTU Deployment for High-Volume Workload <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Scenario:** Deploy gpt-4o with reserved capacity (PTU) for predictable workload.
 **Config:** gpt-4o / ProvisionedManaged / 200 PTU (min 50, max 1000) / Priority Processing enabled
 **PTU sizing:** 40K input + 20K output tokens/min → ~100 PTU estimated → 200 PTU recommended (2x headroom)
 **Result:** Guaranteed throughput, fixed monthly cost. Use case: customer service bots, document pipelines.
 
-## Example 4: Development Deployment with Standard SKU
+## Example 4: Development Deployment with Standard SKU <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Scenario:** Deploy gpt-4o-mini for dev/testing with minimal cost.
 **Config:** gpt-4o-mini / Standard / 1K TPM / Name: `gpt-4o-mini-dev`
 **Result:** 1K TPM, 10 req/10s. Minimal pay-per-use cost for development and prototyping.
 
-## Example 5: Spillover Configuration
+## Example 5: Spillover Configuration <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Scenario:** Deploy gpt-4o with spillover to handle peak load overflow.
 **Config:** gpt-4o / GlobalStandard / 20K TPM / Dynamic Quota / Spillover → `gpt-4o-backup`
 **Result:** Primary handles up to 20K TPM; overflow auto-redirects to backup deployment.
 
-## Example 6: Anthropic Model Deployment (claude-sonnet-4-6)
+## Example 6: Anthropic Model Deployment (claude-sonnet-4-6) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Scenario:** Deploy claude-sonnet-4-6 with customized settings.
 **Config:** claude-sonnet-4-6 / GlobalStandard / capacity 1 (MaaS) / Industry: Healthcare / No RAI policy (Anthropic manages content filtering)
@@ -39,7 +39,7 @@
 
 ---
 
-## Comparison Matrix
+## Comparison Matrix <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Scenario | Model | SKU | Capacity | Dynamic Quota | Priority | Spillover | Use Case |
 |----------|-------|-----|----------|:---:|:---:|:---:|----------|
@@ -50,9 +50,9 @@
 | Ex 5 | gpt-4o | GlobalStandard | 20K TPM | ✓ | - | ✓ | Peak load |
 | Ex 6 | claude-sonnet-4-6 | GlobalStandard | 1 (MaaS) | - | - | - | Anthropic model |
 
-## Common Patterns
+## Common Patterns <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Dev → Staging → Production
+### Dev → Staging → Production <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Stage | Model | SKU | Capacity | Extras |
 |-------|-------|-----|----------|--------|
@@ -60,14 +60,14 @@
 | Staging | gpt-4o | GlobalStandard | 10K TPM | — |
 | Production | gpt-4o | GlobalStandard | 50K TPM | Dynamic Quota + Spillover |
 
-### Cost Optimization
+### Cost Optimization <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **High priority:** gpt-4o, ProvisionedManaged, 100 PTU, Priority Processing
 - **Low priority:** gpt-4o-mini, Standard, 5K TPM
 
 ---
 
-## Tips and Best Practices
+## Tips and Best Practices <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Capacity:** Start conservative → monitor with Azure Monitor → scale gradually → use spillover for peaks.
 
@@ -81,10 +81,12 @@
 
 ---
 
-## Troubleshooting
+## Troubleshooting <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Problem | Solution |
 |---------|----------|
 | `QuotaExceeded` | Check usage with `az cognitiveservices usage list`, reduce capacity, try different SKU, check other regions, or use the [quota skill](../../../quota/quota.md) to request an increase |
 | Version not available for SKU | Check `az cognitiveservices account list-models --query "[?name=='gpt-4o'].version"`, use latest |
 | Deployment name exists | Skill auto-generates unique name (e.g., `gpt-4o-2`), or specify custom name |
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

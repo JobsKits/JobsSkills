@@ -17,7 +17,7 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
 
 ## 一、[**Swift**](https://www.swift.org/) 写作规范 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 1.1、Jobs DSL 总体思想
+### 1.1、Jobs DSL 总体思想 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Jobs 的 Swift / OC DSL 本质是一套命名和调用思想：用点语法 + 链式语法让对象从创建、配置、事件、装配到布局尽量一路设置下去，减少散落赋值和割裂的中间变量。
 - Swift 侧“Jobs 自己写的代码”固定指主工程 + `JobsByPods/` 下 Jobs 自建本地 Pods；排除根目录 `Pods/`、`JobsByPods/ManualBySwiftPods@Pods/` 和确认的外援第三方源码。扫描、批改、回归和编译都按这个边界执行。
@@ -59,14 +59,14 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
 - 每次完善或纠错 Swift 代码片段后，必须按同一写法反扫 Swift 工程应用层，重点查 `rowHeight =`、`contentInset =`、`scrollIndicatorInsets =`、`contentInsetAdjustmentBehavior =`、`backgroundColor =`、`delegate =`、`dataSource =` 等已有 DSL 覆盖的裸赋值。命中 Jobs 自己维护的主工程或本地 Swift Pod 代码时改成链式；外援 `Pods/`、`ManualBySwiftPods@Pods/` 和确认为第三方源码的目录不处理。
 - DSL 示例颗粒度必须细：一个属性、一个状态、一个事件、一个装配动作分别独立成行，不把标题、颜色、字体、图片、内边距等多个意图合并到一行。若同一能力同时存在单参数和二参数写法，默认首选单参数写法；二参数写法只在确实需要表达 `.selected`、`.disabled`、`.highlighted` 等非默认状态差异时使用。
 
-#### 1.1.1、Swift 底层自建 API 与公共 CodeSnippets 强制同步
+#### 1.1.1、Swift 底层自建 API 与公共 CodeSnippets 强制同步 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Swift 工程框架文档固定为 `/Users/jobs/Documents/Github/JobsBaseConfig/JobsBaseConfig@JobsSwiftBaseConfigDemo/SwiftDoc.md/Swift工程项目框架配置方案@Jobs.md/Swift工程项目框架配置方案@Jobs.md`；Xcode 代码块目录固定为 `/Users/jobs/Library/Developer/Xcode/UserData/CodeSnippets`，是 Swift / OC 共用的 Xcode 资产，不属于任一单独工程。
 - 但凡新增、删除、重命名或改变 `JobsSwiftBaseDefines`、`JobsSwiftBlock`、`JobsSwiftDSL`、`JobsByUIKit`、公共协议、基础组件公开入口等底层自建 API，同一任务必须同步核对 Swift 对应实现、公开入口、相关 Pod / 根 README、宿主 Demo、Swift 工程框架文档和公共 CodeSnippets；某项没有对应内容时也必须完成检索，并在交付中明确说明无需修改。
 - 如果该 API 在 OC 新工程或 OC 老工程存在同语义封装，同时核对两侧对应实现和命名；不能因本轮只在 Swift 落码就跳过语义对齐检查。
 - 工程文档和 CodeSnippets 都不是 API 权威源。更新前必须以 Jobs 自维护源码、公开入口和可运行 Demo 核对真实签名；相关 `.codesnippet` 至少使用 `plutil -lint` 校验。
 
-### 1.2、文件基座与依赖导入
+### 1.2、文件基座与依赖导入 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Jobs 自己维护的 [**Swift**](https://www.swift.org/) 文件顶部注释必须使用完整 Jobs 模板：第一行文件名，第二行模块名，第三行空注释行，第四行 `Created by Jobs on yyyy年M月d日，星期X.`。新建文件、迁移文件、整理旧文件或用户点名头注释不规范时，都要补齐；不要保留只有文件名和模块名的简化头。文件头注释区域和 `import` 导入区域之间必须保留一个空行，不能让注释块的最后一行 `//` 紧贴 `import`。
 
@@ -113,7 +113,7 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
 - `typealias` 等平台差异声明写在正文区域，和 `import` 区域之间保留一行空行；如果 `canImport` 块包住类、扩展、`@main` 或其它业务代码，则按业务条件编译处理，不当成导入块移动。
 - 本地 Pod 化框架默认按项目既有能力引入：`JobsByUIKit` 提供 UI / 链式调用 / 导航栏等能力，`JobsSwiftBlock` 提供闭包封装能力。缺依赖时先检查 `Podfile` / 本地 Pods，不要在业务文件里绕开封装重新实现。
 
-#### 1.2.1、`switch` / `case` 分支注释
+#### 1.2.1、`switch` / `case` 分支注释 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Swift 项目中 Jobs 自己维护的新增、修改和存量回归代码，只要使用 `switch`，每个 `case` 的分支说明都必须使用独立一行的 `///`，放在该分支紧邻上方并与 `case` 保持同缩进；禁止写成 `case ...: // ...` 或把分支说明接在单行执行语句末尾。枚举定义处已有注释不能替代 `switch` 使用处的独立分支注释。
 - 已有的行尾分支说明应保留原语义并上移为 `///`；编译器、lint 或格式化工具控制注释不当作分支说明，必要时保留原位并另补 `///`。多个枚举值合并在同一个 `case` 时写一条覆盖全部值的独立注释；连续的多个 `case` 标签每个分别写。`default` / `@unknown default` 同样使用独立 `///` 说明兜底或未知值处理语义。
@@ -129,7 +129,7 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
   }
   ```
 
-### 1.3、`UIButton` 强制封装与 `YES` 导入
+### 1.3、`UIButton` 强制封装与 `YES` 导入 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Swift 项目中 Jobs 自己维护的主工程和本地 Swift Pod，只要创建、配置或驱动 `UIButton`，必须使用 `JobsByUIKit` 和 `JobsSwiftDSL` 已有封装，禁止在调用方直接使用系统初始化、属性赋值、`setXxx(...)`、`addTarget(...)`、`UIAction` 或 `sendActions(for:)`。固定排除根目录 `Pods/` 和 `JobsByPods/ManualBySwiftPods@Pods/`；确认为外援第三方源码的目录也不改。
 - 按钮创建优先使用 `JobsByUIKit` 工厂：`.system` 对应 `UIButton.sys()`，`.custom` 对应 `UIButton.custom()`，其它系统类型对应 `UIButton.close()`、`.detailDisclosure()`、`.infoLight()`、`.infoDark()`、`.contactAdd()`。调用方禁止写 `UIButton()`、`UIButton(frame:)`、`UIButton(type:)` 或 `UIButton(configuration:)`；如现有工厂缺少某种初始化语义，先在 `JobsByUIKit` 补齐工厂，再回到调用方使用。
@@ -159,7 +159,7 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
   }()
   ```
 
-### 1.4、代码块 + 懒加载写法
+### 1.4、代码块 + 懒加载写法 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 子视图默认使用“代码块闭包 + `lazy var`”创建和配置；初始化、基础属性、轻量事件绑定尽量收口在同一个代码块里，装配方法只负责触发懒加载、添加层级、部署约束或做极少量编排。
 - 凡是创建后会进入页面视图层级、绑定约束 / 事件 / delegate、参与页面生命周期，或未来可能被刷新、显隐、换肤、重配的 UI / 交互对象，都必须提升为所属类型的 `private lazy var` / `private var` 属性并保留引用。禁止在 `viewDidLoad`、`setup*`、`build*`、`make*`、`configure*` 等方法里用局部 `let` / `var` 创建长期 UI 后直接添加；页面装配方法只消费 `self.xxx`。
@@ -179,7 +179,7 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
 
 - 懒加载代码块不要变成第二个 `viewDidLoad`；涉及布局、网络、复杂业务状态时放到独立方法里。需要使用 `self` 的闭包要明确引用策略：UI 初始化闭包尽量不捕获 `self`；事件闭包默认 `[weak self]`，布局闭包按项目现有生命周期可使用 `[unowned self]`。
 
-### 1.5、[**SnapKit**](https://github.com/SnapKit/SnapKit) 强制布局与 `byAddTo` 约束写法
+### 1.5、[**SnapKit**](https://github.com/SnapKit/SnapKit) 强制布局与 `byAddTo` 约束写法 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Swift 项目中 Jobs 自己维护的 UI 布局必须统一使用 [**SnapKit**](https://github.com/SnapKit/SnapKit)，覆盖主工程和 Jobs 自建本地 Pods；继续排除 `Pods/`、`JobsByPods/ManualBySwiftPods@Pods/`、生成代码和确认的外援第三方源码。
 - Jobs 自维护代码禁止直接使用系统 `NSLayoutConstraint` 体系，包括但不限于创建 `NSLayoutConstraint`、调用 `NSLayoutConstraint.activate(...)` / `deactivate(...)`，以及使用 `NSLayoutAnchor` / `NSLayoutXAxisAnchor` / `NSLayoutYAxisAnchor` / `NSLayoutDimension`、`topAnchor` / `leadingAnchor` / `widthAnchor` 等 Anchor API 生成约束。不得把系统约束包进 JobsSwiftDSL 后继续使用；底层和调用方都必须收口到 SnapKit。
@@ -206,7 +206,7 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
 
 - 约束优先表达“相对关系”，不要写死屏幕尺寸。遇到导航栏、顶部栏、底部安全区，优先使用现有封装方法判断，例如 `jobs_hasVisibleTopBar()`、`gk_navigationBar.snp.bottom`。
 
-#### 1.5.1、无警告约束与临时布局阶段
+#### 1.5.1、无警告约束与临时布局阶段 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 新写或修改 UI 后，必须检查控制台 `Unable to simultaneously satisfy constraints`、`UIView-Encapsulated-Layout-*` 和 `UITableViewAlertForLayoutOutsideViewHierarchy`。按日志中的文件名、行号和视图层级反查创建点；禁止靠删除已成立的业务约束或关闭系统日志掩盖问题。
 - `UITableViewCell` / `UICollectionViewCell` 在系统测量阶段可能临时获得 `44` 或 `0` 的封装高度。固定头部高度、折叠内容高度、上下边距等业务约束如果只在真实行高下成立，保留数值但把可压缩的一条设为 `999`；真实高度到位后布局不变，临时阶段让系统封装约束优先。
@@ -215,13 +215,13 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
 - 首次创建用 `makeConstraints` / `byAddTo`，仅常量变化用保存的 `Constraint.update`，结构切换才用 `remakeConstraints`。禁止在复用、配置或 `layoutSubviews` 中反复 `makeConstraints` 叠加同义约束。
 - 导航控制器、TabBar 子控制器和自定义 titleView 未获得真实容器尺寸时，不主动强制导航栏布局。根控制器切换先完成 `window.rootViewController` 和 `makeKeyAndVisible`，再刷新依赖真实宽高的 titleView、列表和安全区布局。
 
-#### 1.5.2、主题缺陷的全局修复与回归
+#### 1.5.2、主题缺陷的全局修复与回归 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 用户指出任意一处主题切换异常时，按当前工程的共性问题处理：扫描主工程和 Jobs 自维护本地 Pods 的全部页面与主题链路，优先修复公共绑定，再处理剩余个例；不能只修截图中的控件。继续遵守所有权边界，不默认回写未点名的来源工程。
 - 同步检查按钮背景及常态 / 选中 / 禁用 / 高亮文字、图标、导航、列表、输入、弹窗和富文本。`JobsCor` 的语义色写入 `UIButton.Configuration.background` 等值类型时不能假定自动更新；应在对应封装层绑定主题语义。富文本和 `CGColor` 存储已解析颜色，必须在主题中心更新后重新生成；订阅使用弱引用，避免在更新回调中再次注册绑定。
 - 验收覆盖白天、黑夜、跟随系统，已创建 / 新创建控件、进入详情后返回及反复切换；检查文字与背景对比、状态保持和布局日志。页面测试通过真实设置入口切换，不能用同名 UserDefaults 启动参数固定主题后宣称切换成功；保留实际页面截图和必要的颜色回归测试。
 
-### 1.6、导航栏配置写法
+### 1.6、导航栏配置写法 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 导航栏统一使用 Jobs 自己封装的 `jobsSetupGKNav` API；简单页面只关心标题时使用简化配置。
 
@@ -291,21 +291,21 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
 - 导航栏按钮事件默认用闭包表达。普通点按用 `.onTap`，追加点按用 `.onTapAppend`，普通长按用 `.onLongPress`，追加长按用 `.onLongPressAppend`。
 - 事件闭包里先通过 `guard` 解包 `self`，失败时在独立行 `return`，再写业务逻辑；不要在按钮链式配置里塞过长业务代码，复杂逻辑下沉到独立方法。
 
-#### 1.6.1、图标资源规则
+#### 1.6.1、图标资源规则 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 用户明确指定图标、图标名称或现有视觉样式时，严格按指定资源落地；用户没有特别指定时，必须先到[**阿里巴巴矢量图标库 iconfont**](https://www.iconfont.cn/)按按钮实际触发行为查找语义匹配的图标。只有 [**iconfont**](https://www.iconfont.cn/) 确实没有合适素材时，才向用户说明并征求其它来源，不能自行改用 SF Symbols、来源不明图片、临时纯色块或无意义占位图。
 - Swift Demo 入口页面中，每个 cell 前的图标必须与当前入口内容及功能语义贴合，并保证同一页面内不重复；来自 [**iconfont**](https://www.iconfont.cn/) 的图标必须下载到本地并放入当前工程实际使用的 `*.xcassets`，禁止通过 URL 或其它方式远程引用。
 - 新图标落地时，按当前项目资源体系放入 `Assets.xcassets`、自建 Pod 的 `Resource` / resource bundle 或既有图标目录，并同步 Xcode 文件引用、podspec 资源声明和 README / SwiftDoc 资源说明。
 - 如果采用字体图标方式集成，要记录并统一维护图标名称、unicode / class 信息；业务代码里不要散落硬编码 codepoint，优先通过统一常量、枚举、模型或封装入口引用。
 
-### 1.7、控制器组织方式
+### 1.7、控制器组织方式 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - `viewDidLoad` 只做主流程编排：导航栏配置、视图唤醒、数据绑定、首屏请求。不要把子视图创建、约束、事件、业务判断全部堆进去。
 - 控制器统一继承 `BaseVC`。除非项目已有更具体的 Jobs 基类，否则不要直接继承 `UIViewController`。
 - 推荐控制器结构按职责分块：系统导入、本地框架导入、类声明、懒加载属性、生命周期、导航栏配置、UI 装配、事件响应、业务方法。
 - 视图创建、`byAddTo` 约束、`byVisible(YES)` 唤醒、`jobsSetupGKNav` 导航栏配置，应保持 Jobs 项目现有链式风格，除非用户明确要求切换成原生写法。
 
-### 1.8、可读性优先的提行与缩进
+### 1.8、可读性优先的提行与缩进 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - OC / Swift 代码以人工阅读和维护为目标，函数 / 方法、条件分支、循环、closure / Block、懒加载和配置代码正常提行、逐层缩进；不把完整实现压到一行，不用分号串联多个动作；多变量声明拆为逐条声明。此规则取代旧的 `};return` 紧凑规则：块结束后 `return` 独立成行；OC 保留语句所需分号，Swift 不为压缩代码添加分号。
 - closure / Block 的参数与捕获列表放在开头，Swift 的 `in` 同行，正文从下一行开始，右花括号独立收口；正文每条语句 / 布局约束独立一行。嵌套分支继续展开，不能只拆最外层却留下紧凑内层。无参数或隐式参数的 closure 同样按块排版。
@@ -321,13 +321,13 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
   return self
   ```
 
-### 1.9、本地 Swift Pod 修改后的工程同步扫描
+### 1.9、本地 Swift Pod 修改后的工程同步扫描 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 但凡修改本地 Swift Pod，不管是新增、删除、重命名、调整源码、公开 API、资源、podspec、`Podfile.deps` 还是依赖关系，都必须扫描整个 Swift 归属工程里使用到这个 Pod 的代码并同步更新。不能只改 `JobsByPods/Pod名@Pods` 目录，也不能只改 podspec。
 - 扫描范围至少包括主工程源码、Demo 入口、`import Pod名`、类型名 / 方法名调用、其它 Pod 的 podspec 依赖、`Podfile` / `Podfile.deps`、README / SwiftDoc / 技术文档和脚本中的 Pod 名。涉及重命名时，要同步处理目录名、文件名、类名、菜单文案和依赖声明，避免源码里留下旧名。
 - `Pods/`、`Podfile.lock`、`PodspecDependencyReport` 等生成物如果本轮没有执行 `pod install` 或报告生成流程，不手工硬改，但最终必须明确标出仍需刷新；如果执行了生成流程，则要把生成物里的旧 Pod 引用一起确认干净。
 
-### 1.10、Swift 项目 `Podfile` / `Podfile.deps` 脚本边界
+### 1.10、Swift 项目 `Podfile` / `Podfile.deps` 脚本边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Swift 项目的 `Podfile.deps` 只维护 `pod` 依赖定义，不直接执行外部脚本；外部脚本统一由 `Podfile` 调用，避免依赖清单掺入副作用。
 - 采用或调整 `Podfile` / `Podfile.deps` 解耦时，必须加载 [jobs-podspec 的解耦、展示与脚本边界](../jobs-podspec/SKILL.md) 1.6.1 节，执行逐条依赖声明、Xcode 红钻引用态与工程完整性的共同验收。
@@ -335,12 +335,12 @@ description: 当任务涉及 Swift、系统类创建工厂、UIButton 创建/配
 - Flutter / Unity / CodeGraph / PodspecDependencyReport 这类脚本都按可选增强处理；只有用户明确指定某脚本是强制门禁时，才允许 `raise` 阻塞。
 - 新增脚本入口优先复用 `jobs_run_external_script(...)` 等统一 helper，避免在 `Podfile` 中散落裸 `system(script_path)`。
 
-### 1.11、安装与构建挂载脚本的 README 同步
+### 1.11、安装与构建挂载脚本的 README 同步 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Swift 项目新增或修改 `pod install` 外援脚本、Xcode 编译 / 编译后挂载脚本及其调用配置时，必须在同一任务更新项目根 `README.md` 的“项目配置支持”；移除挂载也要修正文档，不能只改脚本或脚本目录 README。
 - 必须加载并执行 [jobs-podspec 的安装与构建脚本同步规则](../jobs-podspec/SKILL.md) 1.6.2 节，核实触发时机、行为、产物、日志、开关与失败边界，并完成受影响工程的文档对账。
 
-### 1.12、前端 API 回退、UIButton 空态与远程图片
+### 1.12、前端 API 回退、UIButton 空态与远程图片 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Swift 业务 API 请求统一使用 Jobs `JobsNetworking`。业务层不得直接调用 AFNetworking、YTKNetwork 或 Alamofire；JobsNetworking 内部使用的实现库由封装层管理。只在项目明确保留旧兼容适配器时，才显式安装相应依赖，不能让模板依赖无意带入旧网络栈。
 - 数据页面每次进入或刷新都请求真实 API；首屏可先画出本地样例让 UI 立即出现，成功时用服务端响应替换，失败 / 超时 / 解码失败时继续显示本地样例。写操作也先请求服务端，失败后在本地演示模型应用同一业务状态迁移，并清楚标注离线演示。用短且可配置的超时确保未部署服务时页面很快出现。

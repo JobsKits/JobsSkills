@@ -16,7 +16,7 @@
 - `💻JobsCodexConfigs/skills` 仅作为 `JobsCodexConfigs` 父仓对本仓库的 Git 子模块挂载点，便于父仓记录所使用的 `JobsSkills` 版本；它不是可以反向覆盖现行工作树的备份源。
 - 外援 `Skill` 依旧由其上游仓库管理源码和版本；本仓库只记录来源和运行态链接映射。
 
-## 二、Git 管理边界
+## 二、Git 管理边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | 类型 | Git 处理 | 信息来源 |
 | --- | --- | --- |
@@ -28,7 +28,7 @@ Git 对软链接只保存“目标路径字符串”，不保存链接目标的�
 
 `.gitignore` 中使用完整链接名称，不使用 `/understand*` 之类的宽泛规则，避免误伤以后新增的同前缀自有 `Skill`。
 
-## 三、外援软链接溯源
+## 三、外援软链接溯源 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 上游项目：[**Understand Anything**](https://github.com/Lum1104/Understand-Anything)
 - 上游 Git 地址：`https://github.com/Lum1104/Understand-Anything.git`
@@ -47,7 +47,7 @@ Git 对软链接只保存“目标路径字符串”，不保存链接目标的�
 | `understand-knowledge` | `understand-anything-plugin/skills/understand-knowledge` |
 | `understand-onboard` | `understand-anything-plugin/skills/understand-onboard` |
 
-## 四、溯源与恢复检查
+## 四、溯源与恢复检查 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1、检查上游地址和当前版本：
 

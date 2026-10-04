@@ -1,6 +1,6 @@
-# Context Adaptation
+# <span id="前言">Context Adaptation</span>
 
-## Platform Scaling
+## Platform Scaling <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Platform | Duration Modifier | Complexity | Physics |
 |----------|------------------|------------|---------|
@@ -13,9 +13,9 @@
 **Mobile rules**: prefer opacity + transform; touch feedback <100ms; reduce stagger budgets by 30%; avoid parallax
 **Desktop opportunities**: hover states, cursor tracking, multi-column stagger, spatial choreography
 
-## Accessibility
+## Accessibility <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### prefers-reduced-motion
+### prefers-reduced-motion <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Original Motion | Reduced Alternative |
 |----------------|-------------------|
@@ -28,16 +28,16 @@
 
 Reduced motion means: remove spatial movement, keep opacity, remove spring easing, reduce duration 50%+, never auto-play loops.
 
-### Vestibular Triggers (avoid or provide alternatives)
+### Vestibular Triggers (avoid or provide alternatives) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Large-scale zoom, full-screen position transitions
 - Spinning elements >100px, parallax >2 layers, rapid direction changes
 
-### Cognitive Accessibility
+### Cognitive Accessibility <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Same interaction = same animation every time
 - Pause controls for animations >5 seconds
 - Don't convey critical info through motion alone
 
-## Performance Budgets
+## Performance Budgets <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Tier | Properties | Max Elements |
 |------|-----------|-------------|
@@ -51,7 +51,7 @@ Reduced motion means: remove spatial movement, keep opacity, remove spring easin
 - Stagger reduces peak load vs simultaneous
 - Fallback: 30fps acceptable for ambient
 
-## Content Type Adaptation
+## Content Type Adaptation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Content Type | Personality | Duration | Motion Density |
 |-------------|-------------|----------|---------------|
@@ -64,7 +64,7 @@ Reduced motion means: remove spatial movement, keep opacity, remove spring easin
 | Editorial | Premium | 350-600ms | Low |
 | Children's apps | Playful | 150-300ms | High |
 
-## Responsive Motion
+## Responsive Motion <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Container Width | Max Displacement | Duration |
 |----------------|-----------------|----------|
@@ -77,7 +77,9 @@ Reduced motion means: remove spatial movement, keep opacity, remove spring easin
 - Medium: standard stagger, 2-3 columns
 - Large: full choreography, center-out stagger, parallax
 
-## Dark Mode
+## Dark Mode <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Reduce motion intensity 10-20% (bright on dark = more impact)
 - Subtler ambient motion; careful with opacity values
 - Avoid pure white flashes
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

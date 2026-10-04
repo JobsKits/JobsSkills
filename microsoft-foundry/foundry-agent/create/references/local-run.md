@@ -1,4 +1,4 @@
-# Local Run Reference
+# <span id="前言">Local Run Reference</span>
 
 Use this when iterating on a hosted agent before deploying.
 
@@ -19,7 +19,7 @@ Use this when iterating on a hosted agent before deploying.
 > ```
 > A stale `AZURE_AI_MODEL_DEPLOYMENT_NAME` in `azd env` can make local run call the wrong deployment even when `.env` is correct, commonly surfacing as a Foundry responses API `404 Not Found`.
 
-## Prepare the local environment
+## Prepare the local environment <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 For Python agents, prepare the environment from the **agent's service source directory** -- the folder that contains `requirements.txt` and `agent.yaml` (typically `<repo>/src/<service-name>/`, not the azd project root). `azd ai agent run` resolves the venv relative to this folder; a `.venv` created in the project root is ignored and azd silently creates a second one without `uv`.
 
@@ -31,7 +31,7 @@ For Python agents, prepare the environment from the **agent's service source dir
 
 > **Important:** The venv must live next to `requirements.txt`, not in the azd project root. Install `uv` before running `azd ai agent run`, and keep that venv activated when running the command; otherwise the local run falls back to slower dependency installation. Do NOT manually run `pip install -r requirements.txt` / `uv pip install -r requirements.txt --prerelease=allow`; let `azd ai agent run` install dependencies.
 
-## Start the agent locally
+## Start the agent locally <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Activate the service-dir `.venv`, then in that venv run:
 
@@ -55,7 +55,7 @@ For headless or CI runs, pass `--no-inspector` and start the local server in a m
 
 Do **not** start `azd ai agent run` as a detached process that you cannot monitor or stop (for example, a bare `azd ai agent run ... &`, or a popped PowerShell window on Windows). Keep logs, readiness polling, and the PID/process handle for cleanup.
 
-## Useful flags
+## Useful flags <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Flag | Purpose |
 |------|---------|
@@ -69,7 +69,7 @@ Pass the service name when there are multiple `ai.agent` services:
 azd ai agent run my-agent
 ```
 
-## Where the start command comes from
+## Where the start command comes from <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Resolution order (first non-empty wins):
 
@@ -92,7 +92,7 @@ services:
 
 If detection fails and no override is set, `run` errors with the project dir and asks for `--start-command` or `startupCommand`.
 
-## Invoke the local agent
+## Invoke the local agent <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 azd ai agent invoke --local "hello, are you up?"
@@ -122,7 +122,7 @@ Other useful flags:
 
 After the local invocation completes, stop the `azd ai agent run` process you started before moving on.
 
-## When to graduate to remote
+## When to graduate to remote <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Local dev validates code shape; remote validates infra + identity + Foundry binding. Move to deploy when:
 
@@ -134,7 +134,7 @@ Before proceeding to deploy, clean up the local agent process.
 
 Next step -> [deploy/deploy.md](../../deploy/deploy.md).
 
-## Common failures
+## Common failures <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Symptom | Likely cause | Fix |
 |---------|--------------|-----|
@@ -144,3 +144,5 @@ Next step -> [deploy/deploy.md](../../deploy/deploy.md).
 | `cannot use --version with --local` | `--version` is remote-only | Drop `--version`, or remove `--local` to hit the deployed agent. |
 | Inspector never opens | Headless env, or extension install failed | Pass `--no-inspector`, or run `azd extension install azure.ai.inspector`. |
 | Auth / connection errors against Azure services | Local credentials not wired | Expected -- `DefaultAzureCredential` falls back to your `az login` / VS Code identity. Use `azd auth login` if needed. |
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

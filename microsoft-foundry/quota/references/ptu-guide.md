@@ -1,26 +1,26 @@
-# Provisioned Throughput Units (PTU) Guide
+# <span id="前言">Provisioned Throughput Units (PTU) Guide</span>
 
 **Table of Contents:** [Understanding PTU vs Standard TPM](#understanding-ptu-vs-standard-tpm) · [When to Use PTU](#when-to-use-ptu) · [PTU Capacity Planning](#ptu-capacity-planning) · [Deploy Model with PTU](#deploy-model-with-ptu) · [Request PTU Quota Increase](#request-ptu-quota-increase) · [Understanding Region and Deployment Quotas](#understanding-region-and-deployment-quotas) · [External Resources](#external-resources)
 
-## Understanding PTU vs Standard TPM
+## Understanding PTU vs Standard TPM <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Microsoft Foundry offers two quota types:
 
-### Standard TPM (Tokens Per Minute)
+### Standard TPM (Tokens Per Minute) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Pay-as-you-go model, charged per token
 - Each deployment consumes capacity units (e.g., 10K TPM, 50K TPM)
 - Total regional quota shared across all deployments
 - Subject to rate limiting during high demand (429 errors possible)
 - Best for: Variable workloads, development, testing, bursty traffic
 
-### Provisioned Throughput Units (PTU)
+### Provisioned Throughput Units (PTU) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Monthly commitment for guaranteed throughput
 - No rate limiting, consistent latency
 - Measured in PTU units (not TPM)
 - Best for: Predictable, high-volume production workloads
 - More cost-effective when consistent token usage justifies monthly commitment
 
-## When to Use PTU
+## When to Use PTU <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Factor | Standard (TPM) | Provisioned (PTU) |
 |--------|----------------|-------------------|
@@ -41,9 +41,9 @@ Microsoft Foundry offers two quota types:
 **Decision Guidance:**
 Compare your current pay-as-you-go costs with PTU pricing. PTU may be more economical when consistent usage justifies the monthly commitment.
 
-## PTU Capacity Planning
+## PTU Capacity Planning <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Official Calculation Methods
+### Official Calculation Methods <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > **Agent Instruction:** Only present official Azure capacity calculator methods below. Do NOT generate or suggest estimated PTU formulas, TPM-per-PTU conversion tables, or reference deprecated calculators (oai.azure.com/portal/calculator).
 
@@ -77,13 +77,13 @@ curl -X POST "https://management.azure.com/subscriptions/<subscription-id>/provi
   }'
 ```
 
-## Deploy Model with PTU
+## Deploy Model with PTU <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Step 1: Calculate PTU Requirements
+### Step 1: Calculate PTU Requirements <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use the official capacity calculator methods above to determine required PTU capacity.
 
-### Step 2: Deploy with PTU
+### Step 2: Deploy with PTU <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 # Deploy model with calculated PTU capacity
@@ -110,7 +110,7 @@ az cognitiveservices account deployment show \
 - Billing: Monthly commitment regardless of usage
 - No rate limiting (guaranteed throughput)
 
-## Request PTU Quota Increase
+## Request PTU Quota Increase <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 PTU quota is separate from TPM quota and requires specific justification:
 
@@ -130,23 +130,25 @@ PTU quota is separate from TPM quota and requires specific justification:
 
 **Alternative:** Deploy to different region with available PTU quota
 
-## Understanding Region and Deployment Quotas
+## Understanding Region and Deployment Quotas <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Region Quota
+### Region Quota <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Maximum PTU capacity available in an Azure region
 - Varies by model type (GPT-4, GPT-4o, etc.)
 - Shared across subscription resources in same region
 - Separate from TPM quota (you have both TPM and PTU quotas)
 
-### Deployment Slots
+### Deployment Slots <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Number of concurrent model deployments allowed
 - Typically 10-20 slots per resource
 - Each PTU deployment uses one slot (same as TPM deployments)
 - Deployment count limit is independent of capacity
 
-## External Resources
+## External Resources <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - [Understanding PTU Costs](https://learn.microsoft.com/azure/ai-foundry/openai/how-to/provisioned-throughput-onboarding)
 - [What Is Provisioned Throughput](https://learn.microsoft.com/azure/ai-foundry/openai/concepts/provisioned-throughput)
 - [Calculate Model Capacity API](https://learn.microsoft.com/rest/api/aiservices/accountmanagement/calculate-model-capacity/calculate-model-capacity?view=rest-aiservices-accountmanagement-2024-10-01&tabs=HTTP)
 - [PTU Overview](https://learn.microsoft.com/azure/ai-services/openai/concepts/provisioned-throughput)
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

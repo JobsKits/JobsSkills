@@ -1,4 +1,4 @@
-# Create Hosted Agent (azd ai)
+# <span id="前言">Create Hosted Agent (azd ai)</span>
 
 Scaffold a hosted Foundry agent project with the Azure Developer CLI (`azd`) and the `azure.ai.agents` extension. The same flow covers greenfield (from a curated sample) and brownfield (lift existing code), then drops you into a local inner-loop so you can iterate before deploying.
 
@@ -6,7 +6,7 @@ Scaffold a hosted Foundry agent project with the Azure Developer CLI (`azd`) and
 
 > **Scope:** `azd ai` is the preferred *code-first* path -- use it when the intent is agent code on disk, in a repo, with infrastructure-as-code and a local inner-loop. If the intent is only to create a remote agent resource (no code on disk), other approaches may apply -- for prompt agents see [create-prompt.md](create-prompt.md), or use the Foundry MCP tools / portal.
 
-## Quick Reference
+## Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Property | Value |
 |----------|-------|
@@ -18,7 +18,7 @@ Scaffold a hosted Foundry agent project with the Azure Developer CLI (`azd`) and
 | Sample catalog | `azd ai agent sample list --featured-only --output json` |
 | Reference docs | [azd-ai-cli](references/azd-ai-cli.md), [local-run](references/local-run.md), [tools](references/tools.md) |
 
-## When to Use This Skill
+## When to Use This Skill <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Create a new hosted agent from a curated Foundry sample.
 - Lift an existing agent project (Python, .NET, Node.js) into a hosted Foundry agent.
@@ -27,7 +27,7 @@ Scaffold a hosted Foundry agent project with the Azure Developer CLI (`azd`) and
 
 For prompt agents (LLM + instructions, no container), use [create-prompt.md](create-prompt.md). For deploy, use [deploy.md](../deploy/deploy.md).
 
-## Hosted vs Prompt
+## Hosted vs Prompt <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | | Hosted | Prompt |
 |--|--------|--------|
@@ -36,9 +36,9 @@ For prompt agents (LLM + instructions, no container), use [create-prompt.md](cre
 | Local debugging | `azd ai agent run` | Limited |
 | Output | New immutable agent version per `azd deploy` | `agent_update` via MCP / SDK |
 
-## Workflow
+## Workflow <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Step 1 -- Verify the environment
+### Step 1 -- Verify the environment <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > **Preflight: get `AZURE_SUBSCRIPTION_ID` + `AZURE_LOCATION` into the azd env *before* the first `azd ai agent init`.** Without both, init defers model resolution → `azure.yaml services.<name>.config.deployments[]` ends up empty → `AI_PROJECT_DEPLOYMENTS=[]` → `azd provision` creates zero model deployments → `agent.yaml` keeps the literal `{{AZURE_AI_MODEL_DEPLOYMENT_NAME}}` placeholder. `azd ai agent init` itself has **no** `--subscription` / `--location` flags (those live on core `azd init`). Pick the **first** option that fits, ranked best-first:
 >
@@ -75,7 +75,7 @@ Branch on the reported agent status:
 - `not_deployed` -> Step 2.
 - `active` / `deployed` -> already deployed. Skip to [deploy/deploy.md](../deploy/deploy.md) for redeploy or [tools](references/tools.md) to add a tool.
 
-### Step 2 -- New or existing Foundry project?
+### Step 2 -- New or existing Foundry project? <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Ask: "Do you want to create a new Foundry project, or use an existing one?" Skip the question when the prompt already says to use an existing project or supplies a Foundry project endpoint / project ARM resource ID.
 
@@ -90,7 +90,7 @@ Ask: "Do you want to create a new Foundry project, or use an existing one?" Skip
 
 Do not guess, derive, or construct the project ID from the endpoint. For `--project-id`, pass either the user-supplied project ARM resource ID or the `id` returned by Azure lookup / the bundled resolve script.
 
-### Step 3 -- Pick the scaffolding source
+### Step 3 -- Pick the scaffolding source <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | User has ... | Use |
 |--------------|-----|
@@ -99,7 +99,7 @@ Do not guess, derive, or construct the project ID from the endpoint. For `--proj
 
 If unsure, default to greenfield. Never guess a manifest URL by hand.
 
-### Step 4a -- Greenfield: scaffold from a sample
+### Step 4a -- Greenfield: scaffold from a sample <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 List the curated catalog (filter by language if known):
 
@@ -137,7 +137,7 @@ Do not run `azd env new`, `azd env select`, or `azd env set` before `azd ai agen
 
 `init` writes `azure.yaml` (or appends to it), `<service-dir>/agent.yaml`, and `<service-dir>/.agentignore` (code-deploy only). A successful direct-code init produces `<service-dir>/agent.yaml` with `code_configuration:`. For file shapes, see [azd-ai-cli](references/azd-ai-cli.md).
 
-#### Model deployments (azd Golden Path)
+#### Model deployments (azd Golden Path) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 `azure.yaml services.<name>.config.deployments[]` is the **single source of truth** for model deployments in azd-managed Foundry projects. The flow is:
 
@@ -181,7 +181,7 @@ Check the scaffold before local run:
 5. Prefer `--agent-name` at init time (above). Fallback only: if init already ran without it, rename the agent in `<service-dir>/agent.yaml` AND the matching key under `azure.yaml services:` to the same value, preserving its `project:` path.
 6. If you change CPU or memory, keep `<service-dir>/agent.yaml` and `azure.yaml services.<name>.config.container.resources` aligned because the `azure.yaml` service config can override the agent file.
 
-### Step 4b -- Brownfield: lift existing code
+### Step 4b -- Brownfield: lift existing code <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use ONLY when the workspace already contains hand-written agent source.
 
@@ -196,11 +196,11 @@ azd ai agent init --no-prompt \
 
 `--runtime` and `--entry-point` are required with `--deploy-mode code --no-prompt`. Runtimes: `python_3_13`, `python_3_14`, `dotnet_10`, `node_22`. `--deploy-mode container` builds from `Dockerfile`. For an existing Foundry project, add `--project-id "<resourceId>"`.
 
-### Step 5 -- Run locally and iterate
+### Step 5 -- Run locally and iterate <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Read and follow [local-run](references/local-run.md). Complete one representative local invocation before deploying.
 
-### Step 6 -- Add tools (optional)
+### Step 6 -- Add tools (optional) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Tools attach through **toolboxes** -- bundled MCP-compatible endpoints. Flow:
 
@@ -212,11 +212,11 @@ Tools attach through **toolboxes** -- bundled MCP-compatible endpoints. Flow:
 
 Full recipes (GitHub MCP, Azure AI Search, A2A, Bing Custom) in [tools](references/tools.md).
 
-### Step 7 -- Hand off to deploy
+### Step 7 -- Hand off to deploy <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Once local invocation succeeds, tell the user the agent is ready and ask if they want to deploy. Read [deploy/deploy.md](../deploy/deploy.md).
 
-## Expected env-var fingerprint (post-provision)
+## Expected env-var fingerprint (post-provision) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 After `azd provision` completes for an `azd ai agent`-scaffolded project (default Basic Agent Setup), `azd env get-values` should show this canonical state. Verify before debugging deployment or runtime issues.
 
@@ -236,7 +236,7 @@ Both `ENABLE_HOSTED_AGENTS` and `ENABLE_CAPABILITY_HOST` are set automatically b
 
 See the canonical env-var registry: [azure-dev/cli/azd/docs/environment-variables.md](https://github.com/Azure/azure-dev/blob/main/cli/azd/docs/environment-variables.md).
 
-## Common Guidelines
+## Common Guidelines <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. **Sample-first** -- always get `manifestUrl` from `azd ai agent sample list`.
 2. **Prefer azd over az** -- fall back to `az` only as a last resort, with explicit consent.
@@ -245,11 +245,11 @@ See the canonical env-var registry: [azure-dev/cli/azd/docs/environment-variable
 5. **Two files** -- `agent.yaml` is the agent; `azure.yaml services.<name>.config` is service config. See [azd-ai-cli](references/azd-ai-cli.md).
 6. **Reserved env vars** -- `FOUNDRY_*` and `AGENT_*` are platform-injected at runtime; `AI_PROJECT_DEPLOYMENTS`, `AI_PROJECT_RESOURCES`, and `AI_PROJECT_TOOL_CONNECTIONS` are extension-managed transport for Bicep. Never set any of these with `azd env set` — edit `azure.yaml services.<name>.config` and re-run `azd ai agent init`.
 
-## Non-Interactive / YOLO Mode
+## Non-Interactive / YOLO Mode <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Defaults when unspecified: greenfield + Python + `azd ai agent sample list --featured-only --language python`, choose the simplest recommended sample that matches the request, plus `--no-prompt` on every write. If creating a new project and the user did not provide a project name, auto-generate one using the pattern `ai-project-<random>` (6-8 lowercase alphanumeric characters). Show the generated name to the user but do not block on confirmation. If using an existing project, ensure `azd ai agent init` receives `--project-id`: use the supplied ARM ID, or run the Step 2 resolve script for the supplied Foundry project endpoint and pass the returned `id`. Stop and ask only when neither an ARM ID nor a resolvable endpoint is available. If the manifest declares secret parameters, collect them with `ask_user` and set them via `azd env set PARAM_...` before init -- keep `--no-prompt` (do not fall into azd's interactive prompts).
 
-## Error Handling
+## Error Handling <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Error | Fix |
 |-------|-----|
@@ -269,10 +269,12 @@ Defaults when unspecified: greenfield + Python + `azd ai agent sample list --fea
 
 Run `azd ai agent doctor --output json` to surface failing checks with `suggestion` fields.
 
-## Next Steps
+## Next Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Deploy to Foundry -> [deploy/deploy.md](../deploy/deploy.md)
 - Add tools -> [tools](references/tools.md)
 - Invoke the deployed agent -> [invoke/invoke.md](../invoke/invoke.md)
 - Evaluate / optimize -> [observe/observe.md](../observe/observe.md)
 - Diagnose failures -> [troubleshoot/troubleshoot.md](../troubleshoot/troubleshoot.md)
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

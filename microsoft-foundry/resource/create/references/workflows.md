@@ -1,16 +1,16 @@
-# Detailed Workflows: Create Foundry Resource
+# <span id="前言">Detailed Workflows: Create Foundry Resource</span>
 
 **Table of Contents:** [Workflow 1: Create Resource Group](#workflow-1-create-resource-group---detailed-steps) · [Workflow 2: Create Foundry Resource](#workflow-2-create-foundry-resource---detailed-steps) · [Workflow 3: Register Resource Provider](#workflow-3-register-resource-provider---detailed-steps)
 
-## Workflow 1: Create Resource Group - Detailed Steps
+## Workflow 1: Create Resource Group - Detailed Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Step 1: Ask user preference
+### Step 1: Ask user preference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Ask the user which option they prefer:
 1. Use an existing resource group
 2. Create a new resource group
 
-### Step 2a: If user chooses "Use existing resource group"
+### Step 2a: If user chooses "Use existing resource group" <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Count and list existing resource groups:
 
@@ -53,7 +53,7 @@ az group list --query "[-5:].{Name:name, Location:location}" --out table
   Then let user select, and fetch details as above
 - Display details to user, then proceed to create Foundry resource
 
-### Step 2b: If user chooses "Create new resource group"
+### Step 2b: If user chooses "Create new resource group" <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. List available Azure regions:
 
@@ -86,9 +86,9 @@ az group show --name <resource-group-name> --query "{Name:name, Location:locatio
 
 Expected output: `State: "Succeeded"`
 
-## Workflow 2: Create Foundry Resource - Detailed Steps
+## Workflow 2: Create Foundry Resource - Detailed Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Step 1: Verify prerequisites
+### Step 1: Verify prerequisites <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 # Check Azure CLI version (need 2.0+)
@@ -103,7 +103,7 @@ az provider show --namespace Microsoft.CognitiveServices --query "registrationSt
 
 If provider not registered, see Workflow #3: Register Resource Provider.
 
-### Step 2: Choose location
+### Step 2: Choose location <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Always ask the user to choose a location.** List available regions and let the user select:
 
@@ -121,7 +121,7 @@ Common regions for AI Services:
 
 > **Important:** Do not automatically use the resource group's location. Always ask the user which region they prefer.
 
-### Step 3: Create Foundry resource
+### Step 3: Create Foundry resource <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 az cognitiveservices account create \
@@ -141,7 +141,7 @@ az cognitiveservices account create \
 - `--location`: Azure region (**always ask user to choose** from available regions)
 - `--yes`: Auto-accept terms without prompting
 
-### Step 4: Verify resource creation
+### Step 4: Verify resource creation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 # Check resource details to verify creation
@@ -162,7 +162,7 @@ Expected output:
 - SKU: S0
 - Kind: AIServices
 
-### Step 5: Get access keys
+### Step 5: Get access keys <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 az cognitiveservices account keys list \
@@ -172,16 +172,16 @@ az cognitiveservices account keys list \
 
 This returns `key1` and `key2` for API authentication.
 
-## Workflow 3: Register Resource Provider - Detailed Steps
+## Workflow 3: Register Resource Provider - Detailed Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### When Needed
+### When Needed <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Required when:
 - First time creating Cognitive Services in subscription
 - Error: `ResourceProviderNotRegistered`
 - Insufficient permissions during resource creation
 
-### Steps
+### Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Step 1: Check registration status**
 
@@ -220,7 +220,7 @@ Wait until state is `Registered`.
 az provider list --query "[?namespace=='Microsoft.CognitiveServices']"
 ```
 
-### Required Permissions
+### Required Permissions <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 To register a resource provider, you need one of:
 - **Subscription Owner** role
@@ -235,3 +235,5 @@ To register a resource provider, you need one of:
 - **Azure CLI** (recommended): `az provider register --namespace Microsoft.CognitiveServices`
 - **Azure Portal**: Navigate to Subscriptions → Resource providers → Microsoft.CognitiveServices → Register
 - **PowerShell**: `Register-AzResourceProvider -ProviderNamespace Microsoft.CognitiveServices`
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

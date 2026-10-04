@@ -1,16 +1,16 @@
-# Steps 3–5 — Download Results, Cluster Failures, Dive Into Category
+# <span id="前言">Steps 3–5 — Download Results, Cluster Failures, Dive Into Category</span>
 
-## Step 3 — Download Results
+## Step 3 — Download Results <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 `evaluation_get` returns run metadata but **not** full per-row output. Write a Python script (save to `scripts/`) to download detailed results using the **Azure AI Projects Python SDK**.
 
-### Prerequisites
+### Prerequisites <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```text
 pip install azure-ai-projects>=2.0.0 azure-identity
 ```
 
-### SDK Client Setup
+### SDK Client Setup <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 from azure.identity import DefaultAzureCredential
@@ -26,14 +26,14 @@ client = project_client.get_openai_client()
 
 > ⚠️ **Common mistake:** Calling `project_client.evals` directly — the `evals` namespace is on the OpenAI client returned by `get_openai_client()`, not on `AIProjectClient` itself.
 
-### Retrieve Run Status
+### Retrieve Run Status <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 run = client.evals.runs.retrieve(run_id=run_id, eval_id=eval_id)
 print(f"Status: {run.status}  Report: {run.report_url}")
 ```
 
-### Download Per-Row Output Items
+### Download Per-Row Output Items <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The SDK handles pagination automatically — no manual `has_more` / `after` loop required.
 
@@ -44,13 +44,13 @@ all_items = [item.model_dump() for item in output_items]
 
 > 💡 **Tip:** Use `model_dump()` to convert each SDK object to a plain dict for JSON serialization.
 
-### Data Structure
+### Data Structure <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Query/response data lives in `datasource_item.query` and `datasource_item['sample.output_text']`, **not** in `sample.input`/`sample.output` (which are empty arrays). Parse `datasource_item` fields when extracting queries and responses for analysis.
 
 > ⚠️ **LLM judge knowledge cutoff:** When evaluating agents that use real-time data sources (web search, Bing Grounding, live APIs), the LLM judge may flag factually correct but temporally recent responses as "fabricated" or "unverifiable" because the judge's training data predates the agent's live results. Check failure reasons for phrases like "cannot verify," "beyond knowledge cutoff," or "no evidence" before treating them as real failures. See Behavioral Rule 18 in `observe.md` for mitigations.
 
-### Custom Evaluator Dual-Entry Parsing
+### Custom Evaluator Dual-Entry Parsing <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Custom evaluators produce **two** result entries per item in the `results` array:
 
@@ -95,13 +95,13 @@ def extract_evaluator_result(item, evaluator_name):
  "reason": "The response provides outdated and fabricated information...", "passed": false}
 ```
 
-### Persist Results
+### Persist Results <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Save results to `.foundry/results/<environment>/<eval-id>/<run-id>.json` (use `json.dump` with `default=str` for non-serializable fields). Print summary: total items, passed, failed, errored counts.
 
 > ⚠️ **Show Data Viewer deeplinks (for VS Code runtime only):** Append a Data Viewer deeplink immediately after reference to an evaluation result file in your response. Format: "[Open in Data Viewer](vscode://ms-windows-ai-studio.windows-ai-studio/open_data_viewer?file=<file_path>&source=microsoft-foundry-skill) for details and perform analysis".
 
-## Step 4 — Cluster Failures by Root Cause
+## Step 4 — Cluster Failures by Root Cause <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Analyze every row in the results. Group failures into clusters:
 
@@ -126,10 +126,12 @@ Produce a prioritized action table:
 
 **Rule:** Prioritize runtime errors first, then suites tagged `tier=smoke`, then suites tagged `purpose=regression`, then broader coverage suites by count × severity.
 
-## Step 5 — Dive Into Category
+## Step 5 — Dive Into Category <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When the user wants to inspect a specific cluster, display the individual rows: evaluation-suite ID, input query, the agent's original response, evaluator scores, and failure reason. Let the user confirm which category or evaluation suite to optimize.
 
-## Next Steps
+## Next Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 After clustering -> proceed to [Step 6: Optimize Prompt](optimize-deploy.md).
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

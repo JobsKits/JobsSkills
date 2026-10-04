@@ -1,8 +1,8 @@
-# Core Philosophy
+# <span id="前言">Core Philosophy</span>
 
-## Three Pillars
+## Three Pillars <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Pillar 1: Emotional Intent
+### Pillar 1: Emotional Intent <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 Define target emotion before choosing any property.
 
 | Emotion | Character | Timing | Easing |
@@ -14,7 +14,7 @@ Define target emotion before choosing any property.
 | Surprise | Sudden, explosive | 150-300ms | Exponential |
 | Confidence | Direct, decisive | 200-400ms | Strong ease-out |
 
-### Pillar 2: Visual Narrative
+### Pillar 2: Visual Narrative <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Phase | Duration Share | Purpose |
 |-------|--------------|---------|
@@ -24,14 +24,14 @@ Define target emotion before choosing any property.
 
 Even a 200ms tooltip fade has implicit setup→action→resolution.
 
-### Pillar 3: Motion Craft
+### Pillar 3: Motion Craft <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Easing curves match emotional intent
 - Duration proportional to element size and distance
 - Arcs for organic, straight for mechanical
 - Secondary motion (shadows, related elements)
 - Nothing starts and stops all at once
 
-## Three Motion Layers
+## Three Motion Layers <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Layer | Role | Amplitude |
 |-------|------|-----------|
@@ -43,11 +43,13 @@ Even a 200ms tooltip fade has implicit setup→action→resolution.
 - Ambient is continuous/slow, never demands attention
 - Primary-only animation feels flat; always add secondary + ambient
 
-## The 1/3 Screen Rule
+## The 1/3 Screen Rule <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 No motion travels >1/3 screen without intermediate keyframe. Break with direction changes, speed shifts, or arc adjustments.
 
-## The Attention Budget
+## The Attention Budget <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - One hero motion per scene moment
 - Max 2-3 elements in active motion simultaneously
 - Ambient doesn't count against budget
 - Stagger rather than synchronize
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

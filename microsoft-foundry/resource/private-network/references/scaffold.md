@@ -1,8 +1,8 @@
-# Scaffold & Parameterize
+# <span id="前言">Scaffold & Parameterize</span>
 
 Use this reference to fetch the confirmed template and wire up parameters.
 
-## Path A — OFFICIAL / ADAPT
+## Path A — OFFICIAL / ADAPT <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 If the user has no GitHub access, the template must already be present in the workspace. Do NOT attempt to fetch from GitHub.
 
@@ -10,7 +10,7 @@ Fetch the template from the GitHub URL in [template-index.md](template-index.md)
 
 For ADAPT: after fetching, modify the template to match the user's requirements before parameterizing.
 
-## Path B — EXTEND
+## Path B — EXTEND <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 If the user has existing Bicep or Terraform templates they want to extend, load [custom-template-adaptation.md](custom-template-adaptation.md). Follow the gap analysis there: read the user's template, identify what's present, add only the missing mandatory resources.
 
@@ -28,3 +28,5 @@ Set parameter values using the answers collected in [intake.md](intake.md):
 | `disableLocalAuth` | Set `true` if Azure Policy requires it |
 
 > Do NOT run `az deployment group create` yet — validate first (next step).
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

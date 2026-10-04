@@ -1,16 +1,16 @@
-# Tools and Toolboxes (azd ai)
+# <span id="前言">Tools and Toolboxes (azd ai)</span>
 
 How to attach tools (web search, Azure AI Search, MCP, A2A) to a hosted agent using `azd ai toolbox` and `azd ai agent connection`.
 
 A **toolbox** is a curated bundle of connection-backed tools that Foundry exposes as a single MCP-compatible endpoint. The agent connects to one URL and discovers every tool inside. `azd deploy` does NOT auto-create toolboxes -- you drive the lifecycle explicitly.
 
-## Install the extension once
+## Install the extension once <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 azd extension install azure.ai.toolboxes
 ```
 
-## The flow (every recipe)
+## The flow (every recipe) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. Create the **connection** (`azd ai agent connection create ...`).
 2. Create or update the **toolbox** (`azd ai toolbox create` / `connection add`).
@@ -19,18 +19,18 @@ azd extension install azure.ai.toolboxes
 5. Reference it in `<service-dir>/agent.yaml` `environment_variables[]`.
 6. `azd deploy`.
 
-## Env var naming convention
+## Env var naming convention <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Uppercase the toolbox name, collapse non-alphanumeric to `_`, prefix `TOOLBOX_`, suffix `_MCP_ENDPOINT`. Examples: `agent-tools` -> `TOOLBOX_AGENT_TOOLS_MCP_ENDPOINT`, `agent.tools.v2` -> `TOOLBOX_AGENT_TOOLS_V2_MCP_ENDPOINT`.
 
-## Endpoint URL shapes
+## Endpoint URL shapes <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - `{project}/toolboxes/{name}/versions/{version}/mcp?api-version=v1` -- version-pinned. What `azd ai toolbox show` returns.
 - `{project}/toolboxes/{name}/mcp?api-version=v1` -- default version (consumer). Always serves `default_version`.
 
 To auto-pick up new default versions without redeploying, drop the `/versions/<ver>` segment and store the consumer URL.
 
-## CLI surface
+## CLI surface <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Command | What it does |
 |---------|--------------|
@@ -46,7 +46,7 @@ To auto-pick up new default versions without redeploying, drop the `/versions/<v
 
 Every mutation publishes a new immutable version and promotes it to default.
 
-## `--from-file` shape
+## `--from-file` shape <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```yaml
 description: research toolbox    # only on `create`
@@ -59,7 +59,7 @@ connections:
   - name: my-a2a                 # RemoteA2A
 ```
 
-## Recipe: GitHub MCP
+## Recipe: GitHub MCP <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 # 1. Connection
@@ -90,7 +90,7 @@ environment_variables:
 
 Then `azd deploy`.
 
-## Recipe: Azure AI Search RAG
+## Recipe: Azure AI Search RAG <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 azd ai agent connection create my-search-conn \
@@ -103,7 +103,7 @@ azd ai toolbox connection add agent-tools my-search-conn --index contoso-outdoor
 
 For multiple indexes, add multiple entries with different `index` values.
 
-## Recipe: A2A peer agent
+## Recipe: A2A peer agent <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 azd ai agent connection create peer-agent-conn \
@@ -116,7 +116,7 @@ azd ai toolbox connection add agent-tools peer-agent-conn
 
 For authenticated peers, use `--auth-type project-managed-identity --audience https://ai.azure.com/.default`.
 
-## Recipe: multi-tool toolbox in one call
+## Recipe: multi-tool toolbox in one call <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```yaml
 # tools.yaml
@@ -135,13 +135,13 @@ azd ai toolbox create agent-tools --from-file tools.yaml
 
 One new default version regardless of how many connections you attach in one call.
 
-## Tools the CLI does NOT manage today
+## Tools the CLI does NOT manage today <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 `azd ai toolbox` only handles connection-backed tools (`RemoteTool`, `CognitiveSearch`, `RemoteA2A`, `GroundingWithCustomSearch`). These built-ins have no connection and are NOT addable via this CLI: `web_search`, `code_interpreter`, `file_search`, `function`, `toolbox_search_preview`.
 
 To include any built-in in a toolbox today, use the Python / .NET / JS SDK or call the REST API directly.
 
-## Required header (agent code)
+## Required header (agent code) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Every MCP request to the toolbox endpoint must include:
 
@@ -151,7 +151,7 @@ Foundry-Features: Toolboxes=V1Preview
 
 Token scope: `https://ai.azure.com/.default`. RBAC: the calling identity (developer + agent identity at runtime) needs **Foundry User** on the Foundry project.
 
-## Agent code (Python, Microsoft Agent Framework)
+## Agent code (Python, Microsoft Agent Framework) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 import os, httpx
@@ -177,7 +177,7 @@ tool = MCPStreamableHTTPTool(
 
 Install: `pip install httpx azure-identity agent-framework`.
 
-## MCP client gotchas
+## MCP client gotchas <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **Always stream.** Non-streaming is not supported.
 - **Don't call `prompts/list`.** Returns `500`. Pass `load_prompts=False`.
@@ -185,7 +185,7 @@ Install: `pip install httpx azure-identity agent-framework`.
 - **Tool names are prefixed with `server_label`.** `name="myserver"` -> tools appear as `myserver.<tool>`.
 - **`require_approval`** is the client's responsibility -- the toolbox proxy does NOT enforce it. Pass `approval_mode="never_require"` or wire an approval handler.
 
-## Verify the wire end-to-end
+## Verify the wire end-to-end <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 azd ai toolbox list --output json
@@ -194,7 +194,7 @@ azd deploy
 azd ai agent invoke "list the tools you have access to"
 ```
 
-## Troubleshooting
+## Troubleshooting <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Symptom | Likely cause |
 |---------|--------------|
@@ -207,3 +207,5 @@ azd ai agent invoke "list the tools you have access to"
 | Empty response, tool never called | `require_approval: always` with no handler. Pass `approval_mode="never_require"`. |
 | `tools/list` returns zero | Bad credentials, or toolbox version still provisioning. |
 | Tool names don't match | Use `{server_label}.{tool_name}`. |
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

@@ -7,11 +7,11 @@ metadata:
   version: "1.0.1"
 ---
 
-# Customize Model Deployment
+# <span id="前言">Customize Model Deployment</span>
 
 Interactive guided workflow for deploying Azure OpenAI models with full customization control over version, SKU, capacity, content filtering, and advanced options.
 
-## Quick Reference
+## Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Property | Description |
 |----------|-------------|
@@ -22,7 +22,7 @@ Interactive guided workflow for deploying Azure OpenAI models with full customiz
 | **Authentication** | Azure CLI (`az login`) |
 | **Tools** | Azure CLI, MCP tools (optional) |
 
-## When to Use This Skill
+## When to Use This Skill <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use this skill when you need **precise control** over deployment configuration:
 
@@ -35,7 +35,7 @@ Use this skill when you need **precise control** over deployment configuration:
 
 **Alternative:** Use `preset` for quick deployment to the best available region with automatic configuration.
 
-### Comparison: customize vs preset
+### Comparison: customize vs preset <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Feature | customize | preset |
 |---------|---------------------|----------------------------|
@@ -47,16 +47,16 @@ Use this skill when you need **precise control** over deployment configuration:
 | **Region** | Current region first, falls back to all regions if no capacity | Checks capacity across all regions upfront |
 | **Use Case** | Precise deployment requirements | Quick deployment to best region |
 
-## Prerequisites
+## Prerequisites <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Azure subscription with Cognitive Services Contributor or Owner role
 - Azure AI Foundry project resource ID (format: `/subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/projects/{project}`)
 - Azure CLI installed and authenticated (`az login`)
 - Optional: Set `PROJECT_RESOURCE_ID` environment variable
 
-## Workflow Overview
+## Workflow Overview <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Complete Flow (14 Phases)
+### Complete Flow (14 Phases) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```
 1. Verify Authentication
@@ -75,13 +75,13 @@ Use this skill when you need **precise control** over deployment configuration:
 13. Execute Deployment & Monitor
 ```
 
-### Fast Path (Defaults)
+### Fast Path (Defaults) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 If user accepts all defaults (latest version, GlobalStandard SKU, recommended capacity, default RAI policy, standard upgrade policy), deployment completes in ~5 interactions.
 
 ---
 
-## Phase Summaries
+## Phase Summaries <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > ⚠️ **MUST READ:** Before executing any phase, load [references/customize-workflow.md](references/customize-workflow.md) for the full scripts and implementation details. The summaries below describe *what* each phase does — the reference file contains the *how* (CLI commands, quota patterns, capacity formulas, cross-region fallback logic).
 
@@ -104,9 +104,9 @@ If user accepts all defaults (latest version, GlobalStandard SKU, recommended ca
 
 ---
 
-## Error Handling
+## Error Handling <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Common Issues and Resolutions
+### Common Issues and Resolutions <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Error | Cause | Resolution |
 |-------|-------|------------|
@@ -120,7 +120,7 @@ If user accepts all defaults (latest version, GlobalStandard SKU, recommended ca
 | **Permission denied** | Insufficient permissions | Assign Cognitive Services Contributor role |
 | **Capacity query fails** | API/permissions/network error | **DEPLOYMENT BLOCKED**: Will not proceed without valid quota data |
 
-### Troubleshooting Commands
+### Troubleshooting Commands <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 # Check deployment status
@@ -138,7 +138,7 @@ az cognitiveservices account deployment delete --name <account> --resource-group
 
 ---
 
-## Selection Guides & Advanced Topics
+## Selection Guides & Advanced Topics <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > For SKU comparison tables, PTU sizing formulas, and advanced option details, load [references/customize-guides.md](references/customize-guides.md).
 
@@ -150,7 +150,7 @@ az cognitiveservices account deployment delete --name <account> --resource-group
 
 ---
 
-## Related Skills
+## Related Skills <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **preset** - Quick deployment to best region with automatic configuration
 - **microsoft-foundry** - Parent skill for all Azure AI Foundry operations
@@ -159,10 +159,11 @@ az cognitiveservices account deployment delete --name <account> --resource-group
 
 ---
 
-## Notes
+## Notes <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Set `PROJECT_RESOURCE_ID` environment variable to skip prompt
 - Not all SKUs available in all regions; capacity varies by subscription/region/model
 - Custom RAI policies can be configured in Azure Portal
 - Automatic version upgrades occur during maintenance windows
 - Use Azure Monitor and Application Insights for production deployments
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

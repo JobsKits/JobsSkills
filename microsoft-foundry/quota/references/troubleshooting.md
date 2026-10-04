@@ -1,8 +1,8 @@
-# Troubleshooting Quota Errors
+# <span id="前言">Troubleshooting Quota Errors</span>
 
 **Table of Contents:** [Common Quota Errors](#common-quota-errors) · [Detailed Error Resolution](#detailed-error-resolution) · [Request Quota Increase Process](#request-quota-increase-process) · [Diagnostic Commands](#diagnostic-commands) · [External Resources](#external-resources)
 
-## Common Quota Errors
+## Common Quota Errors <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Error | Cause | Quick Fix |
 |-------|-------|-----------|
@@ -13,9 +13,9 @@
 | `PTU capacity unavailable` | No PTU quota in region | Request PTU quota or try different region |
 | `SKU not supported` | PTU not available for model/region | Check model availability or use Standard TPM |
 
-## Detailed Error Resolution
+## Detailed Error Resolution <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### QuotaExceeded Error
+### QuotaExceeded Error <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 All available TPM or PTU quota consumed in the region.
 
@@ -36,7 +36,7 @@ All available TPM or PTU quota consumed in the region.
    - **Option C**: Deploy to different region with available quota
    - **Option D**: Request quota increase through Azure Portal
 
-### InsufficientQuota Error
+### InsufficientQuota Error <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Available quota less than requested capacity.
 
@@ -58,7 +58,7 @@ Available quota less than requested capacity.
    - Try different region with more available quota
    - Request quota increase
 
-### DeploymentLimitReached Error
+### DeploymentLimitReached Error <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Resource reached maximum deployment slot limit (10-20 slots).
 
@@ -89,7 +89,7 @@ Resource reached maximum deployment slot limit (10-20 slots).
      --query 'length([])'
    ```
 
-### 429 Rate Limit Errors
+### 429 Rate Limit Errors <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 TPM capacity insufficient for traffic volume (Standard TPM only).
 
@@ -116,7 +116,7 @@ TPM capacity insufficient for traffic volume (Standard TPM only).
    - **Option B**: Migrate to PTU for guaranteed throughput (no rate limits)
    - **Option C**: Implement retry logic with exponential backoff in application
 
-### PTU Capacity Unavailable Error
+### PTU Capacity Unavailable Error <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 No PTU quota allocated in region, or PTU not available for model/region.
 
@@ -136,7 +136,7 @@ No PTU quota allocated in region, or PTU not available for model/region.
    - Try different region where PTU is available
    - Use Standard TPM instead
 
-### SKU Not Supported Error
+### SKU Not Supported Error <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 PTU not available for specific model or region combination.
 
@@ -150,9 +150,9 @@ PTU not available for specific model or region combination.
    - Choose different region where PTU is supported
    - Use alternative model that supports PTU in your region
 
-## Request Quota Increase Process
+## Request Quota Increase Process <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### For Standard TPM Quota
+### For Standard TPM Quota <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. Navigate to Azure Portal → Your Foundry resource → **Quotas**
 2. Identify model needing increase (e.g., "GPT-4o Standard")
@@ -165,7 +165,7 @@ PTU not available for specific model or region combination.
 
 **Processing Time:** Typically 1-2 business days
 
-### For PTU Quota
+### For PTU Quota <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. Navigate to Azure Portal → Your Foundry resource → **Quotas**
 2. Select **Provisioned throughput unit** tab
@@ -180,7 +180,7 @@ PTU not available for specific model or region combination.
 
 **Processing Time:** Typically 3-5 business days (requires stronger justification)
 
-## Diagnostic Commands
+## Diagnostic Commands <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 # Check deployment status
@@ -204,8 +204,10 @@ az cognitiveservices account deployment list \
   --output table
 ```
 
-## External Resources
+## External Resources <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - [Quota Management Documentation](https://learn.microsoft.com/azure/ai-services/openai/how-to/quota)
 - [Rate Limits Documentation](https://learn.microsoft.com/azure/ai-services/openai/quotas-limits)
 - [Troubleshooting Guide](https://learn.microsoft.com/azure/ai-services/openai/troubleshooting)
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

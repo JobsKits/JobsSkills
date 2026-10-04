@@ -7,15 +7,15 @@ metadata:
   version: "1.1.26"
 ---
 
-# Microsoft Foundry Skill
+# <span id="前言">Microsoft Foundry Skill</span>
 
 This skill helps developers work with Microsoft Foundry resources, covering model discovery and deployment, complete dev lifecycle of AI agent, evaluation workflows, and troubleshooting.
 
-## Pre-Execution Requirements
+## Pre-Execution Requirements <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Before using Foundry MCP operations, call the Azure MCP `foundry` tool and inspect the available Foundry MCP tools and related parameters. Treat this as the discovery/help step for MCP-based workflows.
 
-## Sub-Skills
+## Sub-Skills <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > **MANDATORY: Before executing ANY workflow-specific steps, you MUST read the corresponding sub-skill document.** Do not call workflow-specific MCP tools for a workflow without reading its skill document. This applies even if you already know the MCP tool parameters — the skill document contains required workflow steps, pre-checks, and validation logic that must be followed. This rule applies on every new user message that triggers a different workflow, even if the skill is already loaded.
 
@@ -49,7 +49,7 @@ This skill includes specialized sub-skills for specific workflows. **Use these i
 
 > 💡 **Prompt Optimization:** For requests like "optimize my prompt" or "improve my agent instructions," load [observe](foundry-agent/observe/observe.md) and use the `prompt_optimize` MCP tool through that eval-driven workflow.
 
-## Infrastructure Lifecycle
+## Infrastructure Lifecycle <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Match user intent to the correct infrastructure workflow.
 
@@ -60,7 +60,7 @@ Match user intent to the correct infrastructure workflow.
 | Create a Foundry project (public) | [project/create](project/create/create-foundry-project.md) |
 | Create a bare Foundry resource | [resource/create](resource/create/create-foundry-resource.md) |
 
-## Agent Development Lifecycle
+## Agent Development Lifecycle <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Match user intent to the correct agent workflow. Read each sub-skill in order before executing.
 
@@ -78,7 +78,7 @@ Match user intent to the correct agent workflow. Read each sub-skill in order be
 | Troubleshoot an agent issue | invoke → troubleshoot |
 | Fix a broken agent (troubleshoot + redeploy) | invoke → troubleshoot → apply fixes → deploy → invoke |
 
-## Agent: .foundry Workspace Standard
+## Agent: .foundry Workspace Standard <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Every agent source folder can keep Foundry-specific cache and overlay state under `.foundry/`:
 
@@ -98,15 +98,15 @@ Every agent source folder can keep Foundry-specific cache and overlay state unde
 - `suites/`, `datasets/`, and `evaluators/` are local cache folders. Reuse them when they are current, and ask before refreshing or overwriting them.
 - See [Agent Metadata Contract](references/agent-metadata-contract.md) for the canonical schema and workflow rules.
 
-## Agent: Setup References
+## Agent: Setup References <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - [Standard Agent Setup](references/standard-agent-setup.md) — advanced setup for production workloads that need data-residency control (bring-your-own Cosmos DB / Storage / AI Search via a Foundry capability host). The default `azd ai agent` flow uses **Basic Agent Setup** and does **not** provision `capabilityHosts/agents` — do not flag its absence as a bug. For default post-provision state, see the "Expected env-var fingerprint" section in [foundry-agent/create/create-hosted.md](foundry-agent/create/create-hosted.md).
 
-## Agent: Common Project Context Resolution
+## Agent: Common Project Context Resolution <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Agent skills should run this step **only when they need configuration values they don't already have**. If a value (for example, agent root, environment, project endpoint, or agent name) is already known from the user's message or a previous skill in the same session, skip resolution for that value.
 
-### Step 1: Discover Agent Roots and azd Context
+### Step 1: Discover Agent Roots and azd Context <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 First check whether the workspace has `azure.yaml` with services using `host: azure.ai.agent`.
 
@@ -119,7 +119,7 @@ First check whether the workspace has `azure.yaml` with services using `host: az
 
 After selecting an agent root, keep all local `.foundry` cache inspection, source inspection, evaluator suggestions, dataset suggestions, and prompt-optimization context inside that folder only. Do **not** scan sibling agent folders unless the user explicitly switches roots.
 
-### Step 2: Resolve Environment and Deployment Context
+### Step 2: Resolve Environment and Deployment Context <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 If `azure.yaml` is present, resolve the azd environment first:
 
@@ -141,7 +141,7 @@ Run `azd env get-values` for the selected environment when project/deployment va
 
 When azd supplies these values, use them as the source of truth and do not copy them into `.foundry/agent-metadata*.yaml` on metadata writes.
 
-### Step 3: Select Metadata Overlay and Resolve Environment
+### Step 3: Select Metadata Overlay and Resolve Environment <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Inside the selected agent root, choose the metadata file in this order:
 1. Metadata filename or path explicitly provided by the user or workflow
@@ -159,7 +159,7 @@ If the selected metadata file still contains multiple environments and none of t
 
 If the selected environment exposes older `testSuites[]` metadata but not `evaluationSuites[]`, treat `testSuites[]` as the source for this session and normalize each entry in memory to the `evaluationSuites[]` shape before continuing. If the metadata is older still and only exposes legacy `testCases[]`, normalize that list the same way. Preserve dataset and evaluator fields, keep any existing `tags`, and map legacy `priority` to `tags.tier` only when `tags.tier` is missing: `P0` -> `smoke`, `P1` -> `regression`, `P2` -> `coverage`.
 
-### Step 4: Resolve eval.yaml Local Evaluation Intent
+### Step 4: Resolve eval.yaml Local Evaluation Intent <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 If `eval.yaml` exists in the selected agent root, parse it before generating new suites:
 
@@ -173,7 +173,7 @@ If `eval.yaml` exists in the selected agent root, parse it before generating new
 
 Treat `eval.yaml` as local evaluation intent, not proof that a Foundry suite exists. Persist synced suite/dataset/evaluator references to `.foundry` only after remote lookup or registration succeeds.
 
-### Step 5: Resolve Common Configuration
+### Step 5: Resolve Common Configuration <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Layer sources in this order:
 
@@ -193,7 +193,7 @@ If azd and metadata both provide the same value and they differ, stop and ask wh
 | Evaluation suites and cache paths | `.foundry/agent-metadata*.yaml` | observe, eval-datasets |
 | Local seed dataset/evaluator intent | `eval.yaml` | observe, eval-datasets |
 
-### Step 6: Write Metadata Overlay (Create/Deploy/Observe Only)
+### Step 6: Write Metadata Overlay (Create/Deploy/Observe Only) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 On any metadata write (deploy, auto-setup, dataset refresh, or trace-to-dataset update), persist only non-derivable overlay/cache state in the selected metadata file:
 
@@ -203,7 +203,7 @@ On any metadata write (deploy, auto-setup, dataset refresh, or trace-to-dataset 
 
 Do not copy azd-owned deployment values into metadata when azd already provides them. If the selected file is a preferred single-environment file, rewrite only that one environment block. If the selected file is a legacy multi-environment file, rewrite only the selected environment block. Never copy or merge environments across sibling metadata files automatically. If the selected environment still uses older `testSuites[]` or legacy `testCases[]`, rewrite it to `evaluationSuites[]` and remove migrated `priority` fields from the rewritten entries.
 
-### Step 7: Collect Missing Values
+### Step 7: Collect Missing Values <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use the `ask_user` or `askQuestions` tool **only for values not resolved** from the user's message, session context, metadata, or azd bootstrap. Common values skills may need:
 - **Agent root** — Target azd service project folder or folder containing `.foundry/agent-metadata*.yaml`
@@ -214,7 +214,7 @@ Use the `ask_user` or `askQuestions` tool **only for values not resolved** from 
 
 > 💡 **Tip:** If the user already provides the agent path, environment, project endpoint, or agent name, extract it directly — do not ask again.
 
-## Agent: Agent Types
+## Agent: Agent Types <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 All agent skills support two agent types:
 
@@ -225,18 +225,20 @@ All agent skills support two agent types:
 
 Use `agent_get` MCP tool to determine an agent's type when needed.
 
-## Tool Usage Conventions
+## Tool Usage Conventions <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Use the `ask_user` or `askQuestions` tool whenever collecting information from the user
 - Use the `task` or `runSubagent` tool to delegate long-running or independent sub-tasks (e.g., env var scanning, status polling, Dockerfile generation)
 - Prefer Azure MCP tools over direct CLI commands when available
 - Reference official Microsoft documentation URLs instead of embedding CLI command syntax
 
-## Additional Resources
+## Additional Resources <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - [Foundry Hosted Agents](https://learn.microsoft.com/azure/ai-foundry/agents/concepts/hosted-agents?view=foundry)
 - [Foundry Agent Runtime Components](https://learn.microsoft.com/azure/ai-foundry/agents/concepts/runtime-components?view=foundry)
 
-## SDK Quick Reference
+## SDK Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - [Python](references/sdk/foundry-sdk-py.md)
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

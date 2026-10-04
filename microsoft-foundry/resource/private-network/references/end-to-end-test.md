@@ -1,8 +1,8 @@
-# End-to-End Test (VNet Access Required)
+# <span id="前言">End-to-End Test (VNet Access Required)</span>
 
 Continues from [post-deployment-validation.md](post-deployment-validation.md). Steps 1–3 there must be complete first.
 
-## 4. VNet Access Setup
+## 4. VNet Access Setup <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > ⚠️ The remaining tests require connectivity to the VNet.
 
@@ -17,7 +17,7 @@ Options:
 
 ---
 
-## 5. End-to-End Test (VPN users only)
+## 5. End-to-End Test (VPN users only) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Three phases:
 1. **Network** — DNS resolution + port 443 reachability
@@ -26,13 +26,13 @@ Three phases:
 
 > ⚠️ Chromium browsers may bypass VPN DNS via Secure DNS (DoH). If portal shows "Error loading agents" but CLI works, disable Secure DNS.
 
-### Requirements
+### Requirements <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 pip install azure-ai-projects azure-identity azure-ai-agents
 ```
 
-### Phase 1: Network Validation
+### Phase 1: Network Validation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Resolve DNS and test port 443 for all private endpoints. Substitute actual resource names from the deployment.
 
@@ -76,7 +76,7 @@ All should resolve to private IPs and be reachable.
 
 Report results to the user (✅/❌ per endpoint) before proceeding to Phase 2.
 
-### Phase 2: Agent Lifecycle Test
+### Phase 2: Agent Lifecycle Test <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Create agent, thread, send message, verify response, cleanup. This exercises all 4 PEs (AI Services, Cosmos DB, Storage, AI Search).
 
@@ -102,11 +102,11 @@ Report results to the user (which PEs passed, any failures) before proceeding to
 
 Ask user to disconnect VPN. Repeat Phase 2 — it should fail with 403. Report whether isolation is confirmed before proceeding to cross-check.
 
-### Requirements Cross-Check
+### Requirements Cross-Check <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 After testing, compare each requirement gathered in [intake.md](intake.md) against the deployed state. Flag any mismatches with remediation steps.
 
-### Cleanup (VPN users only)
+### Cleanup (VPN users only) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Ask if user wants to delete VPN Gateway (~$140/month) and DNS Resolver (~$180/month), or keep for ongoing access.
 
@@ -115,3 +115,5 @@ az network vnet-gateway delete --resource-group <rg> --name vpn-gateway-<suffix>
 az network dns-resolver delete --resource-group <rg> --name dns-resolver-<suffix> --yes
 az network public-ip delete --resource-group <rg> --name vpn-gateway-pip-<suffix>
 ```
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

@@ -1,4 +1,4 @@
-# Agent Tools
+# <span id="前言">Agent Tools</span>
 
 This file is the **index** for every tool an agent can use. For each tool, it points to a dedicated reference file, and — where the tool is also available through a [toolbox](use-toolbox-in-hosted-agent.md) — lists the toolbox `type` value.
 
@@ -9,7 +9,7 @@ Two delivery paths exist:
 
 > 💡 **Authoritative tool shapes:** the source-of-truth for every tool's wire shape is the **Foundry Agents typespec** on the `main` branch of [`Azure/azure-rest-api-specs`](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices). When in doubt about a field name, default, or new tool type that isn't yet documented here, load the typespec directly — it's updated as tools are added/changed.
 
-## Tool Summary
+## Tool Summary <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Tool | Prompt-agent SDK class | Toolbox `type` | Connection? | Reference |
 |------|------------------------|----------------|-------------|-----------|
@@ -31,18 +31,18 @@ Two delivery paths exist:
 
 > Combine multiple tools on one agent or one toolbox version. The model decides which to invoke. For multi-tool toolbox limits (at most one unnamed tool per type, unique `server_label` per MCP tool) see [toolbox-reference.md](toolbox-reference.md#multi-tool-toolbox-constraint).
 
-## How to use this index
+## How to use this index <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When you need details for a specific tool, **load that tool's reference file directly** — each one is self-contained (shape, requirements, references). Don't try to keep all tools in context at once.
 
 For the toolbox runtime contract (endpoint, auth, MCP protocol, citation patterns, troubleshooting) see [toolbox-reference.md](toolbox-reference.md). For wiring a toolbox into a hosted agent (env vars, samples, tracing) see [use-toolbox-in-hosted-agent.md](use-toolbox-in-hosted-agent.md).
 
-## Adjacent (not a `type` in a toolbox version)
+## Adjacent (not a `type` in a toolbox version) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **Agent Memory** — use the `MemorySearchTool` SDK class on prompt agents; for hosted agents, configure the memory store via the project (separate from the toolbox). See [tool-memory.md](tool-memory.md).
 - **Routines (preview)** — not a tool; an agent **trigger** (`schedule` / `timer` / `github_issue` / `custom`) that invokes an existing agent. Event-based routines are powered by the same **Connector Namespace** that backs catalog-MCP / managed-MCP connectors. See the [public Routines docs](https://learn.microsoft.com/azure/foundry/agents/how-to/use-routines).
 
-## References
+## References <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **[Foundry Agents typespec (`main`)](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices)** — authoritative tool shapes
 - [Tool Catalog](https://learn.microsoft.com/azure/foundry/agents/concepts/tool-catalog)
@@ -50,3 +50,5 @@ For the toolbox runtime contract (endpoint, auth, MCP protocol, citation pattern
 - [use-toolbox-in-hosted-agent.md](use-toolbox-in-hosted-agent.md) — wiring a toolbox into a hosted agent
 - [toolbox-reference.md](toolbox-reference.md) — toolbox runtime contract
 - [foundry-tool-catalog.md](foundry-tool-catalog.md) — project connections for remote tools
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

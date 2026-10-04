@@ -12,9 +12,9 @@ metadata:
   version: "1.0.0"
 ---
 
-# Motion Design Skill
+# <span id="前言">Motion Design Skill</span>
 
-## When to Apply
+## When to Apply <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use this skill when:
 - Creating UI animations (buttons, cards, modals, page transitions)
@@ -33,7 +33,7 @@ Use this skill when:
 
 ---
 
-## Quick Reference: 8-Step Checklist
+## Quick Reference: 8-Step Checklist <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Before creating any animation:
 
@@ -48,7 +48,7 @@ Before creating any animation:
 
 ---
 
-## Three Pillars (CRITICAL)
+## Three Pillars (CRITICAL) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Every animation must satisfy three pillars before any technical decisions:
 
@@ -67,7 +67,7 @@ Every animation must satisfy three pillars before any technical decisions:
 
 ---
 
-## Motion Personality
+## Motion Personality <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Select ONE archetype per project. Apply consistently.
 
@@ -89,7 +89,7 @@ Select ONE archetype per project. Apply consistently.
 
 ---
 
-## Property Selection
+## Property Selection <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Effect Goal | Primary Property | Secondary Properties |
 |-------------|------------------|---------------------|
@@ -108,7 +108,7 @@ Select ONE archetype per project. Apply consistently.
 
 ---
 
-## Duration Table
+## Duration Table <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Element Type | Duration | Rationale |
 |-------------|----------|-----------|
@@ -134,7 +134,7 @@ Select ONE archetype per project. Apply consistently.
 
 ---
 
-## Easing Selection
+## Easing Selection <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Directional rules**:
 - **Entrance** → decelerate (fast start, gentle landing): ease-out family
@@ -169,16 +169,16 @@ Select ONE archetype per project. Apply consistently.
 
 ---
 
-## Common Patterns
+## Common Patterns <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Button Press (Playful)
+### Button Press (Playful) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 1. **Anticipation**: Scale to 0.97 (50ms, ease-out)
 2. **Squash**: Scale to [1.04, 0.96] (100ms, ease-in)
 3. **Follow through**: Overshoots to 1.02, settles to 1.0 (spring, 200ms)
 4. **Secondary**: Shadow shrinks during press, icon shifts down 2px
 5. **Total**: ~150ms press + 200ms settle
 
-### Card Entrance (Premium)
+### Card Entrance (Premium) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 1. **Start**: 20px below target, opacity 0
 2. **Path**: Slight curve (10px X offset at midpoint)
 3. **Easing**: ease-out-cubic deceleration
@@ -186,14 +186,14 @@ Select ONE archetype per project. Apply consistently.
 5. **Secondary**: Content fades in 100ms after card lands
 6. **Staging**: Other cards dim to 80%
 
-### Success State (Playful)
+### Success State (Playful) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 1. **Primary**: Scale pop with ease-out-back
 2. **Secondary**: Checkmark draws in
 3. **Ambient**: Subtle particle burst
 4. **Color**: Green fill
 5. **Total**: 300-400ms
 
-### Error Shake (Corporate)
+### Error Shake (Corporate) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 1. **Primary**: Position oscillates 2-3 times, ±10-15px horizontal
 2. **Easing**: ease-in-out for sharp stops
 3. **Color**: Red tint
@@ -204,7 +204,7 @@ Select ONE archetype per project. Apply consistently.
 
 ---
 
-## Choreography Essentials
+## Choreography Essentials <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Coordinated entry**:
 - Lead with the hero — primary element enters first or most prominently
@@ -230,7 +230,7 @@ Select ONE archetype per project. Apply consistently.
 
 ---
 
-## Emotion-to-Motion Map
+## Emotion-to-Motion Map <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Emotion | Character | Path | Easing | Duration |
 |---------|-----------|------|--------|----------|
@@ -248,7 +248,7 @@ Select ONE archetype per project. Apply consistently.
 
 ---
 
-## Weight Classification
+## Weight Classification <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Weight | Examples | Duration | Overshoot | Easing |
 |--------|----------|----------|-----------|--------|
@@ -258,15 +258,15 @@ Select ONE archetype per project. Apply consistently.
 
 ---
 
-## Quality Rules
+## Quality Rules <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### CRITICAL — never break
+### CRITICAL — never break <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 1. **Never linear for spatial movement** — always use easing curves (linear only for spinners, progress bars)
 2. **Never opacity-only** for important state changes — combine with position or scale
 3. **Never exceed 1/3 screen** without intermediate keyframe
 4. **Always three motion layers** — primary + secondary + ambient
 
-### HIGH — strongly follow
+### HIGH — strongly follow <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 1. Match duration to element type (see tables)
 2. Use directional easing (ease-out entrance, ease-in exit)
 3. Apply Disney principles (especially anticipation, follow-through)
@@ -276,7 +276,7 @@ Select ONE archetype per project. Apply consistently.
 
 ---
 
-## Troubleshooting Quick Reference
+## Troubleshooting Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Problem | Likely Cause | Fix |
 |---------|-------------|-----|
@@ -290,7 +290,7 @@ Select ONE archetype per project. Apply consistently.
 
 ---
 
-## File Reference
+## File Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Philosophy** (director/):
 - [core-philosophy.md](director/core-philosophy.md) — Three Pillars deep dive
@@ -313,3 +313,5 @@ Select ONE archetype per project. Apply consistently.
 - [state-feedback.md](patterns/state-feedback.md) — Success, error, loading, hover
 - [ambient-continuous.md](patterns/ambient-continuous.md) — Looping, breathing, parallax
 - [multi-element.md](patterns/multi-element.md) — Stagger + choreography recipes
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

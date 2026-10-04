@@ -1,10 +1,10 @@
-# Invocations WebSocket (`invocations_ws`) Protocol
+# <span id="前言">Invocations WebSocket (`invocations_ws`) Protocol</span>
 
 Build, deploy, and connect to Foundry hosted agents that expose a **duplex WebSocket** endpoint instead of an HTTP request/response surface. Use this for real-time, bidirectional workloads — voice agents, live transcripts, custom streaming protocols, and signaling for out-of-band media transports.
 
 > ℹ️ **Preview.** `invocations_ws` is in public preview. For current region availability see [Foundry Hosted Agents — region availability](https://learn.microsoft.com/azure/foundry/agents/concepts/hosted-agents#region-availability). Every upgrade must carry the preview flag — either the `foundry_features=HostedAgents=V1Preview` query parameter or the `Foundry-Features: HostedAgents=V1Preview` request header.
 
-## Quick Reference
+## Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Property | Value |
 |----------|-------|
@@ -18,7 +18,7 @@ Build, deploy, and connect to Foundry hosted agents that expose a **duplex WebSo
 | Session affinity | Per-connection, keyed by the `agent_session_id` query parameter (optional — auto-generated if omitted) |
 | Multi-turn / state | Agent-managed inside the container; platform does **not** store history |
 
-## When to Use This Skill
+## When to Use This Skill <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Build or operate a hosted real-time voice agent (audio in / audio out, control frames)
 - Bridge an out-of-band media transport (WebRTC, SFU, telephony) to a Foundry-hosted bot via WebSocket signaling
@@ -27,7 +27,7 @@ Build, deploy, and connect to Foundry hosted agents that expose a **duplex WebSo
 
 > ℹ️ For HTTP-based invocation (single request/response, OpenAI `responses` API, or custom HTTP `invocations`), use the [`invoke`](../invoke/invoke.md) skill instead.
 
-## Protocol Comparison
+## Protocol Comparison <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Aspect | `responses` | `invocations` | `invocations_ws` |
 |--------|-------------|---------------|------------------|
@@ -38,9 +38,9 @@ Build, deploy, and connect to Foundry hosted agents that expose a **duplex WebSo
 | Streaming | `stream: true` (SSE) | Agent-controlled | Native duplex |
 | Best for | Chat | Webhooks / classifiers / protocol bridges | Voice, signaling, real-time |
 
-## Workflow
+## Workflow <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Step 1: Author the Container
+### Step 1: Author the Container <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use the `azure-ai-agentserver-invocations` host — the same package that serves HTTP `/invocations` — and register a WebSocket handler with `@app.ws_handler`. The host runs the server, binds the port, exposes `/readiness`, handles `await websocket.accept()`, runs Ping/Pong keep-alive (default 30s), maps uncaught handler exceptions to close code `1011`, and emits the structured close event used by `azd ai agent monitor`. You can register `@app.invocation_handler` (HTTP `POST /invocations`) and `@app.ws_handler` (WebSocket `GET /invocations_ws`) on the same `app`.
 
@@ -63,7 +63,7 @@ Inside the handler, read the session id from `FOUNDRY_AGENT_SESSION_ID` (env var
 
 See [Invocations WebSocket Protocol Guide](references/invocations-ws-protocol.md) for the framing model, the `agent_session_id` query parameter, control-vs-data frame patterns, and discovery guidance.
 
-### Step 2: Declare the Protocol in `agent.yaml`
+### Step 2: Declare the Protocol in `agent.yaml` <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```yaml
 kind: hosted
@@ -84,7 +84,7 @@ The matching `agent.manifest.yaml` declares the same `protocol: invocations_ws` 
 
 > ⚠️ The default `azd` scaffold uses `0.25 cpu / 0.5Gi`, which is too small for most real-time workloads. Bump `resources` before deploying.
 
-### Step 3: Deploy via `azd`
+### Step 3: Deploy via `azd` <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use the standard hosted-agent flow from the [`deploy`](../deploy/deploy.md) skill:
 
@@ -97,7 +97,7 @@ azd deploy my-ws-agent
 
 Once `Running`, the Foundry endpoint is reachable at the URL pattern in the Quick Reference table above.
 
-### Step 4: Connect a Client
+### Step 4: Connect a Client <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Connect to the Foundry-side WebSocket directly:
 
@@ -123,11 +123,11 @@ Connect to the Foundry-side WebSocket directly:
 
 4. **Speak your protocol.** Send and receive whatever your container expects.
 
-### Step 5: Multi-turn / Session State
+### Step 5: Multi-turn / Session State <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 There is no platform-managed history. To correlate frames across reconnects or keep per-user state, reuse the same `agent_session_id` and key your state off it inside the container. See [Session Management](../invoke/references/session-management.md).
 
-### Step 6: Observe and Troubleshoot
+### Step 6: Observe and Troubleshoot <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Stream container logs while testing:
 
@@ -139,7 +139,7 @@ azd ai agent monitor my-ws-agent --session-id <agent_session_id> --follow
 
 The same `agent_session_id` can be used to stream container logs (see the [`troubleshoot`](../troubleshoot/troubleshoot.md) skill for deeper diagnostics).
 
-## Error Handling
+## Error Handling <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Error | Cause | Resolution |
 |-------|-------|------------|
@@ -151,7 +151,7 @@ The same `agent_session_id` can be used to stream container logs (see the [`trou
 | Cold-start delay on first connect | Container initialising (VAD, model load, etc.) | Expected; subsequent connections to the same container are fast |
 | State lost across reconnect | Different `agent_session_id` used | Reuse the same `agent_session_id` query parameter to preserve agent-managed state |
 
-## Reference Samples
+## Reference Samples <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 End-to-end working samples (server container + browser portal) live in the [`foundry-samples`](https://github.com/microsoft-foundry/foundry-samples) repo under:
 
@@ -161,7 +161,7 @@ samples/python/hosted-agents/bring-your-own/invocations_ws/
 
 Each sub-folder shows a different media-path strategy (audio entirely over the WebSocket vs. WebSocket as signaling-only for an out-of-band media transport). Pick the one whose architecture matches your latency, NAT-traversal, and operational constraints.
 
-## Additional Resources
+## Additional Resources <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - [Invocations WebSocket Protocol Guide](references/invocations-ws-protocol.md)
 - [Session Management](../invoke/references/session-management.md)
@@ -169,3 +169,5 @@ Each sub-folder shows a different media-path strategy (audio entirely over the W
 - [`invoke` skill](../invoke/invoke.md) — HTTP-based `responses` and `invocations` protocols
 - [`deploy` skill](../deploy/deploy.md) — package and deploy hosted-agent containers
 - [`troubleshoot` skill](../troubleshoot/troubleshoot.md) — diagnose hosted-agent runtime failures
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

@@ -1,10 +1,10 @@
-# Post-Deployment Validation
+# <span id="前言">Post-Deployment Validation</span>
 
 Run after deployment succeeds. Steps 1-3 can run from anywhere (management plane). Steps 4-5 require VNet access.
 
-## 1. Infrastructure Verification
+## 1. Infrastructure Verification <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 1.1 Resource State
+### 1.1 Resource State <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Verify all resources are in `Succeeded` state:
 
@@ -14,7 +14,7 @@ az deployment operation group list \
   --query "[].{resource:properties.targetResource.resourceType,state:properties.provisioningState}" -o table
 ```
 
-### 1.2 Private Endpoint Connections
+### 1.2 Private Endpoint Connections <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Verify all PE connections are `Approved`:
 
@@ -24,7 +24,7 @@ az network private-endpoint list \
   --query "[].{name:name,status:privateLinkServiceConnections[0].privateLinkServiceConnectionState.status,resource:privateLinkServiceConnections[0].groupIds[0]}" -o table
 ```
 
-### 1.3 Public Network Access Audit
+### 1.3 Public Network Access Audit <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Verify all resources have public access disabled:
 
@@ -46,7 +46,7 @@ All should return `Disabled`.
 
 > **T10 (Private Basic):** Steps 2-5 below do not apply — T10 has no agents, no capability host, and no BYO resources. Setup is complete after Step 1.
 
-## 2. RBAC Role Assignment (no VNet required)
+## 2. RBAC Role Assignment (no VNet required) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The template does not assign data-plane roles automatically.
 
@@ -70,7 +70,7 @@ az role assignment create \
 
 > ⚠️ RBAC propagation can take 1–5 minutes.
 
-## 3. Deploy a Model (no VNet required)
+## 3. Deploy a Model (no VNet required) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 az cognitiveservices account deployment create \
@@ -88,6 +88,8 @@ Fall back to `Standard` SKU if `GlobalStandard` quota is exhausted.
 
 ---
 
-## 4. VNet Access & End-to-End Test
+## 4. VNet Access & End-to-End Test <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 For the remaining steps (VNet access setup, DNS resolution, agent lifecycle test, isolation proof, cleanup), read [end-to-end-test.md](end-to-end-test.md).
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

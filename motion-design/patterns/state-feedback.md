@@ -1,20 +1,20 @@
-# State & Feedback Patterns
+# <span id="前言">State & Feedback Patterns</span>
 
-## Button Press
+## Button Press <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Playful
+### Playful <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Press: scale 0.95 (60ms, ease-out); Release: overshoot 1.05 (80ms); Settle: 1.0 (120ms, spring)
 - Secondary: shadow shrinks/grows; color darkens/brightens. Total ~260ms
 
-### Premium
+### Premium <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Press: scale 0.98 (80ms); Release: 1.0 (150ms, no overshoot)
 - Opacity dims to 90% on press. Total ~230ms
 
-### Corporate
+### Corporate <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Press: scale 0.97 (60ms); Release: 1.0 (100ms); overshoot 0-2%
 - Background darkens 10%. Total ~160ms
 
-## Hover States
+## Hover States <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Element | Effect | Duration |
 |---------|--------|----------|
@@ -26,71 +26,73 @@
 
 Hover enter <100ms; hover exit 150-200ms (slower = polished).
 
-## Toggle / Switch
+## Toggle / Switch <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Thumb slides (120-180ms, ease-in-out); track color transitions simultaneously
 - Slight squash in movement direction
 - Playful: bounce at destination; Premium: smooth, no overshoot
 
-## Success State
+## Success State <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Checkmark Success
+### Checkmark Success <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 1. Container: scale 0.9→1.0 (200ms, ease-out-back, 5-10% overshoot)
 2. Checkmark: stroke draw (150ms, ease-out, 100ms delay)
 3. Color: to green (200ms); ambient glow/particles (300ms)
 4. Total: 400-500ms
 
-### Confirmation Badge
+### Confirmation Badge <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 1. Badge scales from 0 (200ms, ease-out-back)
 2. Text fades in (150ms, 50ms delay)
 3. Background pulse (300ms, sine)
 
-### Payment Success
+### Payment Success <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 1. Spinner → checkmark crossfade (200ms)
 2. Checkmark draws (200ms); container → success color (200ms)
 3. Text fades in (200ms, 100ms delay); optional confetti (300-500ms)
 
-## Error State
+## Error State <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Error Shake
+### Error Shake <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Horizontal oscillation ±10-15px, 2-3 cycles decreasing amplitude
 - ease-in-out, 300-400ms total; red tint; no overshoot; settles at origin
 
-### Inline Validation
+### Inline Validation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 1. Error text slides down + fades in (200ms)
 2. Border → red (150ms); icon scales in (150ms, 50ms delay)
 3. Optional single shake (200ms)
 
-### Form Submission Error
+### Form Submission Error <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 1. Button returns to normal (200ms)
 2. Error message slides in (250ms)
 3. Affected fields highlight red (150ms, staggered 30ms)
 4. Smooth scroll to first error (300ms, ease-in-out)
 
-## Loading States
+## Loading States <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Spinner
+### Spinner <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Continuous 360°, linear, 1000-1500ms/rev; optional breathing pulse (2-3s)
 
-### Skeleton
+### Skeleton <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Gradient sweep L→R, 1500-2000ms; base 10-20% opacity, peak 30-40%
 
-### Progress Bar
+### Progress Bar <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Width/transform, ease-in-out; optional color milestones + shimmer
 
-### Indeterminate
+### Indeterminate <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Oscillating position/width, 1500-2500ms, ease-in-out; continuous, never frantic
 
-## Warning State
+## Warning State <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 1. Yellow/amber border (150ms)
 2. Warning icon scales in (150ms, subtle overshoot)
 3. Optional icon pulse (2-3s, sine); text fades in (200ms, 50ms delay)
 
-## Disabled / Enabled
+## Disabled / Enabled <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **Disabling**: opacity to 50-60% (200ms); optional scale to 98%
 - **Enabling**: opacity to 100% (200ms); optional scale pulse 98%→100%
 
-## Focus States
+## Focus States <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Focus ring: scale 95%→100% + opacity (150ms)
 - Card focus: scale 1.01, shadow increase (150ms)
 - Tab nav focus: <100ms; must work with reduced-motion
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

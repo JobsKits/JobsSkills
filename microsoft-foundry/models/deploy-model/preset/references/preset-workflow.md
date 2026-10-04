@@ -1,10 +1,10 @@
-# Preset Deployment Workflow - Detailed Implementation
+# <span id="前言">Preset Deployment Workflow - Detailed Implementation</span>
 
 This file contains the full step-by-step bash/PowerShell scripts for preset (optimal region) model deployment. Referenced from the main [SKILL.md](../SKILL.md).
 
 ---
 
-## Phase 1: Verify Authentication
+## Phase 1: Verify Authentication <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Check if user is logged into Azure CLI:
 
@@ -28,7 +28,7 @@ az account set --subscription <subscription-id>
 
 ---
 
-## Phase 2: Get Current Project
+## Phase 2: Get Current Project <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Check for PROJECT_RESOURCE_ID environment variable first:**
 
@@ -100,7 +100,7 @@ echo "  Region: $PROJECT_REGION"
 
 ---
 
-## Phase 3: Get Model Name
+## Phase 3: Get Model Name <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **If model name provided as skill parameter, skip this phase.**
 
@@ -158,7 +158,7 @@ echo "Model format: $MODEL_FORMAT"
 
 ---
 
-## Phase 4: Check Current Region Capacity
+## Phase 4: Check Current Region Capacity <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Before checking other regions, see if the current project's region has capacity:
 
@@ -186,7 +186,7 @@ fi
 
 ---
 
-## Phase 5: Query Multi-Region Capacity (If Needed)
+## Phase 5: Query Multi-Region Capacity (If Needed) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Only execute this phase if current region has no capacity.
 
@@ -279,7 +279,7 @@ fi
 
 ---
 
-## Phase 6: Select Region and Project
+## Phase 6: Select Region and Project <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Ask user to select region from available options.**
 
@@ -366,7 +366,7 @@ RESOURCE_GROUP="$NEW_RESOURCE_GROUP"
 
 ---
 
-## Phase 7: Deploy Model
+## Phase 7: Deploy Model <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Generate unique deployment name:**
 
@@ -420,7 +420,7 @@ else
 fi
 ```
 
-### If MODEL_FORMAT is NOT "Anthropic" — Standard CLI Deployment
+### If MODEL_FORMAT is NOT "Anthropic" — Standard CLI Deployment <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > 💡 **Note:** The Azure CLI supports all non-Anthropic model formats directly.
 
@@ -456,7 +456,7 @@ az cognitiveservices account deployment create `
 
 > 💡 **Note:** For non-OpenAI MaaS models (Meta-Llama, Mistral, Cohere, etc.), `$DEPLOY_CAPACITY` is `1` (set in capacity calculation above).
 
-### If MODEL_FORMAT is "Anthropic" — REST API Deployment with modelProviderData
+### If MODEL_FORMAT is "Anthropic" — REST API Deployment with modelProviderData <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The Azure CLI does not support `--model-provider-data`. You must use the ARM REST API directly.
 
@@ -625,7 +625,7 @@ fi
 
 ---
 
-## Phase 8: Display Deployment Details
+## Phase 8: Display Deployment Details <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Show deployment information:**
 ```bash
@@ -692,3 +692,5 @@ echo "• Click the link above to test in Azure AI Foundry playground"
 echo "• Integrate into your application"
 echo "• Set up monitoring and alerts"
 ```
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

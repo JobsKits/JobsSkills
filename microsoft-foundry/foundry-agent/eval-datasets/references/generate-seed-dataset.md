@@ -1,21 +1,21 @@
-# Generate Seed Evaluation Dataset
+# <span id="前言">Generate Seed Evaluation Dataset</span>
 
 Generate a seed evaluation dataset for a Foundry agent by producing realistic, diverse test queries grounded in the agent's instructions and tool capabilities.
 
 > **Preferred setup:** For deployed agents, use the observe workflow's [Evaluation Suite Generation](../../observe/references/evaluation-suite-generation.md) first. This manual seed-dataset flow is the fallback when suite/data generation APIs are unavailable, fail, return incomplete artifacts, or the user explicitly wants hand-authored local data.
 
-## ⛔ Do NOT
+## ⛔ Do NOT <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Do NOT omit the `expected_behavior` field. It is **required** on every row, even during Phase 1 (built-in evaluators only). It pre-positions the dataset for Phase 2 custom evaluators.
 - Do NOT use `generateSyntheticData=true` on the eval API. Local generation provides reproducibility, version control, and human review before running evals.
 - Do NOT use vague `expected_behavior` values like "responds correctly". Always describe concrete actions (tool calls, sources to cite, tone, decline behavior).
 
-## Prerequisites
+## Prerequisites <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Agent deployed and running (or local `agent.yaml` available with instructions and tool definitions)
 - Selected `.foundry/agent-metadata*.yaml` file resolved with `projectEndpoint` and `agentName`
 
-## Dataset Row Schema
+## Dataset Row Schema <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > ⚠️ **MANDATORY: Every JSONL row must include both `query` and `expected_behavior`.**
 
@@ -32,7 +32,7 @@ Example row:
 {"query": "What are the latest EU AI Act updates?", "expected_behavior": "Uses Bing search to find recent EU AI Act news; cites at least one source; mentions implementation timelines or enforcement dates", "context": "current_events", "ground_truth": "The EU AI Act was formally adopted in 2024 with phased enforcement starting 2025."}
 ```
 
-## Step 1 — Gather Agent Context
+## Step 1 — Gather Agent Context <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Collect the agent's full context from `agent_get` or local `agent.yaml` in the selected agent root:
 
@@ -42,13 +42,13 @@ Collect the agent's full context from `agent_get` or local `agent.yaml` in the s
 - **Protocols** — supported protocols (e.g. `responses`, `invocations`, `invocations_ws`, `a2a`, `mcp`)
 - **Example messages** — from `agent.yaml` metadata if available
 
-## Step 2 — Generate Test Queries
+## Step 2 — Generate Test Queries <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > 💡 **Generate directly.** The coding agent (you) already has full context of the agent's instructions, tools, and capabilities from Step 1. Generate the JSONL rows directly — there is no need to call an external model deployment.
 
 Using the agent context collected in Step 1, generate 20 diverse, realistic test queries that exercise the agent's full capability surface. For agents with many tools, increase count to ensure at least one query per tool.
 
-### Coverage Requirements
+### Coverage Requirements <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Distribute queries across these categories:
 
@@ -61,7 +61,7 @@ Distribute queries across these categories:
 | **Safety boundaries** | 10% | Inputs that test responsible AI guardrails |
 | **Multi-step** | 5% | Queries requiring multiple tool calls or reasoning chains |
 
-### Generation Rules
+### Generation Rules <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Vary query length, formality, and complexity
 - Include at least one query per declared tool
@@ -74,7 +74,7 @@ Distribute queries across these categories:
 
 > 💡 **No separate validation step is needed.** As long as generation follows these rules, the dataset is valid by construction. The schema may evolve over time — enforcing it at generation time (not via a separate validation pass) keeps the workflow simple and forward-compatible.
 
-### Save
+### Save <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Save the generated JSONL to:
 
@@ -84,7 +84,7 @@ Save the generated JSONL to:
 
 The filename must start with `agentName` from the selected metadata file, followed by `-eval-seed-v1`.
 
-## Step 3 — Register in Foundry
+## Step 3 — Register in Foundry <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Register the generated dataset in Foundry. Follow these sub-steps:
 
@@ -133,7 +133,7 @@ evaluation_dataset_create(
    - `version`: `v1`
 6. Save the returned `datasetUri` in both the selected metadata file (under the active evaluation suite) and `.foundry/datasets/manifest.json`.
 
-## Step 4 — Update Metadata
+## Step 4 — Update Metadata <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Update the selected metadata file for the selected environment's `evaluationSuites[]`:
 
@@ -181,9 +181,11 @@ Update `.foundry/datasets/manifest.json` by appending a new entry to the `datase
 }
 ```
 
-## Next Steps
+## Next Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **Run evaluation** → [observe skill Step 2](../../observe/references/evaluate-step.md)
 - **Curate or edit rows** → [Dataset Curation](dataset-curation.md)
 - **Version after edits** → [Dataset Versioning](dataset-versioning.md)
 - **Harvest production traces later** → [Trace-to-Dataset Pipeline](trace-to-dataset.md)
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

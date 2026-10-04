@@ -1,14 +1,14 @@
-# Session Management
+# <span id="前言">Session Management</span>
 
 Manage hosted agent sessions — isolated compute environments that provide persistent state across invocations.
 
 This document covers session creation and lifecycle for both HTTP-protocol agents (`responses`, `invocations`) and WebSocket agents (`invocations_ws`).
 
-## Overview
+## Overview <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Sessions bind a hosted agent to a dedicated compute instance. Files written to `$HOME` during a session persist across requests for the lifetime of that session. When a session is deleted, its compute resources and stored files are released.
 
-## Session Creation
+## Session Creation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Protocol | How a session is created | Session id |
 |----------|--------------------------|------------|
@@ -17,7 +17,7 @@ Sessions bind a hosted agent to a dedicated compute instance. Files written to `
 
 Both ids follow the same format rule: `^[A-Za-z0-9_-]{8,128}$`.
 
-## Session Lifecycle
+## Session Lifecycle <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **HTTP (`responses`, `invocations`):**
 
@@ -45,7 +45,7 @@ Key points for `invocations_ws`:
 - Closing the WebSocket does **not** delete the session. To resume, open a new upgrade with the same `agent_session_id` and the container sees its previous `$HOME` state.
 - After the idle timeout, the platform deprovisions compute but persists session state, so the next reconnect re-hydrates the sandbox.
 
-## Session ID Format
+## Session ID Format <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Session IDs must match the pattern `^[A-Za-z0-9_-]{8,128}$`.
 
@@ -53,9 +53,9 @@ Session IDs must match the pattern `^[A-Za-z0-9_-]{8,128}$`.
 - If you omit `sessionId`, the platform auto-generates one
 - Store the returned `sessionId` — it is required for all subsequent operations
 
-## MCP Tool Details
+## MCP Tool Details <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Create Session
+### Create Session <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `session_create` to provision a new session:
 
@@ -67,7 +67,7 @@ Use `session_create` to provision a new session:
 
 Returns: Session resource with `sessionId`, status, and expiration.
 
-### Get Session
+### Get Session <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `session_get` to check session status:
 
@@ -79,7 +79,7 @@ Use `session_get` to check session status:
 
 Returns: Session details including status, version, creation time, and expiration.
 
-### Delete Session
+### Delete Session <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `session_delete` to release compute resources:
 
@@ -91,7 +91,7 @@ Use `session_delete` to release compute resources:
 
 > ⚠️ **Warning:** Deleting a session permanently removes all files stored in `$HOME` for that session.
 
-### List Sessions
+### List Sessions <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `session_list` to enumerate sessions:
 
@@ -106,7 +106,7 @@ Use `session_list` to enumerate sessions:
 
 > ⚠️ **Warning:** `after` and `before` are mutually exclusive — do not pass both.
 
-## Session vs Conversation
+## Session vs Conversation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Concept | Purpose | Scope |
 |---------|---------|-------|
@@ -117,7 +117,7 @@ Use `session_list` to enumerate sessions:
 - A conversation does not require a session (prompt agents use `conversationId` without sessions)
 - For hosted agents using `responses` protocol, use **both**: `sessionId` for compute affinity and `conversationId` for history
 
-## Best Practices
+## Best Practices <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. **Create sessions explicitly** — Always use `session_create` before invoking a hosted agent with `responses` or `invocations` protocol. Do not rely on implicit session creation.
 2. **Reuse sessions** — Keep the same session for related multi-turn interactions to preserve agent state.
@@ -125,3 +125,5 @@ Use `session_list` to enumerate sessions:
 4. **Handle expiry** — Sessions expire based on platform policies. If `session_get` returns a non-running state, create a new session.
 5. **Version awareness** — The platform auto-resolves the agent version at session creation time. If you need a specific version, ensure it is active before creating the session.
 6. **Debug with logstream** — Use `session_logstream` to stream stdout/stderr from a running session for troubleshooting.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

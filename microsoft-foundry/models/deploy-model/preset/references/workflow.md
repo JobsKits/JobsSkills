@@ -1,4 +1,4 @@
-# Preset Deployment Workflow — Step-by-Step
+# <span id="前言">Preset Deployment Workflow — Step-by-Step</span>
 
 Condensed implementation reference for preset (optimal region) model deployment. See [SKILL.md](../SKILL.md) for overview.
 
@@ -6,7 +6,7 @@ Condensed implementation reference for preset (optimal region) model deployment.
 
 ---
 
-## Phase 1: Verify Authentication
+## Phase 1: Verify Authentication <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 az account show --query "{Subscription:name, User:user.name}" -o table
@@ -23,7 +23,7 @@ az account set --subscription <subscription-id>
 
 ---
 
-## Phase 2: Get Current Project
+## Phase 2: Get Current Project <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Read `PROJECT_RESOURCE_ID` from env or prompt user. Format:
 `/subscriptions/{sub-id}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/projects/{project}`
@@ -50,7 +50,7 @@ PROJECT_REGION=$(az cognitiveservices account show \
 
 ---
 
-## Phase 3: Get Model Name
+## Phase 3: Get Model Name <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 If model not provided as parameter, list available models:
 
@@ -73,7 +73,7 @@ az cognitiveservices account list-models \
 
 ---
 
-## Phase 4: Check Current Region Capacity
+## Phase 4: Check Current Region Capacity <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 CAPACITY_JSON=$(az rest --method GET \
@@ -86,7 +86,7 @@ If `CURRENT_CAPACITY > 0` → skip to Phase 7. Otherwise continue to Phase 5.
 
 ---
 
-## Phase 5: Query Multi-Region Capacity
+## Phase 5: Query Multi-Region Capacity <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 ALL_REGIONS_JSON=$(az rest --method GET \
@@ -109,7 +109,7 @@ If no regions have capacity, defer to the [quota skill](../../../../quota/quota.
 
 ---
 
-## Phase 6: Select Region and Project
+## Phase 6: Select Region and Project <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Present available regions to user. Store selection as `SELECTED_REGION`.
 
@@ -141,7 +141,7 @@ az cognitiveservices account create \
 
 ---
 
-## Phase 7: Deploy Model
+## Phase 7: Deploy Model <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Generate unique deployment name using `scripts/generate_deployment_name.sh`:
 
@@ -172,3 +172,5 @@ az cognitiveservices account deployment create \
 ```
 
 Monitor with `az cognitiveservices account deployment show ... --query "properties.provisioningState"` until `Succeeded` or `Failed`.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

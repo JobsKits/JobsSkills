@@ -1,8 +1,8 @@
-# Dataset Curation — Human-in-the-Loop Review
+# <span id="前言">Dataset Curation — Human-in-the-Loop Review</span>
 
 Review, annotate, and approve harvested trace candidates before including them in evaluation datasets. This ensures dataset quality by adding a human review gate between raw trace extraction and finalized test cases.
 
-## Workflow Overview
+## Workflow Overview <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```
 Raw Traces (from KQL harvest)
@@ -17,7 +17,7 @@ Raw Traces (from KQL harvest)
 [3] Approved Dataset (versioned, ready for eval)
 ```
 
-## Step 1 — Generate Candidate File
+## Step 1 — Generate Candidate File <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 After running a [trace harvest](trace-to-dataset.md), save candidates with a `status` field:
 
@@ -32,7 +32,7 @@ Each line includes a review status:
 {"query": "What's the refund policy?", "response": "...", "status": "pending", "metadata": {"source": "trace", "conversationId": "conv-def-456", "harvestRule": "latency", "duration": 8700}}
 ```
 
-## Step 2 — Present for Review
+## Step 2 — Present for Review <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Show candidates in a review table:
 
@@ -42,7 +42,7 @@ Show candidates in a review table:
 | 2 | ⏳ pending | "What's the refund..." | latency harvest | — | 8.7s | — |
 | 3 | ⏳ pending | "Can you help me..." | low-eval harvest | — | 0.4s | 2.0 |
 
-### Review Actions
+### Review Actions <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 For each candidate, the user can:
 
@@ -54,14 +54,14 @@ For each candidate, the user can:
 | **Reject** | Exclude from dataset |
 | **Flag** | Mark for later review |
 
-### Batch Operations
+### Batch Operations <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - *"Approve all"* — include all pending candidates
 - *"Approve all errors"* — include all candidates from error harvest
 - *"Reject duplicates"* — exclude candidates with similar queries to existing dataset entries
 - *"Approve #1, #3, #5; reject #2, #4"* — selective approval by number
 
-## Step 3 — Finalize Dataset
+## Step 3 — Finalize Dataset <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 After review, filter approved candidates and save to a versioned dataset:
 
@@ -71,7 +71,7 @@ After review, filter approved candidates and save to a versioned dataset:
 4. Save to `.foundry/datasets/<agent-name>-<source>-v<N>.jsonl`
 5. Update `.foundry/datasets/manifest.json` with metadata
 
-### Update Candidate Status
+### Update Candidate Status <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Mark the candidate file with final statuses:
 
@@ -83,7 +83,7 @@ Mark the candidate file with final statuses:
 
 > 💡 **Tip:** Keep candidate files as an audit trail. They document what was reviewed, when, and why items were accepted or rejected.
 
-## Quality Checks
+## Quality Checks <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Before finalizing, verify dataset quality:
 
@@ -95,8 +95,10 @@ Before finalizing, verify dataset quality:
 | **Minimum size** | Warn if dataset has fewer than 20 examples (may not be statistically meaningful) |
 | **Safety coverage** | Ensure safety-related test cases are included if the agent handles sensitive topics |
 
-## Next Steps
+## Next Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **Version the approved dataset** → [Dataset Versioning](dataset-versioning.md)
 - **Organize into splits** → [Dataset Organization](dataset-organization.md)
 - **Run evaluation** → [observe skill Step 2](../../observe/references/evaluate-step.md)
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

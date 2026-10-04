@@ -1,14 +1,14 @@
-# Agent Observability Loop
+# <span id="前言">Agent Observability Loop</span>
 
 Orchestrate the full eval-driven optimization cycle for a Foundry agent. This skill manages the **multi-step workflow** for a selected agent root and environment: reusing or refreshing `.foundry` cache in that folder only, generating evaluation suites, caching generated datasets and rubric-based evaluators, running agent-target batch evals, clustering failures, optimizing prompts, redeploying, and comparing versions. Use this skill instead of calling individual `azure` MCP evaluation tools manually.
 
-## When to Use This Skill
+## When to Use This Skill <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 USE FOR: evaluate my agent, run an eval, test my agent, check agent quality, run batch evaluation, analyze eval results, why did my eval fail, cluster failures, improve agent quality, optimize agent prompt, compare agent versions, re-evaluate after changes, set up CI/CD evals, agent monitoring, eval-driven optimization, set up continuous monitoring, production quality monitoring, why are eval scores dropping.
 
 > ⚠️ **DO NOT manually call** `evaluation_suite_generation_job_create`, `evaluation_agent_batch_eval_create`, `data_generation_job_create`, `evaluator_generation_job_create`, `evaluation_comparison_create`, `prompt_optimize`, or `continuous_eval_create` **without reading this skill first.** This skill defines required pre-checks, environment selection, cache reuse, artifact persistence, fallback behavior, and multi-step orchestration that the raw tools do not enforce.
 
-## Quick Reference
+## Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Property | Value |
 |----------|-------|
@@ -17,7 +17,7 @@ USE FOR: evaluate my agent, run an eval, test my agent, check agent quality, run
 | Prerequisite | Agent deployed and running (use [deploy skill](../deploy/deploy.md)) |
 | Local cache | selected `.foundry/agent-metadata*.yaml` overlay, `.foundry/suites/`, `.foundry/evaluators/`, `.foundry/datasets/`, `.foundry/results/`; `eval.yaml` can provide local eval intent |
 
-## Entry Points
+## Entry Points <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | User Intent | Start At |
 |-------------|----------|
@@ -32,7 +32,7 @@ USE FOR: evaluate my agent, run an eval, test my agent, check agent quality, run
 
 > ⚠️ **Important:** Before running any evaluation (Step 2), always resolve the selected agent root, environment, effective deployment context, and metadata overlay file. In azd projects, derive project endpoint and deployed agent identity from `azd env get-values`; use metadata for synced suite/cache refs and explicit overrides. Inspect `.foundry/evaluators/`, `.foundry/datasets/`, `.foundry/suites/`, and matching `eval.yaml` in that root only. If the selected suite has `suiteName`, confirm it with `evaluation_suite_get`; otherwise use verified eval.yaml or legacy dataset/evaluator metadata. If cache is missing, stale, or the user wants to refresh it, route through [Step 1: Auto-Setup](references/deploy-and-setup.md) first — even if the user only asked to "evaluate." Do **not** merge `.foundry` cache or source context from sibling agent folders or sibling metadata files.
 
-## Before Starting — Detect Current State
+## Before Starting — Detect Current State <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. Resolve the target agent root, selected environment, effective deployment context, and selected metadata overlay file using [Common Project Context Resolution](../../SKILL.md#agent-common-project-context-resolution).
 2. In azd projects, prefer azd env values for project endpoint and deployed agent name/version; if metadata disagrees, stop and ask which source is authoritative.
@@ -41,7 +41,7 @@ USE FOR: evaluate my agent, run an eval, test my agent, check agent quality, run
 5. Use `evaluation_get` to check for existing eval runs.
 6. Jump to the appropriate entry point.
 
-## Loop Overview
+## Loop Overview <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```text
 1. Auto-setup generated evaluation suite or refresh .foundry cache for the selected environment
@@ -57,7 +57,7 @@ USE FOR: evaluate my agent, run an eval, test my agent, check agent quality, run
 10. Prompt: enable CI/CD pipeline evals and/or continuous production monitoring
 ```
 
-## Behavioral Rules
+## Behavioral Rules <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. **Keep context visible.** Restate the selected agent root, environment, metadata overlay file, and primary deployment context source (azd or metadata) in setup, evaluation, and result summaries.
 2. **Stay inside the selected agent root.** Once the agent root is resolved, inspect only that folder's `.foundry/` cache and source tree when suggesting tools, datasets, evaluators, or prompt optimizations. Do not merge sibling agent folders.
@@ -80,7 +80,7 @@ USE FOR: evaluate my agent, run an eval, test my agent, check agent quality, run
 19. **Show Data Viewer deeplinks (for VS Code runtime only).** Append a Data Viewer deeplink immediately after reference to a dataset file or evaluation result file in your response. Format: "[Open in Data Viewer](vscode://ms-windows-ai-studio.windows-ai-studio/open_data_viewer?file=<file_path>&source=microsoft-foundry-skill) for details and perform analysis". This applies to files in `.foundry/datasets/`, `.foundry/results/`.
 20. **Use the custom evaluator output contract in fallback/manual creation.** When creating custom evaluator prompts manually, treat the MCP/tool-enforced output schema as authoritative: `result` plus `reason`. Do **not** include or preserve conflicting user-provided output instructions such as `score`/`reasoning`, duplicate `OUTPUT FORMAT` blocks, markdown, or alternate JSON schemas in `promptText`. If the user provides a judge prompt that contains its own return schema, keep the rubric and placeholders but rewrite or remove the output-format section so it cannot conflict with the enforced `result`/`reason` contract.
 
-## Manual Fallback Evaluator Strategy
+## Manual Fallback Evaluator Strategy <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use this only when generated suite setup is unavailable or the user explicitly wants manual evaluator selection.
 
@@ -112,7 +112,7 @@ promptText: |
 
 > ⚠️ **Output contract:** Do not add `Return JSON: {"score": ...}` or any extra output-format block to custom evaluator `promptText`. The evaluator runtime appends and enforces the final JSON contract (`result` and `reason`). If a user-supplied rubric asks for `score`/`reasoning`, normalize that wording to `result`/`reason` or omit the output schema entirely before calling `evaluator_catalog_create`.
 
-## Related Skills
+## Related Skills <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | User Intent | Skill |
 |-------------|-------|
@@ -120,3 +120,5 @@ promptText: |
 | "Debug hosted agent issues" / "Hosted-agent logs" | [troubleshoot skill](../troubleshoot/troubleshoot.md) |
 | "Deploy or redeploy agent" | [deploy skill](../deploy/deploy.md) |
 | "Enable continuous evaluation" / "Set up ongoing monitoring" | [Continuous Eval](references/continuous-eval.md) (reference within this skill) |
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

@@ -1,15 +1,15 @@
-# Eval Correlation — Find Evaluation Results by Response or Conversation ID
+# <span id="前言">Eval Correlation — Find Evaluation Results by Response or Conversation ID</span>
 
 Look up evaluation scores for a specific agent response using App Insights.
 
 > **IMPORTANT:** The Foundry evaluation API does NOT support querying by response ID or conversation ID. App Insights `customEvents` is the ONLY way to correlate eval scores to specific responses. Always use this KQL approach when the user asks for eval results for a specific response or conversation.
 
-## Prerequisites
+## Prerequisites <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - App Insights resource resolved (see [trace.md](../trace.md) Before Starting)
 - A response ID (`gen_ai.response.id`) or conversation ID (`gen_ai.conversation.id`) from a previous trace query
 
-## Search by Response ID
+## Search by Response ID <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```kql
 customEvents
@@ -27,7 +27,7 @@ customEvents
 | order by evalName asc
 ```
 
-## Search by Conversation ID
+## Search by Conversation ID <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```kql
 customEvents
@@ -44,7 +44,7 @@ customEvents
 | order by responseId asc, evalName asc
 ```
 
-## Present Results
+## Present Results <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Show eval scores as a table:
 
@@ -55,3 +55,5 @@ Show eval scores as a table:
 | relevance | 2.0 | fail | Response doesn't address... |
 
 When showing alongside a span tree (see [Conversation Detail](conversation-detail.md)), attach eval scores to the span whose `gen_ai.response.id` matches.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

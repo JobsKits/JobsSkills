@@ -1,6 +1,6 @@
-# RFT Grader Design Guide
+# <span id="前言">RFT Grader Design Guide</span>
 
-## Grader Type Selection
+## Grader Type Selection <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Grader Type | Best For | Tradeoffs |
 |------------|---------|-----------|
@@ -11,7 +11,7 @@
 
 Start with Python grader unless you need external API calls. Python graders are fast, deterministic, reliable, and tool-aware (`sample.output_tools` provides tool call metadata).
 
-## Partial Credit Pattern
+## Partial Credit Pattern <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Binary pass/fail gives sparse reward. Decompose into 2–4 scored dimensions:
 
@@ -39,7 +39,7 @@ def grade(sample, item):
     return round(min(score, 1.0), 3)
 ```
 
-### Weight Guidelines
+### Weight Guidelines <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Dimension | Typical Weight | Examples |
 |-----------|---------------|----------|
@@ -48,7 +48,7 @@ def grade(sample, item):
 | Reasoning | 0.1–0.2 | Cited correct rules, justified decision |
 | Process quality | 0.05–0.1 | Used right tools, followed steps |
 
-## Threshold Calibration Workflow
+## Threshold Calibration Workflow <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The `pass_threshold` determines what score counts as pass vs fail — the most important RFT hyperparameter.
 
@@ -74,7 +74,7 @@ for threshold in [0.5, 0.6, 0.7, 0.8, 0.85, 0.9, 0.95]:
 
 **Always re-run calibration when you change your dataset.**
 
-## Consistency Rules
+## Consistency Rules <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When using multiple graders (Python for training, endpoint for debugging, local script for eval):
 
@@ -83,3 +83,5 @@ When using multiple graders (Python for training, endpoint for debugging, local 
 3. **Test with same examples** — run 10 samples through all graders and verify scores match
 
 Mismatched scoring causes the model to learn different behavior than what your evaluation measures.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

@@ -1,12 +1,12 @@
-# Step 1 - Auto-Setup Evaluation Suite
+# <span id="前言">Step 1 - Auto-Setup Evaluation Suite</span>
 
 > **This step runs automatically after deployment.** If the agent was deployed via the [deploy skill](../../deploy/deploy.md), `.foundry` cache and metadata may already be configured. Check `.foundry/evaluators/`, `.foundry/datasets/`, and the selected metadata file under the selected agent root before re-creating them.
 
-## Auto-Generate Suite
+## Auto-Generate Suite <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 After deployment, immediately prepare a Foundry evaluation suite and local references for the selected environment without waiting for the user to request it.
 
-### 1. Resolve Context
+### 1. Resolve Context <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use [Common Project Context Resolution](../../../SKILL.md#agent-common-project-context-resolution) to compute effective context. In azd projects, prefer `azd env get-values` for deployment context and use the selected `.foundry/agent-metadata*.yaml` file only as an overlay/cache. Use `agent_get`, local `agent.yaml`, and matching `eval.yaml` as needed to resolve:
 
@@ -21,7 +21,7 @@ Use [Common Project Context Resolution](../../../SKILL.md#agent-common-project-c
 
 Do not assume `gpt-4o` exists.
 
-### 2. Reuse or Refresh Cache
+### 2. Reuse or Refresh Cache <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Inspect `.foundry/suites/`, `.foundry/evaluators/`, `.foundry/datasets/`, matching `eval.yaml`, and the selected environment's `evaluationSuites[]` in the selected agent root only. Do **not** merge sibling agent folders.
 
@@ -30,7 +30,7 @@ Inspect `.foundry/suites/`, `.foundry/evaluators/`, `.foundry/datasets/`, matchi
 - **Cache is missing/stale or user asks refresh** -> generate a new suite after confirming any overwrite.
 - **Legacy entry without `suiteName`** -> keep it as legacy fallback metadata unless the user approves generating a new suite.
 
-### 3. Generate Suite
+### 3. Generate Suite <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Read [Evaluation Suite Generation](evaluation-suite-generation.md). If the user selected existing `eval.yaml`, follow the local eval.yaml verification/registration path there before creating a generated suite. Otherwise call:
 
@@ -49,7 +49,7 @@ For trace-informed suites, include `traceAgentName` or `traceAgentId`, `traceAge
 
 When refining an existing dataset, include `datasetName` and `datasetVersion`.
 
-### 4. Persist Local References
+### 4. Persist Local References <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Cache generated artifacts inside the selected root:
 
@@ -66,7 +66,7 @@ Cache generated artifacts inside the selected root:
 
 If the job result exposes only remote names/versions, fetch metadata with `evaluation_suite_get(projectEndpoint, suiteName, suiteVersion)`, `evaluation_dataset_get`, `evaluation_dataset_sas_url_get`, and `evaluator_catalog_get`, then materialize the full suite JSON, full evaluator JSON, dataset `.ref.json`, and downloaded dataset blobs. Never overwrite user-edited cache files without confirmation; deterministic re-fetch of the same immutable remote `<name>-v<version>` may replace the generated cache artifact for that exact version.
 
-### 5. Update Metadata
+### 5. Update Metadata <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Write only the selected metadata file and selected environment. In azd projects, persist only non-derivable overlay/cache state; do not copy azd-owned project endpoint, agent name/version, ACR, or observability values. Persist evaluation suites with:
 
@@ -77,12 +77,14 @@ Write only the selected metadata file and selected environment. In azd projects,
 
 Use tags such as `tier: smoke`, `purpose: baseline`, and `stage: generated`. If metadata still uses older `testSuites[]` or legacy `testCases[]`, replace that list with `evaluationSuites[]` on write and map `priority` to `tags.tier` only when `tags.tier` is missing.
 
-### 6. Fallback
+### 6. Fallback <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 If suite generation fails, is unavailable, or returns incomplete artifacts, explain the failure and fall back to the existing manual path: `evaluator_catalog_get`, local seed JSONL generation via [Generate Seed Evaluation Dataset](../../eval-datasets/references/generate-seed-dataset.md), `evaluation_dataset_create`, and `evaluationSuites[]` metadata with `generationSource: manual-fallback`.
 
-### 7. Prompt User
+### 7. Prompt User <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Ask: *"Your agent is deployed and the selected environment has evaluation-suite metadata plus local dataset/evaluator references. Would you like to run an evaluation to identify optimization opportunities?"*
 
 If yes -> proceed to [Step 2: Evaluate](evaluate-step.md). If no -> stop.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

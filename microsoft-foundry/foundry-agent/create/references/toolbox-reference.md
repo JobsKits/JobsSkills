@@ -1,8 +1,8 @@
-# Toolbox Reference
+# <span id="前言">Toolbox Reference</span>
 
 Endpoint format, MCP protocol details, authentication, OAuth consent handling, endpoint testing, citation pattern, and troubleshooting for Foundry Toolboxes.
 
-## Endpoint Format
+## Endpoint Format <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The toolbox MCP endpoint is constructed from the **project endpoint** + **toolbox name**:
 
@@ -17,7 +17,7 @@ The toolbox MCP endpoint is constructed from the **project endpoint** + **toolbo
 - **Required header** on every request: `Foundry-Features: Toolboxes=V1Preview`
 - `?api-version=v1` query parameter is **required** — requests without it return HTTP 400.
 
-### Agent env contract
+### Agent env contract <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Hosted agents read the MCP endpoint from a single environment variable. The **canonical** name is **`TOOLBOX_ENDPOINT`** — use it in all new code and `.env` files:
 
@@ -31,7 +31,7 @@ TOOLBOX_ENDPOINT=https://{host}/api/projects/{project}/toolboxes/{toolbox_name}/
 
 > ⚠️ **Don't use `FOUNDRY_TOOLBOX_ENDPOINT` in new code.** The Foundry platform **reserves** all environment variables prefixed `FOUNDRY_` and may silently overwrite user-defined values at runtime. Always use a name without the `FOUNDRY_` prefix (e.g. `TOOLBOX_ENDPOINT` or `TOOLBOX_MCP_ENDPOINT`). Some older samples still reference `FOUNDRY_TOOLBOX_ENDPOINT` — treat that as **deprecated/legacy** and only fall back to it when maintaining a sample that already wires it.
 
-## MCP Protocol
+## MCP Protocol <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Toolboxes use **Model Context Protocol (MCP)** — JSON-RPC 2.0 over HTTP POST:
 
@@ -41,7 +41,7 @@ Toolboxes use **Model Context Protocol (MCP)** — JSON-RPC 2.0 over HTTP POST:
 
 > `prompts/list` is **not supported** by the toolbox endpoint. Always pass `load_prompts=False` to MCP client constructors.
 
-### Tool naming
+### Tool naming <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **MCP-sourced tools** (`type: mcp`) are exposed as `{server_label}.{tool_name}` (e.g. `myserver.get_info`). Call them with the prefixed name in `tools/call`.
 - **All other tool types** (`web_search`, `file_search`, `azure_ai_search`, `code_interpreter`, `openapi`, `a2a_preview`, `work_iq_preview`, `fabric_iq_preview`, …) use the value of the entry's `name` field, or the default tool name if `name` is unset.
@@ -50,7 +50,7 @@ Toolboxes use **Model Context Protocol (MCP)** — JSON-RPC 2.0 over HTTP POST:
 
 Each tool returned by `tools/list` includes a `_meta.tool_configuration` block with at least the `type`, plus type-specific fields (e.g. `server_label`, `server_url`, `require_approval` for MCP).
 
-## Authentication
+## Authentication <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **Agent → Toolbox:** Azure AD bearer token with scope `https://ai.azure.com/.default`, refreshed on every request.
 - **Toolbox → External Services:** Managed by the platform via project connections (API keys, OAuth, managed identity). See [foundry-tool-catalog.md](foundry-tool-catalog.md) for the connection shapes that back each tool type.
@@ -59,7 +59,7 @@ Each tool returned by `tools/list` includes a `_meta.tool_configuration` block w
 
 > 💡 **If you're hitting OAuth errors (e.g. `CONSENT_REQUIRED`, ARA-style "authentication required" errors, or 401s) when calling an MCP server directly from your agent**, switch to wiring the same MCP server into a toolbox. The toolbox handles the full OAuth flow — bearer-token acquisition, refresh, consent discovery, and per-user token passthrough — so your agent only ever talks to the toolbox MCP endpoint with a standard `https://ai.azure.com/.default` token. This is the recommended path for any OAuth-based MCP server in a hosted agent.
 
-## OAuth Consent Handling
+## OAuth Consent Handling <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When a toolbox includes an OAuth-based MCP connection (e.g., GitHub OAuth), the **first** call from a new user triggers a `CONSENT_REQUIRED` error (MCP error code **`-32007`**). The error message contains the consent URL. This error can surface on either `initialize` or `tools/call` depending on when the server discovers the missing grant.
 
@@ -83,7 +83,7 @@ Example error shape:
 
 > This is a one-time flow per user per OAuth connection in a project. The agent should not silently swallow this error.
 
-## Multi-Tool Toolbox Constraint
+## Multi-Tool Toolbox Constraint <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 A single toolbox can combine multiple tools, but **at most one tool per unnamed tool type**. Tools like `web_search`, `file_search`, `azure_ai_search`, and `code_interpreter` have no identifier; to include more than one instance of the same type, set a unique `name` on each instance. MCP tools must each have a unique `server_label`.
 
@@ -100,7 +100,7 @@ Valid combinations include:
 - `azure_ai_search` + one or more `mcp`
 - `toolbox_search_preview` (the Tool Search directive — doesn't count toward the limit) + any other tools
 
-## Azure AI Search Citation Pattern
+## Azure AI Search Citation Pattern <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When calling an `azure_ai_search` tool through the toolbox MCP endpoint, citation metadata is returned under `result.structuredContent.documents[]` — **not** in a separate `citations` array. Treat each document as one citation:
 
@@ -121,7 +121,7 @@ Verification checklist:
 
 For File Search and Web Search citation patterns (under `result.content[].resource._meta` and `..._meta.annotations[]` respectively), see the public [Toolbox docs](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/toolbox).
 
-## Testing the Toolbox Endpoint
+## Testing the Toolbox Endpoint <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Before running the full agent, verify the toolbox MCP endpoint works end-to-end. Use `az login` for authentication, then test the three MCP operations in order:
 
@@ -174,7 +174,7 @@ curl -sS -X POST "$TOOLBOX_URL" \
   -d '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"<tool_name>","arguments":{"query":"test"}}}' | jq .
 ```
 
-## Troubleshooting
+## Troubleshooting <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Error | Cause | Resolution |
 |-------|-------|------------|
@@ -192,3 +192,5 @@ curl -sS -X POST "$TOOLBOX_URL" \
 | 400 missing `api-version` | Query string dropped | Append `?api-version=v1` to every toolbox URL |
 | Environment variable silently overwritten at runtime | Foundry reserves `FOUNDRY_`-prefixed env vars | Rename to a non-`FOUNDRY_` name (e.g. `TOOLBOX_ENDPOINT`) |
 | 403 on `POST /toolboxes` or `PUT .../connections/...` | Caller lacks `Foundry User` (or `Azure AI Developer` / `Cognitive Services Contributor`) on the project | Grant the role at the project scope |
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

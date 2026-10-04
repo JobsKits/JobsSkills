@@ -1,8 +1,8 @@
-# eval.yaml Guidance
+# <span id="前言">eval.yaml Guidance</span>
 
 Create `eval.yaml` directly when the conversation or `.foundry/agent-metadata*.yaml` already selected the dataset/evaluators. Otherwise ask whether to run `azd ai agent eval generate` or let optimize use built-in defaults.
 
-## Include
+## Include <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```yaml
 name: <suite-or-optimization-name>
@@ -47,7 +47,7 @@ For `options.optimization_model`, first verify that the target Foundry project h
 
 If none exist, ask the user to deploy one before configuring optimization. Use `options.optimization_config.model_search_space` only for target model candidates that exist in the project; it may include the baseline model when the user wants it compared.
 
-## Generate evals when inputs are missing
+## Generate evals when inputs are missing <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Prefer `eval generate` over older init flows:
 
@@ -58,7 +58,7 @@ azd ai agent eval generate --reset-defaults
 
 After generation, run `azd ai agent optimize --optimize-model <allowed-optimizer-model-deployment-name>` from the azd project; optimize auto-detects the generated `eval.yaml`.
 
-## Skip
+## Skip <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Do not add these fields unless the user explicitly asks and understands the tradeoff:
 
@@ -74,7 +74,7 @@ Do not add these fields unless the user explicitly asks and understands the trad
 
 Keep `target_attributes` omitted so azd can auto-detect optimizable attributes.
 
-## Source mapping
+## Source mapping <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Source | eval.yaml field |
 |--------|-----------------|
@@ -89,3 +89,5 @@ Keep `target_attributes` omitted so azd can auto-detect optimizable attributes.
 | selected target model candidates | `options.optimization_config.model_search_space` |
 
 Treat older `dataset_file`, `dataset_reference`, `validation_reference`, `max_iterations`, and `optimization_config.model` as legacy inputs when reading existing files, but write new files with the current contract above.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

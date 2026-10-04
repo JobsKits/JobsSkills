@@ -7,11 +7,11 @@ metadata:
   version: "1.0.0"
 ---
 
-# Capacity Discovery
+# <span id="前言">Capacity Discovery</span>
 
 Finds available Azure OpenAI model capacity across all accessible regions and projects. Recommends the best deployment location based on capacity requirements.
 
-## Quick Reference
+## Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Property | Description |
 |----------|-------------|
@@ -21,7 +21,7 @@ Finds available Azure OpenAI model capacity across all accessible regions and pr
 | **Action** | Read-only analysis — does NOT deploy. Hands off to preset or customize |
 | **Authentication** | Azure CLI (`az login`) |
 
-## When to Use This Skill
+## When to Use This Skill <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - ✅ User asks "where can I deploy gpt-4o?"
 - ✅ User specifies a capacity target: "find a region with 10K TPM for gpt-4o"
@@ -31,7 +31,7 @@ Finds available Azure OpenAI model capacity across all accessible regions and pr
 
 **After discovery → hand off to [preset](../preset/SKILL.md) or [customize](../customize/SKILL.md) for actual deployment.**
 
-## Scripts
+## Scripts <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Pre-built scripts handle the complex REST API calls and data processing. Use these instead of constructing commands manually.
 
@@ -42,15 +42,15 @@ Pre-built scripts handle the complex REST API calls and data processing. Use the
 | `scripts/query_capacity.ps1` | Raw capacity query (no project matching) | Quick capacity check or version listing |
 | `scripts/query_capacity.sh` | Same as above (bash) | Quick capacity check or version listing |
 
-## Workflow
+## Workflow <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Phase 1: Validate Prerequisites
+### Phase 1: Validate Prerequisites <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 az account show --query "{Subscription:name, SubscriptionId:id}" --output table
 ```
 
-### Phase 2: Identify Model and Version
+### Phase 2: Identify Model and Version <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Extract model name from user prompt. If version is unknown, query available versions:
 
@@ -63,7 +63,7 @@ Extract model name from user prompt. If version is unknown, query available vers
 
 This lists available versions. Use the latest version unless user specifies otherwise.
 
-### Phase 3: Run Discovery
+### Phase 3: Run Discovery <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Run the full discovery script with model name, version, and minimum capacity target:
 
@@ -76,7 +76,7 @@ Run the full discovery script with model name, version, and minimum capacity tar
 
 > 💡 The script automatically queries capacity across ALL regions, cross-references with the user's existing projects, and outputs a ranked table sorted by: meets target → project count → available capacity.
 
-### Phase 3.5: Validate Subscription Quota
+### Phase 3.5: Validate Subscription Quota <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 After discovery identifies candidate regions, validate that the user's subscription actually has available quota in each region. Model capacity (from Phase 3) shows what the platform can support, but subscription quota limits what this specific user can deploy.
 
@@ -115,7 +115,7 @@ Add a "Quota Available" column to the ranked output from Phase 3:
 
 Regions/SKUs where `quotaAvailable = 0` should be marked with ❌ in the results. If no region has available quota, hand off to the [quota skill](../../../quota/quota.md) for increase requests and troubleshooting.
 
-### Phase 4: Present Results and Hand Off
+### Phase 4: Present Results and Hand Off <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 After the script outputs the ranked table (now annotated with quota info), present it to the user and ask:
 
@@ -124,13 +124,13 @@ After the script outputs the ranked table (now annotated with quota info), prese
 3. 📊 **Check another model** or capacity target → re-run Phase 2
 4. ❌ Cancel
 
-### Phase 5: Confirm Project Before Deploying
+### Phase 5: Confirm Project Before Deploying <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Before handing off to preset or customize, **always confirm the target project** with the user. See the [Project Selection](../SKILL.md#project-selection-all-modes) rules in the parent router.
 
 If the discovery table shows a sample project for the chosen region, suggest it as the default. Otherwise, query projects in that region and let the user pick.
 
-## Error Handling
+## Error Handling <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Error | Cause | Resolution |
 |-------|-------|------------|
@@ -139,8 +139,10 @@ If the discovery table shows a sample project for the chosen region, suggest it 
 | Empty version list | Model not in region catalog | Try a different region: `./scripts/query_capacity.sh <model> "" eastus` |
 | "No projects found" | No AI Services resources | Guide to `project/create` skill or Azure Portal |
 
-## Related Skills
+## Related Skills <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **[preset](../preset/SKILL.md)** — Quick deployment after capacity discovery
 - **[customize](../customize/SKILL.md)** — Custom deployment after capacity discovery
 - **[quota](../../../quota/quota.md)** — For quota viewing, increase requests, and troubleshooting quota errors, defer to this skill instead of duplicating guidance
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

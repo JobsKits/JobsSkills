@@ -17,7 +17,7 @@ description: 当任务涉及 JobsMacEnvVarConfigs、Git 仓库结构、脚本安
 
 ## 一、Git 仓库规则 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 1.1、🌍JobsMacEnvVarConfigs 仓库
+### 1.1、🌍JobsMacEnvVarConfigs 仓库 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 处理 `🌍JobsMacEnvVarConfigs` 仓库时，先分清根目录入口脚本和 `scripts/` 下的解耦脚本，不要把二者混成一类。
 - `scripts/` 是存放解耦脚本代码的目录；这里面的脚本主文件名对应终端里的命令名，脚本文件统一以 `.command` 作为后缀。
@@ -43,7 +43,7 @@ description: 当任务涉及 JobsMacEnvVarConfigs、Git 仓库结构、脚本安
 - `scripts/update.command/update.command` 是全员升级入口；凡是 `scripts/install.command/install.command` 新增、删除或调整安装能力，都必须同步更新升级入口，保持安装与升级能力平行，不允许只改安装不改升级。
 - 写或改这个仓库的脚本时，要随时对照安装与升级两个入口：安装负责“从无到有”，升级负责“已有环境持续更新”，两者覆盖的工具链和交互顺序应尽量一致。
 
-### 1.2、仓库级 Shell 脚本统一整改
+### 1.2、仓库级 Shell 脚本统一整改 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 批量扫描多个仓库或目录前，先识别嵌套关系并对真实路径去重，避免同一脚本被重复改写。
 - 开始修改前必须检查各 Git 工作区和子模块状态；已有改动一律保留，在其基础上继续工作，不得通过回滚或覆盖换取批量处理便利。
@@ -51,7 +51,7 @@ description: 当任务涉及 JobsMacEnvVarConfigs、Git 仓库结构、脚本安
 - 区分可独立执行的入口脚本与仅供 `source` 的函数库；入口脚本的 `main()` 必须服从 `jobs-macos-shell` 的“高层步骤集中编排、每个函数调用带职责注释、禁止单次转调包装”规范，函数库不得为了形式统一而强加入口。
 - 批量改写前后都要按脚本真实解释器执行静态语法检查，并单独审计 `main()` 结构；出现既有失败时记录基线，整改不得引入新增失败。
 
-### 1.3、父仓子模块的 Git 元数据集中管理
+### 1.3、父仓子模块的 Git 元数据集中管理 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 当父仓通过 `.gitmodules` 和 gitlink 管理独立子仓时，Jobs 默认将子仓元数据集中保存在父仓实际 Git 目录（`git rev-parse --git-dir`）下的 `modules/` 中；子仓工作目录根部使用 `.git` 文件指向对应元数据目录。这是子模块的本地管理布局，不改变子仓独立提交历史、远端或分支。
 - 开始整理前，先核对父仓 `.gitmodules`、gitlink、子模块路径和 `git submodule status`，并记录父仓及子仓的工作区状态。仅处理已登记且当前检出存在的子模块；保留已有源码改动、未跟踪文件、提交和远端，不用元数据整理顺带提交、推送或更新子仓。

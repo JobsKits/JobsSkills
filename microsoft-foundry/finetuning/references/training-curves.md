@@ -1,6 +1,6 @@
-# Training Curve Analysis
+# <span id="前言">Training Curve Analysis</span>
 
-## SFT Metrics
+## SFT Metrics <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Column | What it means |
 |--------|---------------|
@@ -11,7 +11,7 @@
 | `full_valid_loss` | Full-pass validation loss (more accurate, less frequent) |
 | `full_valid_mean_token_accuracy` | Full-pass token accuracy |
 
-## Overfitting Detection
+## Overfitting Detection <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Overfitting ratio** at each checkpoint: `valid_loss / train_loss`
 
@@ -30,7 +30,7 @@ if final_val > best_val * 1.2:
     print(f"⚠️ OVERFIT: Best={best_val:.4f}, final={final_val:.4f}")
 ```
 
-## Best Checkpoint Selection (SFT)
+## Best Checkpoint Selection (SFT) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 checkpoints = client.fine_tuning.jobs.checkpoints.list(job_id)
@@ -39,7 +39,7 @@ print(f"Best: step {best_cp.step_number}, valid_loss={best_cp.metrics.valid_loss
       f"model={best_cp.fine_tuned_model_checkpoint}")
 ```
 
-## Diagnosis Table
+## Diagnosis Table <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Observation | Diagnosis | Action |
 |-------------|-----------|--------|
@@ -51,7 +51,7 @@ print(f"Best: step {best_cp.step_number}, valid_loss={best_cp.metrics.valid_loss
 | Both losses stay high | Task too hard | Larger model or simplify task |
 | Large train-valid gap from start | Insufficient/mismatched data | Add diverse training data |
 
-## RFT Metrics
+## RFT Metrics <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Column | What it means |
 |--------|---------------|
@@ -63,23 +63,23 @@ print(f"Best: step {best_cp.step_number}, valid_loss={best_cp.metrics.valid_loss
 | `train_sample_parse_error_count` | Grader couldn't parse output |
 | `train_other_error_count` | Grader logic bugs — should be 0 |
 
-## RFT Reward Curve Patterns
+## RFT Reward Curve Patterns <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **Reward flat at ~0**: Grader broken or threshold too strict
 - **Reward always negative**: pass_threshold too high
 - **Reward immediately high + flat**: Threshold too lenient
 - **Train-valid reward gap > 0.10**: Possible reward hacking
 
-### Token Growth
+### Token Growth <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - **Moderate** (tokens double): Normal — model becoming more thorough
 - **Excessive** (3x+): Grader may incentivize verbosity — check scoring dimensions
 - When comparing checkpoints, equal accuracy at fewer tokens is strictly better
 
-### Parse Errors vs Logic Errors
+### Parse Errors vs Logic Errors <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - `sample_parse_error_count`: Often high in agentic RFT (mid-reasoning captures). Training still works if reward is climbing.
 - `other_error_count`: Bugs in grader logic. Fix before continuing.
 
-## RFT Checkpoint Selection
+## RFT Checkpoint Selection <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 checkpoints = client.fine_tuning.jobs.checkpoints.list(job_id)
@@ -92,3 +92,5 @@ for cp in checkpoints:
 ```
 
 Don't rely solely on `valid_reward` for RFT — deploy 2–3 candidates (peak reward, final, mid-training) and evaluate with your real task harness including tool execution.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

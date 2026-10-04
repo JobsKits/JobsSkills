@@ -1,10 +1,10 @@
-# Dataset Creation Workflow
+# <span id="前言">Dataset Creation Workflow</span>
 
 Three paths to training data (these combine well: curate seeds → augment → generate at scale):
 
 > If you already have data, skip to validation: `python scripts/validate/validate_sft.py your_data.jsonl`
 
-## Approach 1: Manual Curation
+## Approach 1: Manual Curation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Write examples by hand, collect from production logs, or adapt existing datasets.
 
@@ -18,7 +18,7 @@ Write examples by hand, collect from production logs, or adapt existing datasets
 - These seed examples also serve as the foundation of your evaluation test set
 - For RFT, you only need prompts + expected answers — no model responses needed
 
-## Approach 2: LLM Augmentation
+## Approach 2: LLM Augmentation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Expand a small curated dataset through **rephrasing** — generating diverse variations while keeping the same expected answer. Especially useful for RFT.
 
@@ -46,7 +46,7 @@ Original: [your example]
 
 A cheap model (gpt-4.1-mini) works well — no new ground truth needed, just phrasing diversity.
 
-## Approach 3: Synthetic Generation
+## Approach 3: Synthetic Generation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Generate training data from scratch using LLM prompts.
 
@@ -59,7 +59,7 @@ Generate training data from scratch using LLM prompts.
 6. Split into train/validation/test sets
 7. Write JSONL in the correct format (see `references/dataset-formats.md`)
 
-## Quality Checklist
+## Quality Checklist <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Before training, verify:
 
@@ -70,10 +70,12 @@ Before training, verify:
 - [ ] **Reasonable lengths**: No extremely short or extremely long outputs
 - [ ] **Clean text**: No encoding errors, garbled text, or template artifacts
 
-## Dataset Size vs. Quality
+## Dataset Size vs. Quality <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 From experiments:
 - **335 high-quality examples** (carefully curated) → best combined eval score (9.15)
 - **1,576 examples** (broader but noisier) → higher correctness but lower conciseness (8.53)
 
 **Takeaway**: A small, pristine dataset usually beats a large, noisy one. Quality filter aggressively.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

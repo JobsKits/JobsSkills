@@ -17,7 +17,7 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
 
 ## 一、MacOS Shell 脚本（`.sh` / `.command`） <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 1.1、脚本基座
+### 1.1、脚本基座 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 新写或升级脚本时，默认使用：
 
@@ -61,7 +61,7 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
 - 涉及批量文件处理时，使用 `find ... -print0` + `while IFS= read -r -d ''`，路径必须全程加引号，兼容空格、中文、括号和特殊符号。
 - 涉及文本替换时，优先使用 `grep -Fq`；复杂替换可以使用 `perl`，避免脆弱的 `sed` 转义。
 
-### 1.2、彩色日志
+### 1.2、彩色日志 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 新脚本默认带这一组函数；已有脚本按原风格补齐即可。
 
@@ -85,7 +85,7 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
 - 终端输出和日志落盘必须同步，排查时能直接看 `$TMPDIR/脚本名.log`。
 - 成功、警告、错误要有明确前缀。失败分支不要静默吞掉，至少输出失败命令或目标路径。
 
-### 1.3、交互约定
+### 1.3、交互约定 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - MacOS `.sh` / `.command` 脚本统一采用“三层自述”标准，三层各自服务不同场景，不能互相替代：
   1、**外部 README 自述**：脚本所在目录可配套 `README.md`，与主脚本平级，用中文描述脚本行为特征、适用场景、运行方式、风险边界、日志位置和常见问题；它面向运行前阅读。是否新增 README 取决于用户要求、现有目录约定和脚本复杂度，但已存在时必须随脚本行为同步维护。
@@ -166,7 +166,7 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
   }
   ```
 
-### 1.4、[**Homebrew**](https://brew.sh/) / MacOS 环境
+### 1.4、[**Homebrew**](https://brew.sh/) / MacOS 环境 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - [**Homebrew**](https://brew.sh/) 相关脚本必须识别 Apple Silicon 和 Intel：
 
@@ -182,7 +182,7 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
 - 已安装 [**Homebrew**](https://brew.sh/) 时，不自动执行 `brew update && brew upgrade && brew cleanup && brew doctor && brew -v`，必须询问用户。
 - 涉及 CLT、[**Xcode**](https://developer.apple.com/xcode/)、[**CocoaPods**](https://cocoapods.org/)、[**Flutter**](https://flutter.dev/)、[**Android Studio**](https://developer.android.com/studio?hl=zh-c)、[**Java**](https://www.java.com/)、[**Ruby**](https://www.ruby-lang.org/)、[**Node.js**](https://nodejs.org/) 等工具链时，先检查再执行，失败时输出下一步排查方向。
 
-### 1.5、脚本目录 / README / 批量输出
+### 1.5、脚本目录 / README / 批量输出 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 不强制每个 `.sh` / `.command` 都使用“同名文件夹 + 主脚本 + README.md”的结构；应先尊重现有仓库目录、调用路径和同类脚本组织方式，不能仅为了形式统一而批量迁移脚本。
 - 只有用户明确要求独立打包、批量整理、压缩包交付，或当前项目已经采用“一脚本一目录”约定时，才使用同名文件夹包裹结构。
@@ -201,7 +201,7 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
 - 批量升级脚本时，默认做结构优化：统一 `# shell: zsh`、路径变量、彩色日志、自述阻塞、防误触、`main "$@"`、[**Homebrew**](https://brew.sh/) 自检和升级交互；只有命中本节约定时才额外调整目录和 README。
 - 输出压缩包前应做静态检查和结构检查；无法执行 MacOS 专属命令时，README 或最终说明里写清楚“未实际执行”。
 
-### 1.6、Shell 验证
+### 1.6、Shell 验证 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Shell 脚本优先做静态检查：
 
@@ -212,7 +212,7 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
 - 修改 `.command` 后确认 shebang、`SCRIPT_DIR` / `LOG_FILE`、内置自述、回车确认、`main "$@"`、路径引号、危险操作 `YES` 确认、普通升级动作不是默认执行。
 
 
-### 1.7、脚本运行策略与自检定义
+### 1.7、脚本运行策略与自检定义 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 本节只补充 1.3 中自述 / 交互规则的运行策略：入口脚本必须先进入 `show_script_intro_and_wait()` 或等价函数；确认前不得执行环境安装、文件写入、Git 索引修改或其它真实业务。
 - 日志初始化、`setopt`、`trap` 注册、参数解析、路径切换等准备逻辑要排在自述确认之后；确需提前准备的展示变量，只能下沉到无副作用的展示准备函数中。
@@ -291,7 +291,7 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
 - 自检类脚本的定义统一为：检测目标是否存在；如果已经存在，则进入升级 / 更新逻辑；如果没有检测到已安装，则安装最新版本。
 - 自检、安装、升级都必须先检查再执行，并遵守交互确认：普通动作不能默认执行，危险动作必须输入 `YES`；新写或升级脚本继续统一使用 `# shell: zsh`，除非目标环境明确不是 MacOS / zsh。
 
-#### 1.7.1、依赖链完整性与条件式自愈
+#### 1.7.1、依赖链完整性与条件式自愈 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 当目标命令依赖运行时、包管理器或系统引导工具时，编码前先画出当前执行路径的完整依赖链或依赖图，区分必须同时满足的依赖和可以互相替代的安装来源。不能只检查最末端命令，例如通过 npm 安装或升级 [**CodeGraph**](https://github.com/colbymchenry/codegraph) 时，应识别 `CodeGraph → npm → Node.js → Homebrew → bash / curl / Command Line Tools` 这条可恢复链。
 - “已安装”不等于“可用”。`command -v` 只负责发现候选路径；每一层还必须通过 `--version`、只读状态命令或等价的最小健康检查验证真实可执行性。PATH 中存在残缺 shim、损坏安装或不可执行文件时，统一按该层不可用处理。
@@ -305,7 +305,7 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
 - 批量整改后必须同时扫描四类结构问题：一是函数外是否仍有散落执行语句，二是 `main()` 是否严格只含“单行函数调用 + 行尾职责注释”，三是每个调用是否都有同行业务职责注释，四是 `main()` 的第一条函数调用是否为运行时内置自述；不能只做 `zsh -n` 就视为完成。
 
 
-### 1.8、Sourcetree 自定义动作脚本兼容
+### 1.8、Sourcetree 自定义动作脚本兼容 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 所有 Sourcetree 自定义动作脚本固定采用双位置维护：运行目录为 `/Users/jobs/SourceTree.command`，备灾目录为 `/Users/jobs/Documents/Github/JobsGenesis/SourceTree.command`。新增、修改或重命名脚本包时，必须按相同相对路径同步两边的 `.command`、同名 `README.md` 和脚本行为文档，不能只改其中一处。
 - 双位置同步后必须使用 `cmp` 或内容哈希确认对应文件完全一致；修改 `.command` 时，还必须对运行副本与备灾副本分别执行 `zsh -n`。任一位置缺失、内容不一致或语法校验失败，都不能视为任务完成。

@@ -20,19 +20,19 @@
 
 ## 二、审阅重点 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 2.1、AsyncRAT-C-Sharp
+### 2.1、AsyncRAT-C-Sharp <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 重点看网络通信、客户端配置、持久化逻辑、文件操作、进程操作、键鼠/屏幕相关能力、插件加载和反分析迹象。
 - 输出时优先给防守侧信息：可疑路径、进程行为、网络特征、配置字段、日志关注点、EDR/SIEM 检测思路。
 - 不给出控制端搭建、客户端生成、上线联动、插件投放、免杀和逃逸路径。
 
-### 2.2、hackingtool
+### 2.2、hackingtool <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 重点看工具分类、依赖安装、外部脚本调用、目标输入方式、默认扫描/爆破/枚举能力和潜在破坏性动作。
 - 输出时优先给授权边界、风险提示、实验室隔离建议和蓝队监控点。
 - 不把工具菜单改写成可执行攻击步骤，不为未授权目标选择模块或参数。
 
-### 2.3、hetty
+### 2.3、hetty <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 重点看代理监听、证书处理、请求/响应存储、重放能力、项目数据落盘、Web UI 暴露面和访问控制。
 - 输出时优先给合法代理测试流程的风险边界、敏感数据保护、日志留存、测试环境隔离和清理建议。

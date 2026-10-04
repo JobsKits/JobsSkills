@@ -1,21 +1,21 @@
-# Examples: preset
+# <span id="前言">Examples: preset</span>
 
-## Example 1: Fast Path — Current Region Has Capacity
+## Example 1: Fast Path — Current Region Has Capacity <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Scenario:** Deploy gpt-4o to project in East US, which has capacity.
 **Result:** Deployed in ~45s. No region selection needed. 100K TPM default, GlobalStandard SKU.
 
-## Example 2: Alternative Region — No Capacity in Current Region
+## Example 2: Alternative Region — No Capacity in Current Region <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Scenario:** Deploy gpt-4-turbo to dev project in West US 2 (no capacity).
 **Result:** Queried all regions → user selected East US 2 (120K available) → deployed in ~2 min.
 
-## Example 3: Create New Project in Optimal Region
+## Example 3: Create New Project in Optimal Region <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Scenario:** Deploy gpt-4o-mini in Europe for data residency; no existing European project.
 **Result:** Created AI Services hub + project in Sweden Central → deployed in ~4 min with 150K TPM.
 
-## Example 4: Insufficient Quota Everywhere
+## Example 4: Insufficient Quota Everywhere <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Scenario:** Deploy gpt-4 but all regions have exhausted quota.
 **Result:** Graceful failure with actionable guidance:
@@ -23,29 +23,29 @@
 2. List existing deployments consuming quota
 3. Suggest alternative models (gpt-4o, gpt-4o-mini)
 
-## Example 5: First-Time User — No Project
+## Example 5: First-Time User — No Project <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Scenario:** Deploy gpt-4o with no existing AI Foundry project.
 **Result:** Full onboarding in ~5 min — created resource group, AI Services hub, project, then deployed.
 
-## Example 6: Deployment Name Conflict
+## Example 6: Deployment Name Conflict <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Scenario:** Auto-generated deployment name already exists.
 **Result:** Appended random hex suffix (e.g., `-7b9e`) and retried automatically.
 
-## Example 7: Multi-Version Model Selection
+## Example 7: Multi-Version Model Selection <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Scenario:** Deploy "latest gpt-4o" when multiple versions exist.
 **Result:** Latest stable version auto-selected. Capacity aggregated across versions.
 
-## Example 8: Anthropic Model (claude-sonnet-4-6)
+## Example 8: Anthropic Model (claude-sonnet-4-6) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Scenario:** Deploy claude-sonnet-4-6 (Anthropic model requiring modelProviderData).
 **Result:** User prompted for industry selection → tenant country code and org name fetched automatically → deployed via ARM REST API with `modelProviderData` payload in ~2 min. Capacity set to 1 (MaaS billing).
 
 ---
 
-## Summary of Scenarios
+## Summary of Scenarios <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Scenario | Duration | Key Features |
 |----------|----------|--------------|
@@ -58,7 +58,7 @@
 | **7: Multi-Version** | ~1m | Latest version auto-selected |
 | **8: Anthropic** | ~2m | Industry prompt, tenant info, REST API deploy |
 
-## Common Patterns
+## Common Patterns <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```
 A: Quick Deploy     Auth → Get Project → Check Region (✓) → Deploy
@@ -66,3 +66,5 @@ B: Region Select    Auth → Get Project → Region (✗) → Query All → Sele
 C: Full Onboarding  Auth → No Projects → Create Project → Deploy
 D: Error Recovery   Deploy (✗) → Analyze → Fix → Retry
 ```
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

@@ -1,6 +1,6 @@
-# Quality Checklist
+# <span id="前言">Quality Checklist</span>
 
-## Visual Quality
+## Visual Quality <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - [ ] Elements >40px for motion, >100px for detail
 - [ ] Readable at full speed without slow-motion
 - [ ] Clear primary, secondary, ambient layers
@@ -9,7 +9,7 @@
 - [ ] 1/3 rule (distance): no unbroken motion >1/3 container
 - [ ] 1/3 rule (density): max 1/3 elements active simultaneously
 
-## Technical Quality
+## Technical Quality <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - [ ] No linear easing on spatial movement
 - [ ] Duration matches element type table
 - [ ] Ease-out entrances, ease-in exits
@@ -19,7 +19,7 @@
 - [ ] Stagger total <500ms
 - [ ] Follow-through: child elements offset 50-150ms
 
-## Emotional Quality
+## Emotional Quality <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - [ ] Target emotion identified before properties
 - [ ] Personality archetype matches brand
 - [ ] Setup → action → resolution structure
@@ -27,23 +27,23 @@
 - [ ] Consistent: same interaction = same motion
 - [ ] Appropriate on 100th viewing
 
-## Performance Quality
+## Performance Quality <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - [ ] Primary motion uses transform + opacity
 - [ ] <20 animated elements per viewport
 - [ ] No layout-triggering properties animated
 - [ ] Elements staggered, not simultaneous
 - [ ] Maintains 60fps (30fps acceptable for ambient)
 
-## Accessibility Quality
+## Accessibility Quality <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - [ ] prefers-reduced-motion alternative provided
 - [ ] No vestibular triggers without alternative
 - [ ] Same interaction = same animation
 - [ ] Critical info not motion-only
 - [ ] Animations >5s are pausable
 
-## Severity Tiers
+## Severity Tiers <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### CRITICAL
+### CRITICAL <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Linear easing on spatial movement
 - Opacity-only for important states
 - Exceeds 1/3 screen rule
@@ -51,7 +51,7 @@
 - Stagger >500ms
 - Layout property animation causing jank
 
-### HIGH
+### HIGH <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Missing secondary layer
 - Duration mismatch with element type
 - Wrong directional easing
@@ -59,9 +59,11 @@
 - No follow-through
 - Missing reduced-motion alternative
 
-### MEDIUM
+### MEDIUM <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Missing ambient layer
 - No anticipation phase
 - Overshoot mismatch
 - Could use better arcs
 - Missing counter-motion
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

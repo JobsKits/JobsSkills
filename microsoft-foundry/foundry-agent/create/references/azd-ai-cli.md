@@ -1,8 +1,8 @@
-# azd ai CLI Reference
+# <span id="前言">azd ai CLI Reference</span>
 
 Core mental model for the `azd ai agent` extension. Use this when you need to understand command surface, file layout, or where a given setting lives.
 
-## CLI surface
+## CLI surface <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 azd ai project show                  # which Foundry project endpoint is active
@@ -36,7 +36,7 @@ azd ai agent optimize / optimize status / optimize apply / optimize deploy / opt
 
 Read-only commands accept `--output json` and never require `--force`. Write commands are gated by a confirmation envelope (see "Confirmation envelope" below).
 
-## Two files, two schemas
+## Two files, two schemas <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 After `azd ai agent init`, every hosted agent is defined by **two** files plus the active azd env. Putting a field in the wrong file is the most common scaffolding failure.
 
@@ -50,7 +50,7 @@ After `azd ai agent init`, every hosted agent is defined by **two** files plus t
 
 `agent.manifest.yaml` (the file passed to `-m`) is the seed format -- it is NOT on disk after init. Init splits its `parameters:` / `resources:` blocks across the three files above. Don't reintroduce the `template:` wrapper into `agent.yaml`.
 
-### Minimal `agent.yaml` (hosted)
+### Minimal `agent.yaml` (hosted) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```yaml
 # yaml-language-server: $schema=https://raw.githubusercontent.com/microsoft/AgentSchema/refs/heads/main/schemas/v1.0/ContainerAgent.yaml
@@ -78,7 +78,7 @@ code_configuration:
 - In non-interactive mode, `azd ai agent init` defaults to container deploy. Pass `--deploy-mode code --runtime <runtime> --entry-point <file>` during init to get `code_configuration`.
 - `agentEndpoint` / `agentCard` -- patch in place with `azd ai agent endpoint update` (no new version).
 
-### Minimal `azure.yaml` service config
+### Minimal `azure.yaml` service config <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```yaml
 services:
@@ -111,7 +111,7 @@ services:
 - `connections[]` -- project connections provisioned via Bicep. Use `PARAM_<CONN>_<KEY>` env-var references for secrets.
 - `toolboxes[]` -- declarative record of intent; today you still drive the toolbox CLI to materialize them on Foundry. See [tools](tools.md).
 
-## State (azd env vars)
+## State (azd env vars) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Variable | Read by | Where to set |
 |----------|---------|--------------|
@@ -125,7 +125,7 @@ Manage with `azd env get-values`, `azd env set`, `azd env list`, `azd env new`, 
 
 The platform also injects `FOUNDRY_*` and `AGENT_*` into the running container at runtime. **Never** put these in the agent.yaml environment_variables section.
 
-## Resolving subscription / location
+## Resolving subscription / location <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 `azd ai project show` returns only the Foundry project endpoint. For subscription / location, try in order:
 
@@ -136,7 +136,7 @@ The platform also injects `FOUNDRY_*` and `AGENT_*` into the running container a
 
 For the Foundry project ARM ID (`--project-id`), ask the user: "New project, or use an existing one?" If existing, ask for the ID and hint where to find it (https://ai.azure.com -> Operate -> Admin). Do NOT shell out to `az cognitiveservices` -- it returns the wrong resource shape.
 
-## Common error codes
+## Common error codes <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - `not_logged_in` / `login_expired` -- ask the user to run `azd auth login`.
 - `missing_project_endpoint` -- run `azd provision`, or `azd env set AZURE_AI_PROJECT_ENDPOINT <url>`.
@@ -147,3 +147,5 @@ For the Foundry project ARM ID (`--project-id`), ask the user: "New project, or 
 - `agent_definition_not_found` -- deployed name doesn't match `azure.yaml`. Re-deploy from project root.
 
 Any unfamiliar `code` value is safe to surface verbatim to the user.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

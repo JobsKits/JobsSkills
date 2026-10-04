@@ -1,8 +1,8 @@
-# Foundry Agent Trace Analysis
+# <span id="前言">Foundry Agent Trace Analysis</span>
 
 Analyze production traces for Foundry agents using Application Insights and GenAI OpenTelemetry semantic conventions. This skill provides structured KQL-powered workflows for a selected agent root and environment: searching conversations, diagnosing failures, and identifying latency bottlenecks.
 
-## When to Use This Skill
+## When to Use This Skill <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 USE FOR: analyze agent traces, search agent conversations, find failing traces, slow traces, latency analysis, trace search, conversation history, agent errors in production, debug agent responses, App Insights traces, GenAI telemetry, trace correlation, span tree, production trace analysis, evaluation results, evaluation scores, eval run results, find by response ID, get agent trace by conversation ID, agent evaluation scores from App Insights.
 
@@ -10,7 +10,7 @@ USE FOR: analyze agent traces, search agent conversations, find failing traces, 
 
 > ⚠️ **DO NOT manually write KQL queries** for GenAI trace analysis **without reading this skill first.** This skill provides tested query templates with correct GenAI OTel attribute mappings, proper span correlation logic, environment-aware scoping, and conversation-level aggregation patterns.
 
-## Quick Reference
+## Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Property | Value |
 |----------|-------|
@@ -21,7 +21,7 @@ USE FOR: analyze agent traces, search agent conversations, find failing traces, 
 | OTel conventions | [GenAI Spans](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-spans/), [Agent Spans](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-agent-spans/) |
 | Local metadata | selected `.foundry/agent-metadata*.yaml` overlay/cache file |
 
-## Entry Points
+## Entry Points <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | User Intent | Start At |
 |-------------|----------|
@@ -34,7 +34,7 @@ USE FOR: analyze agent traces, search agent conversations, find failing traces, 
 | "What KQL do I need?" | [KQL Templates](references/kql-templates.md) |
 | "Auto-detect agent issues" / "Get automated insights" / "What's wrong with my agent?" | [Tracing Insights API](references/tracing-insights-api.md) |
 
-## Before Starting — Resolve App Insights Connection
+## Before Starting — Resolve App Insights Connection <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. Resolve the target agent root, environment, effective deployment context, and selected metadata overlay using [Common Project Context Resolution](../../SKILL.md#agent-common-project-context-resolution).
 2. In azd projects, prefer App Insights values from `azd env get-values`; otherwise check `environments.<env>.observability.applicationInsightsConnectionString` or `environments.<env>.observability.applicationInsightsResourceId` in the selected metadata file.
@@ -49,7 +49,7 @@ USE FOR: analyze agent traces, search agent conversations, find failing traces, 
 
 > ⚠️ **Always pass `subscription` explicitly** to Azure MCP tools like `monitor_resource_log_query` - they do not extract it from resource IDs.
 
-## Behavioral Rules
+## Behavioral Rules <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. **Always display the KQL query.** Before executing any KQL query, display it in a code block. Never run a query silently.
 2. **Keep environment visible.** Include the selected environment and agent name in each search summary, and include the derived agent version when the query can recover it from telemetry.
@@ -60,3 +60,5 @@ USE FOR: analyze agent traces, search agent conversations, find failing traces, 
 7. **Scope to the selected environment.** App Insights may contain traces from multiple agents or environments. Filter with the selected environment's agent name first, then add an environment tag filter if the telemetry emits one.
 8. **Resolve hosted-agent identity from `requests` first.** For hosted agents, prefer `requests`-scoped `gen_ai.agent.name` or `azure.ai.agentserver.agent_name` as the Foundry-facing filter. When `gen_ai.agent.id` is emitted in `<agent-name>:<version>` format, parse it to surface `agentVersion`, but do not treat `dependencies.gen_ai.agent.name` as the top-level hosted-agent name.
 9. **Use `operation_Id` to fan out hosted-agent traces.** After isolating the hosted-agent `requests` rows, materialize their `operation_Id` values and join other telemetry tables on `operation_Id`. When conversation IDs are sparse, use `coalesce(gen_ai.conversation.id, azure.ai.agentserver.conversation_id, operation_Id)` so every row still rolls up to a stable conversation key.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

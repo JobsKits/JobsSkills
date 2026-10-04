@@ -1,16 +1,16 @@
-# Microsoft Foundry - Python SDK Guide
+# <span id="前言">Microsoft Foundry - Python SDK Guide</span>
 
 Python-specific implementations for working with Microsoft Foundry.
 
 **Table of Contents:** [Prerequisites](#prerequisites) · [Model Discovery and Deployment](#model-discovery-and-deployment-mcp) · [RAG Agent with Azure AI Search](#rag-agent-with-azure-ai-search) · [Creating Agents](#creating-agents) · [Agent Evaluation](#agent-evaluation) · [Knowledge Index Operations](#knowledge-index-operations-mcp) · [Best Practices](#best-practices) · [Error Handling](#error-handling)
 
-## Prerequisites
+## Prerequisites <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 pip install azure-ai-projects azure-identity azure-ai-inference openai azure-ai-evaluation python-dotenv
 ```
 
-### Environment Variables
+### Environment Variables <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 PROJECT_ENDPOINT=https://<resource>.services.ai.azure.com/api/projects/<project>
@@ -21,7 +21,7 @@ AZURE_OPENAI_ENDPOINT=https://<resource>.openai.azure.com
 AZURE_OPENAI_DEPLOYMENT=gpt-4o
 ```
 
-## Model Discovery and Deployment (MCP)
+## Model Discovery and Deployment (MCP) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 foundry_models_list()                              # All models
@@ -36,7 +36,7 @@ foundry_models_deploy(
 )
 ```
 
-## RAG Agent with Azure AI Search
+## RAG Agent with Azure AI Search <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > **Auth:** `DefaultAzureCredential` is for local development. See [auth-best-practices.md](../auth-best-practices.md) for production patterns.
 
@@ -75,7 +75,7 @@ agent = project_client.agents.create_agent(
 )
 ```
 
-### Querying a RAG Agent (Streaming)
+### Querying a RAG Agent (Streaming) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 openai_client = project_client.get_openai_client()
@@ -94,9 +94,9 @@ for event in stream:
                     print(f"\nCitation: {ann.url}")
 ```
 
-## Creating Agents
+## Creating Agents <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Basic Agent
+### Basic Agent <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 agent = project_client.agents.create_agent(
@@ -106,7 +106,7 @@ agent = project_client.agents.create_agent(
 )
 ```
 
-### Agent with Custom Function Tools
+### Agent with Custom Function Tools <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 from azure.ai.agents.models import FunctionTool, ToolSet
@@ -127,7 +127,7 @@ agent = project_client.agents.create_agent(
 )
 ```
 
-### Agent with Web Search
+### Agent with Web Search <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 from azure.ai.projects.models import (
@@ -152,7 +152,7 @@ agent = project_client.agents.create_version(
 
 > 💡 **Tip:** `WebSearchPreviewTool` requires no external resource or connection. For Bing Grounding (which requires a dedicated Bing resource and project connection), see [Bing Grounding reference](../../foundry-agent/create/references/tool-bing-grounding.md).
 
-### Interacting with Agents
+### Interacting with Agents <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 from azure.ai.agents.models import ListSortOrder
@@ -172,9 +172,9 @@ for msg in messages:
 project_client.agents.delete_agent(agent.id)
 ```
 
-## Agent Evaluation
+## Agent Evaluation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Single Response Evaluation (MCP)
+### Single Response Evaluation (MCP) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 foundry_agents_query_and_evaluate(
@@ -193,7 +193,7 @@ foundry_agents_evaluate(
 )
 ```
 
-### Batch Evaluation
+### Batch Evaluation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 from azure.ai.evaluation import AIAgentConverter, IntentResolutionEvaluator, evaluate
@@ -216,14 +216,14 @@ print(f"Results: {result['studio_url']}")
 
 > 💡 **Tip:** Continuous evaluation requires project managed identity with **Foundry User** role and Application Insights connected to the project.
 
-## Knowledge Index Operations (MCP)
+## Knowledge Index Operations (MCP) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 foundry_knowledge_index_list(endpoint="<project-endpoint>")
 foundry_knowledge_index_schema(endpoint="<project-endpoint>", index="my-index")
 ```
 
-## Best Practices
+## Best Practices <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. **Never hardcode credentials** — use environment variables and `python-dotenv`
 2. **Check `run.status`** and handle `HttpResponseError` exceptions
@@ -231,7 +231,7 @@ foundry_knowledge_index_schema(endpoint="<project-endpoint>", index="my-index")
 4. **Use type hints** in custom functions for better tool integration
 5. **Use context managers** for agent cleanup
 
-## Error Handling
+## Error Handling <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 from azure.core.exceptions import HttpResponseError
@@ -250,7 +250,7 @@ except HttpResponseError as e:
         print(f"Error: {e.message}")
 ```
 
-### Context Manager for Agent Cleanup
+### Context Manager for Agent Cleanup <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 from contextlib import contextmanager
@@ -263,3 +263,5 @@ def temporary_agent(project_client, **kwargs):
     finally:
         project_client.agents.delete_agent(agent.id)
 ```
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

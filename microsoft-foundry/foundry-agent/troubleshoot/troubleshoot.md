@@ -1,8 +1,8 @@
-# Foundry Agent Troubleshoot
+# <span id="前言">Foundry Agent Troubleshoot</span>
 
 Troubleshoot and debug Foundry agents by collecting hosted-agent session logs, discovering observability connections, and querying Application Insights telemetry.
 
-## Quick Reference
+## Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Property | Value |
 |----------|-------|
@@ -13,7 +13,7 @@ Troubleshoot and debug Foundry agents by collecting hosted-agent session logs, d
 | Preferred query tool | `monitor_resource_log_query` (Azure MCP) — preferred over `azure-kusto` for App Insights |
 | CLI references | `az cognitiveservices account connection`, `az rest`, `curl` |
 
-## When to Use This Skill
+## When to Use This Skill <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Agent is not responding or returning errors
 - Hosted agent version is not becoming active
@@ -22,27 +22,27 @@ Troubleshoot and debug Foundry agents by collecting hosted-agent session logs, d
 - Query Application Insights for agent traces and exceptions
 - Investigate agent runtime failures
 
-## MCP Tools
+## MCP Tools <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Tool | Description | Parameters |
 |------|-------------|------------|
 | `agent_get` | Get agent details to determine type and inspect agent/version status | `projectEndpoint` (required), `agentName` (optional) |
 
-## Workflow
+## Workflow <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Step 1: Collect Agent Information
+### Step 1: Collect Agent Information <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use the project endpoint and agent name from the project context (see [Common Project Context Resolution](../../SKILL.md#agent-common-project-context-resolution)). Ask the user only for values not already resolved:
 - **Project endpoint** — AI Foundry project endpoint URL
 - **Agent name** — Name of the agent to troubleshoot
 
-### Step 2: Determine Agent Type
+### Step 2: Determine Agent Type <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `agent_get` with `projectEndpoint` and `agentName` to retrieve the agent definition. Check the `kind` field:
 - `"hosted"` → Proceed to Step 3
 - `"prompt"` → Skip to Step 4 (Discover Observability Connections)
 
-### Step 3: Retrieve Logs (Hosted Agents Only)
+### Step 3: Retrieve Logs (Hosted Agents Only) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Hosted-agent logs are scoped to individual **sessions** (sandbox instances).
 
@@ -77,7 +77,7 @@ Hosted-agent logs are scoped to individual **sessions** (sandbox instances).
 
    Present the logs to the user and highlight any errors or warnings found.
 
-### Step 4: Discover Observability Connections
+### Step 4: Discover Observability Connections <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 List the project connections to find Application Insights or Azure Monitor resources using the Azure CLI command documented at:
 [az cognitiveservices account connection](https://learn.microsoft.com/en-us/cli/azure/cognitiveservices/account/connection?view=azure-cli-latest)
@@ -86,7 +86,7 @@ Refer to the documentation above for the exact command syntax and parameters. Lo
 
 If no observability connection is found, inform the user and suggest setting up Application Insights for the project. Ask if they want to proceed without telemetry data.
 
-### Step 5: Query Application Insights Telemetry
+### Step 5: Query Application Insights Telemetry <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use **`monitor_resource_log_query`** (Azure MCP tool) to run KQL queries against the Application Insights resource discovered in Step 4. This is preferred over delegating to the `azure-kusto` skill. Pass the App Insights resource ID and the KQL query directly.
 
@@ -94,7 +94,7 @@ Use **`monitor_resource_log_query`** (Azure MCP tool) to run KQL queries against
 
 Use `* contains "<response_id>"` or `* contains "<agent_name>"` filters to narrow down results to the specific agent instance.
 
-### Step 6: Summarize Findings
+### Step 6: Summarize Findings <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Present a summary to the user including:
 - **Agent type and status** — hosted or prompt; hosted agent version status when relevant
@@ -102,7 +102,7 @@ Present a summary to the user including:
 - **Telemetry insights** — exceptions, failed requests, latency trends
 - **Recommended actions** — specific steps to resolve identified issues
 
-## Error Handling
+## Error Handling <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Error | Cause | Resolution |
 |-------|-------|------------|
@@ -115,9 +115,11 @@ Present a summary to the user including:
 | Kusto query failed | Invalid cluster/database or insufficient permissions | Verify Application Insights resource details and reader permissions |
 | No telemetry data | Agent not instrumented or too recent | Check if Application Insights SDK is configured; data may take a few minutes to appear |
 
-## Additional Resources
+## Additional Resources <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - [Foundry Hosted Agents](https://learn.microsoft.com/azure/ai-foundry/agents/concepts/hosted-agents?view=foundry)
 - [Account Connection CLI Reference](https://learn.microsoft.com/en-us/cli/azure/cognitiveservices/account/connection?view=azure-cli-latest)
 - [KQL Quick Reference](https://learn.microsoft.com/azure/data-explorer/kusto/query/kql-quick-reference)
 - [Foundry Samples](https://github.com/microsoft-foundry/foundry-samples)
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

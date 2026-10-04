@@ -1,8 +1,8 @@
-# Decision Framework
+# <span id="前言">Decision Framework</span>
 
-## The First Questions
+## The First Questions <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 1. Purpose?
+### 1. Purpose? <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Purpose | Approach | Priority |
 |---------|----------|----------|
@@ -13,19 +13,19 @@
 | Explain relationship | Position, connection | Legibility |
 | Celebrate/reward | Overshoot, particles | Delight |
 
-### 2. Audience?
+### 2. Audience? <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Stressed → calm motion; Browsing → richer motion
 - Task-focused → fast, minimal; Exploring → can be dramatic
 - Seen 100x/day → fast, subtle; Seen once → can be dramatic
 
-### 3. Context?
+### 3. Context? <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - Busy layout → simpler motion; Empty → can be dramatic
 - Other animations active → coordinate or stagger
 - Small container → small motion
 
-## 4-Level Decision Hierarchy
+## 4-Level Decision Hierarchy <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Level 1: Motion Category
+### Level 1: Motion Category <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Category | When |
 |----------|------|
@@ -36,10 +36,10 @@
 | Responding | Reacting to interaction |
 | Ambient | Background atmosphere |
 
-### Level 2: Motion Personality
+### Level 2: Motion Personality <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 Match to brand. See [motion-personality.md](motion-personality.md).
 
-### Level 3: Motion Direction
+### Level 3: Motion Direction <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Direction | Communicates |
 |-----------|-------------|
@@ -52,10 +52,10 @@ Match to brand. See [motion-personality.md](motion-personality.md).
 | Center-seeking | Focus, convergence |
 | Center-fleeing | Distribution, release |
 
-### Level 4: Implementation Properties
+### Level 4: Implementation Properties <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 Choose animated properties. See [property-selection.md](../reference/property-selection.md).
 
-## Decision Quick-Path
+## Decision Quick-Path <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```
 1. PURPOSE → What does this motion DO?
@@ -78,7 +78,7 @@ Choose animated properties. See [property-selection.md](../reference/property-se
 5. EASING → Entering=ease-out, Leaving=ease-in, On-screen=ease-in-out, Looping=sine
 ```
 
-## Evaluation Before Delivery
+## Evaluation Before Delivery <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Check | Question |
 |-------|----------|
@@ -89,3 +89,5 @@ Choose animated properties. See [property-selection.md](../reference/property-se
 | Hierarchy | Reinforces importance? |
 | Layers | Primary + secondary + ambient? |
 | Timing | Duration appropriate? |
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

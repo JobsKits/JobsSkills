@@ -1,8 +1,8 @@
-# Evaluation Datasets — Trace-to-Dataset Pipeline & Lifecycle Management
+# <span id="前言">Evaluation Datasets — Trace-to-Dataset Pipeline & Lifecycle Management</span>
 
 Manage the full lifecycle of evaluation datasets for a Foundry agent: generating or regenerating data, harvesting production traces into the selected agent root's local `.foundry` cache, curating versioned test datasets, tracking evaluation quality over time, and syncing approved updates back to Foundry when needed.
 
-## When to Use This Skill
+## When to Use This Skill <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 USE FOR: create dataset from traces, harvest traces into dataset, build test dataset, dataset versioning, version my dataset, tag dataset, pin dataset version, organize datasets, dataset splits, curate test cases, review trace candidates, evaluation trending, metrics over time, eval regression, regression detection, compare evaluations over time, dataset comparison, evaluation lineage, trace to dataset pipeline, annotation review, production traces to test cases.
 
@@ -10,7 +10,7 @@ USE FOR: create dataset from traces, harvest traces into dataset, build test dat
 
 > 💡 **Tip:** This skill complements the [observe skill](../observe/observe.md) (eval-driven optimization loop) and the [trace skill](../trace/trace.md) (production trace analysis). Use this skill when you need to bridge traces and evaluations: turning production data into test cases and tracking evaluation quality over time.
 
-## Quick Reference
+## Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Property | Value |
 |----------|-------|
@@ -21,7 +21,7 @@ USE FOR: create dataset from traces, harvest traces into dataset, build test dat
 | Prerequisites | Agent deployed, effective context resolved from azd or metadata overlay, App Insights connected |
 | Local cache | `.foundry/datasets/`, `.foundry/results/`, `.foundry/evaluators/` |
 
-## Entry Points
+## Entry Points <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | User Intent | Start At |
 |-------------|----------|
@@ -37,7 +37,7 @@ USE FOR: create dataset from traces, harvest traces into dataset, build test dat
 | "Generate eval dataset" / "Create seed dataset" / "Generate test cases for my agent" | [Generate Seed Dataset](references/generate-seed-dataset.md) |
 | "Regenerate dataset" / "Refresh synthetic data" / "Generate from traces without full suite" | [Generated Data Refresh](../observe/references/evaluation-suite-generation.md#regenerate-one-artifact) |
 
-## Before Starting — Detect Current State
+## Before Starting — Detect Current State <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. Resolve the target agent root, environment, effective deployment context, and selected metadata overlay using [Common Project Context Resolution](../../SKILL.md#agent-common-project-context-resolution).
 2. Confirm the selected environment's `projectEndpoint`, `agentName`, and observability settings from azd first, then metadata overrides.
@@ -45,7 +45,7 @@ USE FOR: create dataset from traces, harvest traces into dataset, build test dat
 4. Check whether `evaluation_dataset_get` returns server-side datasets for the same environment and whether `evaluationSuites[]` contains `suiteName`/`suiteVersion` references.
 5. Route to the appropriate entry point based on user intent.
 
-## The Foundry Flywheel
+## The Foundry Flywheel <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```text
 Production Agent -> [1] Trace (App Insights + OTel)
@@ -61,7 +61,7 @@ Production Agent -> [1] Trace (App Insights + OTel)
 
 Each cycle makes the test suite harder and more representative. Production failures from release N become regression tests for release N+1.
 
-## Behavioral Rules
+## Behavioral Rules <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. **Always show KQL queries.** Before executing any trace extraction query, display it in a code block. Never run queries silently.
 2. **Scope to time ranges.** Always include a time range in KQL queries (default: last 7 days for trace harvesting). Ask the user for the range if not specified.
@@ -77,7 +77,7 @@ Each cycle makes the test suite harder and more representative. Production failu
 12. **Never remove dataset rows or weaken evaluators to recover scores.** Score drops after a dataset update are expected - harder tests expose real gaps. Optimize the agent for new failure patterns; do not shrink the test suite.
 13. **Match eval parameter names exactly.** Use `evaluation_agent_batch_eval_create` for agent-target batch eval, including suites that have `suiteName`; call `evaluation_suite_get` only to resolve suite metadata. Use `evaluationId` when creating grouped batch runs, but use `evalId` for `evaluation_get` and comparison/trending lookups.
 
-## Dataset Naming and Metadata Conventions
+## Dataset Naming and Metadata Conventions <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Dataset type | Foundry dataset name | Foundry dataset version | Typical local file | Metadata stage |
 |--------------|----------------------|-------------------------|--------------------|----------------|
@@ -103,7 +103,7 @@ Required metadata to track with every registered or generated dataset:
 
 When a dataset belongs to a generated suite, keep the selected environment's suite metadata aligned with `suiteName`, `suiteVersion`, `generationJobId`, and `generationSource`. Dataset regeneration with `data_generation_job_create` should create a new local dataset version and a reviewed suite version; do not mutate old suite versions in place.
 
-## Related Skills
+## Related Skills <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | User Intent | Skill |
 |-------------|-------|
@@ -113,3 +113,5 @@ When a dataset belongs to a generated suite, keep the selected environment's sui
 | "Deploy my agent" | [deploy skill](../deploy/deploy.md) |
 | "Debug container issues" | [troubleshoot skill](../troubleshoot/troubleshoot.md) |
 | "Review metadata schema" | [Agent Metadata Contract](../../references/agent-metadata-contract.md) |
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

@@ -1,8 +1,8 @@
-# Create Prompt Agent
+# <span id="前言">Create Prompt Agent</span>
 
 Create and manage prompt agents in Azure Foundry Agent Service using MCP tools or Python SDK. For hosted agents (container-based), see [create-hosted.md](create-hosted.md).
 
-## Quick Reference
+## Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Property | Value |
 |----------|-------|
@@ -11,7 +11,7 @@ Create and manage prompt agents in Azure Foundry Agent Service using MCP tools o
 | **Fallback SDK** | `azure-ai-projects` v2.x preview |
 | **Auth** | `DefaultAzureCredential` / `az login` |
 
-## Workflow
+## Workflow <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```
 User Request (create/list/get/update/delete agent)
@@ -32,7 +32,7 @@ Step 3: Fall back to SDK
 Step 4: Execute and confirm result
 ```
 
-### Step 1: Resolve Project Context
+### Step 1: Resolve Project Context <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The user needs a Foundry project endpoint. Check for:
 
@@ -42,7 +42,7 @@ The user needs a Foundry project endpoint. Check for:
 
 Endpoint format: `https://<resource>.services.ai.azure.com/api/projects/<project>`
 
-### Step 2: Create Agent (MCP — Preferred)
+### Step 2: Create Agent (MCP — Preferred) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 For a **prompt agent**:
 - Provide: agent name, model deployment name, instructions
@@ -53,13 +53,13 @@ For a **workflow**:
 - Use MCP to create the individual agents that participate in the workflow
 - Direct the user to the Foundry portal for workflow assembly
 
-### Step 3: SDK Fallback
+### Step 3: SDK Fallback <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 If MCP tools are unavailable, use the `azure-ai-projects` SDK:
 - See [SDK Operations](references/sdk-operations.md) for create, list, update, delete code samples
 - See [Agent Tools](references/agent-tools.md) for adding tools to agents
 
-### Step 4: Add Tools (Optional)
+### Step 4: Add Tools (Optional) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > ⚠️ **MANDATORY:** Before configuring any tool, **read its reference documentation** linked below to understand prerequisites, required parameters, and setup steps. Do not attempt to add a tool without first reviewing its reference.
 
@@ -76,7 +76,7 @@ If MCP tools are unavailable, use the `azure-ai-projects` SDK:
 
 > ⚠️ **Web Search Default:** Use `WebSearchPreviewTool` for web search. Only use `BingGroundingAgentTool` when the user explicitly requests Bing Grounding.
 
-## Error Handling
+## Error Handling <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Error | Cause | Resolution |
 |-------|-------|------------|
@@ -87,3 +87,5 @@ If MCP tools are unavailable, use the `azure-ai-projects` SDK:
 | Tool not available | Tool not configured for project | Verify tool prerequisites (e.g., Bing resource for grounding) |
 | SDK version mismatch | Using 1.x instead of 2.x | Install `azure-ai-projects --pre` for v2.x preview |
 | Tenant mismatch | MCP token tenant differs from resource tenant | Fall back to SDK — `DefaultAzureCredential` resolves the correct tenant |
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

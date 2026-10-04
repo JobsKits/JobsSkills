@@ -1,14 +1,14 @@
-# Azure Authentication Best Practices
+# <span id="前言">Azure Authentication Best Practices</span>
 
 > Source: [Microsoft — Passwordless connections for Azure services](https://learn.microsoft.com/azure/developer/intro/passwordless-overview) and [Azure Identity client libraries](https://learn.microsoft.com/dotnet/azure/sdk/authentication/).
 
 **Table of Contents:** [Golden Rule](#golden-rule) · [Authentication by Environment](#authentication-by-environment) · [Why Not DefaultAzureCredential in Production?](#why-not-defaultazurecredential-in-production) · [Production Patterns](#production-patterns) · [Local Development Setup](#local-development-setup) · [Environment-Aware Pattern](#environment-aware-pattern) · [Security Checklist](#security-checklist) · [Further Reading](#further-reading)
 
-## Golden Rule
+## Golden Rule <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use **managed identities** and **Azure RBAC** in production. Reserve `DefaultAzureCredential` for **local development only**.
 
-## Authentication by Environment
+## Authentication by Environment <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Environment | Recommended Credential | Why |
 |---|---|---|
@@ -17,16 +17,16 @@ Use **managed identities** and **Azure RBAC** in production. Reserve `DefaultAzu
 | **CI/CD pipelines** | `AzurePipelinesCredential` / `WorkloadIdentityCredential` | Scoped to pipeline identity |
 | **Local development** | `DefaultAzureCredential` | Chains CLI, PowerShell, and VS Code credentials for convenience |
 
-## Why Not `DefaultAzureCredential` in Production?
+## Why Not `DefaultAzureCredential` in Production? <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. **Unpredictable fallback chain** — walks through multiple credential types, adding latency and making failures harder to diagnose.
 2. **Broad surface area** — checks environment variables, CLI tokens, and other sources that should not exist in production.
 3. **Non-deterministic** — which credential actually authenticates depends on the environment, making behavior inconsistent across deployments.
 4. **Performance** — each failed credential attempt adds network round-trips before falling back to the next.
 
-## Production Patterns
+## Production Patterns <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### .NET
+### .NET <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```csharp
 using Azure.Identity;
@@ -37,7 +37,7 @@ var credential = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT
 // For user-assigned identity: new ManagedIdentityCredential("<client-id>")
 ```
 
-### TypeScript / JavaScript
+### TypeScript / JavaScript <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```typescript
 import { DefaultAzureCredential, ManagedIdentityCredential } from "@azure/identity";
@@ -48,7 +48,7 @@ const credential = process.env.NODE_ENV === "development"
 // For user-assigned identity: new ManagedIdentityCredential("<client-id>")
 ```
 
-### Python
+### Python <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```python
 import os
@@ -62,7 +62,7 @@ credential = (
 # For user-assigned identity: ManagedIdentityCredential(client_id="<client-id>")
 ```
 
-### Java
+### Java <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```java
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -74,7 +74,7 @@ var credential = "Development".equals(System.getenv("AZURE_FUNCTIONS_ENVIRONMENT
 // For user-assigned identity: new ManagedIdentityCredentialBuilder().clientId("<client-id>").build()
 ```
 
-## Local Development Setup
+## Local Development Setup <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 `DefaultAzureCredential` is ideal for local dev because it automatically picks up credentials from developer tools:
 
@@ -90,7 +90,7 @@ import { DefaultAzureCredential } from "@azure/identity";
 const credential = new DefaultAzureCredential();
 ```
 
-## Environment-Aware Pattern
+## Environment-Aware Pattern <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Detect the runtime environment and select the appropriate credential. The key principle: use `DefaultAzureCredential` only when running locally, and a specific credential in production.
 
@@ -109,7 +109,7 @@ function getCredential() {
 }
 ```
 
-## Security Checklist
+## Security Checklist <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - [ ] Use managed identity for all Azure-hosted apps
 - [ ] Never hardcode credentials, connection strings, or keys
@@ -119,7 +119,7 @@ function getCredential() {
 - [ ] Rotate secrets and certificates on a schedule
 - [ ] Enable Microsoft Defender for Cloud on production resources
 
-## Further Reading
+## Further Reading <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - [Passwordless connections overview](https://learn.microsoft.com/azure/developer/intro/passwordless-overview)
 - [Managed identities overview](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/overview)
@@ -128,3 +128,5 @@ function getCredential() {
 - [Python identity library](https://learn.microsoft.com/python/api/overview/azure/identity-readme)
 - [JavaScript identity library](https://learn.microsoft.com/javascript/api/overview/azure/identity-readme)
 - [Java identity library](https://learn.microsoft.com/java/api/overview/azure/identity-readme)
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

@@ -1,12 +1,12 @@
-# Intake
+# <span id="前言">Intake</span>
 
 Collect all inputs in one pass, tiered by priority. Extract implicit answers from the user’s message before asking. Use `AskUserQuestion` for unanswered items — batch related questions.
 
 ---
 
-## Tier 1 — Core
+## Tier 1 — Core <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 1.0 Verify Subscription
+### 1.0 Verify Subscription <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Run:
 
@@ -20,7 +20,7 @@ Confirm with user. Switch if needed:
 az account set --subscription "<name-or-id>"
 ```
 
-### 1.1 Extract Known Answers
+### 1.1 Extract Known Answers <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Scan the user's message before asking:
 
@@ -34,7 +34,7 @@ Scan the user's message before asking:
 | "I have a Bicep/Terraform template" | Extend existing IaC |
 | "add Foundry to my existing infra" | Extend existing IaC |
 
-### 1.2 Architecture Questions
+### 1.2 Architecture Questions <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 For unanswered items, use `AskUserQuestion`:
 
@@ -54,7 +54,7 @@ If empty, warn the user and suggest alternatives.
 
 **VNet:** New or existing? If new: address space (default `192.168.0.0/16`), subnet CIDRs (agent `/24`, PE `/24`).
 
-### 1.3 Determine Approach
+### 1.3 Determine Approach <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Based on the answers collected, select one of three paths:
 
@@ -77,11 +77,11 @@ Confirm the approach with the user before continuing to Tier 2.
 
 ---
 
-## Tier 2 — Architecture
+## Tier 2 — Architecture <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 *Skip questions already answered or not applicable.*
 
-### BYO VNet only
+### BYO VNet only <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Topology:** Standalone, hub-spoke, or Azure vWAN?
 
@@ -99,7 +99,7 @@ Confirm the approach with the user before continuing to Tier 2.
 
 **Team ownership:** Same team controls VNet, DNS, NSG, and policy? If different team, block and get pre-approval before deploying.
 
-### Managed VNet only
+### Managed VNet only <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Feature flag:** Run `az feature show` to verify `AI.ManagedVnetPreview` is registered. If not, register and wait 15–30 min.
 
@@ -109,7 +109,7 @@ Confirm the approach with the user before continuing to Tier 2.
 
 **Client access:** Where will clients connect from? (Same VNet, peered VNet, on-prem via VPN/ER, Azure-hosted service)
 
-### Both paths
+### Both paths <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **MCP servers:** Needed on VNet?
 
@@ -125,7 +125,7 @@ Confirm the approach with the user before continuing to Tier 2.
 
 ---
 
-## Tier 3 — Enterprise
+## Tier 3 — Enterprise <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Agent tools:** Which tools? (AI Search, Cosmos DB, Storage, MCP, external APIs, Bing grounding, Code Interpreter)
 
@@ -153,11 +153,11 @@ Confirm the approach with the user before continuing to Tier 2.
 
 ---
 
-## Validate Against Learn
+## Validate Against Learn <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 After collecting all requirements, validate the user's configuration against current documentation. Use `microsoft_docs_fetch` on the relevant pages below, then `microsoft_docs_search` for any requirement-specific concerns not covered.
 
-### Reference Pages
+### Reference Pages <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Topic | URL |
 |-------|-----|
@@ -180,8 +180,10 @@ Do NOT proceed until all conflicts are resolved or accepted.
 
 ---
 
-## Confirmation
+## Confirmation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Present a summary of all gathered requirements. Ask: **"Confirm this is accurate before I generate a deployment plan."**
 
 > Do NOT proceed to Plan Generation until you validated requirements against documents and the user confirms.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

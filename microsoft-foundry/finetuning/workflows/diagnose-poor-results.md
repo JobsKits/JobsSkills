@@ -1,8 +1,8 @@
-# Diagnosing Poor Results
+# <span id="前言">Diagnosing Poor Results</span>
 
 When your fine-tuned model performs worse than expected, work through this checklist top-down (most common causes first).
 
-## Diagnostic Table
+## Diagnostic Table <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | # | Symptom | Likely Cause | Fix |
 |---|---------|-------------|-----|
@@ -12,7 +12,7 @@ When your fine-tuned model performs worse than expected, work through this check
 | 4 | Garbage, empty outputs, or errors | Deployment/client bug | Check: wrong model format (→ HTTP 500), `AzureOpenAI` on project endpoint (→ "api-version not allowed"), low capacity (→ timeouts), wrong deployment name. Test with curl. |
 | 5 | RFT model scores below base model | RFT-specific issue | See RFT section below. |
 
-## RFT-Specific Diagnosis
+## RFT-Specific Diagnosis <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Signal | Meaning | Fix |
 |--------|---------|-----|
@@ -21,7 +21,7 @@ When your fine-tuned model performs worse than expected, work through this check
 | Grader too noisy | Random signal, no learning | Use deterministic grader or increase val set size |
 | All of the above fail | RFT may not suit this task | Switch back to SFT |
 
-## Escalation Path
+## Escalation Path <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 If nothing above helps:
 
@@ -31,9 +31,11 @@ If nothing above helps:
 4. **Try prompt engineering instead** — sometimes a well-crafted system prompt beats fine-tuning
 5. **Combine approaches** — prompt engineering + fine-tuning together
 
-## Red Flags: Don't Fine-Tune
+## Red Flags: Don't Fine-Tune <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Base model already scores > 9.0 (minimal headroom)
 - Task changes frequently (constant retraining needed)
 - < 50 examples and can't generate synthetic data
 - "Correct" output is highly subjective
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

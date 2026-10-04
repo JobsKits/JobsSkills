@@ -1,6 +1,6 @@
-# Deployment Formats
+# <span id="前言">Deployment Formats</span>
 
-## Model Format and SKU Mapping
+## Model Format and SKU Mapping <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Base model family | `model.format` | `sku.name` | Endpoint type |
 |-------------------|---------------|------------|---------------|
@@ -14,7 +14,7 @@
 
 **Format strings are case-sensitive.** `"Mistral AI"` works; `"mistral"` does not.
 
-## Two Endpoint Types
+## Two Endpoint Types <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Project Endpoint** (OpenAI models): `https://<resource>.services.ai.azure.com/api/projects/<project>/openai/v1/`
 - Use `openai.OpenAI(base_url=..., api_key=...)` — NOT `AzureOpenAI`
@@ -22,7 +22,7 @@
 **Cognitive Services Endpoint** (OSS models): `https://<resource>.cognitiveservices.azure.com/openai/deployments/<name>/chat/completions?api-version=2025-04-01-preview`
 - Use `openai.AzureOpenAI(azure_endpoint=..., api_key=..., api_version=...)`
 
-## CLI Deployment (`az cognitiveservices`)
+## CLI Deployment (`az cognitiveservices`) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The CLI uses **different** format strings than the ARM REST API for OSS models:
 
@@ -48,7 +48,7 @@ az cognitiveservices account deployment create \
 
 > ⚠️ Using `"OpenAI-OSS"` in ARM REST or `"Microsoft"` in CLI will fail with HTTP 500.
 
-## ARM REST API Deployment
+## ARM REST API Deployment <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```
 PUT https://management.azure.com/subscriptions/{sub_id}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/deployments/{deploy_name}?api-version=2024-10-01
@@ -69,14 +69,14 @@ PUT https://management.azure.com/subscriptions/{sub_id}/resourceGroups/{rg}/prov
 
 **ARM token:** `az account get-access-token --query accessToken -o tsv` (expires ~60min).
 
-## Capacity Notes
+## Capacity Notes <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Capacity = tokens-per-minute in thousands. `100` = 100K TPM.
 - Set capacity ≥ 100 for eval workloads. At capacity=1, OSS FT models hit "Failed to load LoRA" errors.
 - Quota is per-resource. After deleting a deployment, wait 15–20s before creating a new one.
 - Deployment names: max 64 chars, alphanumeric + hyphens, unique within resource.
 
-## Common Deployment Errors
+## Common Deployment Errors <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Error | Cause | Fix |
 |-------|-------|-----|
@@ -86,3 +86,5 @@ PUT https://management.azure.com/subscriptions/{sub_id}/resourceGroups/{rg}/prov
 | HTTP 400, "api-version not allowed" | `AzureOpenAI` client on `/v1/` endpoint | Switch to `openai.OpenAI` |
 | HTTP 429, quota exceeded | Too many deployments | Delete unused, wait 20s |
 | ProvisioningState: Failed | Model not available in region | Try different region |
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

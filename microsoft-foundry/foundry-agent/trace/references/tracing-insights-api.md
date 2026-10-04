@@ -1,8 +1,8 @@
-# Tracing Insights API
+# <span id="前言">Tracing Insights API</span>
 
 Automatically detect quality regressions and anomalies in agent traces using changepoint detection on evaluation scores stored in App Insights.
 
-## When to Use
+## When to Use <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use this instead of manual KQL queries when you want **automated anomaly detection** across evaluation dimensions (task adherence, intent resolution, fluency, latency, token usage). The API finds statistical changepoints in score distributions — no manual threshold tuning needed.
 
@@ -10,7 +10,7 @@ Use this instead of manual KQL queries when you want **automated anomaly detecti
 - App Insights connected to the Foundry project (with `gen_ai.evaluation.result` custom events)
 - Evaluation data from portal playground sessions or batch evals (raw traces alone are not enough)
 
-## Endpoint
+## Endpoint <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```
 POST https://{region}.api.azureml.ms/notification/v1-beta2/subscriptions/{sub}/resourceGroups/{rg}/providers/microsoft.insights/components/{component}/:insights
@@ -31,7 +31,7 @@ The API is region-agnostic — any regional endpoint can serve requests for any 
 
 **Body:** Must send `{}` (empty JSON object) — POST with no body returns 400.
 
-## Example
+## Example <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```powershell
 $token = az account get-access-token --resource https://ai.azure.com --query accessToken -o tsv
@@ -46,7 +46,7 @@ $response = Invoke-RestMethod -Uri $uri -Method POST -Headers @{
 } -Body "{}"
 ```
 
-## Response Structure (v1-beta2)
+## Response Structure (v1-beta2) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Response is grouped by agent version. Each insight includes `relatedSpans` with `operationId` (App Insights trace ID) for querying full trace content.
 
@@ -74,7 +74,7 @@ Response is grouped by agent version. Each insight includes `relatedSpans` with 
 }
 ```
 
-## Querying Traces from relatedSpans
+## Querying Traces from relatedSpans <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `operationId` from `relatedSpans` to fetch full trace content from App Insights:
 
@@ -89,16 +89,18 @@ dependencies
 
 This returns the user query and agent response for the specific trace flagged by the insight.
 
-## How Changepoint Detection Works
+## How Changepoint Detection Works <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The API finds **statistical inflection points within the queried time window**. `meanBefore`/`meanAfter` represent averages on either side of the detected shift — not comparisons to a historical baseline.
 
 - 10+ data points give better signal for changepoint detection
 - `confidence` close to 1.0 = statistically significant shift
 
-## Next Steps
+## Next Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 After receiving insights with `Warning` or `Critical` severity:
 1. Use `relatedSpans.operationId` values to query full trace content from App Insights (see KQL above)
 2. Present the insights summary to the user with severity, type, evaluator name, and shift magnitude
 3. Offer to drill into specific traces for detailed analysis using the [trace analysis skill](../trace.md)
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

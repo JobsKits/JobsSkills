@@ -1,8 +1,8 @@
-# Deploy & Track
+# <span id="前言">Deploy & Track</span>
 
 Applies to all private network deployments.
 
-## Deploy
+## Deploy <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 az deployment group create \
@@ -14,7 +14,7 @@ az deployment group create \
 
 > ⚠️ Capability host provisioning is **asynchronous** (10–20 min). The CLI produces no output during this phase.
 
-## Monitor Progress
+## Monitor Progress <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use exponential backoff — do NOT poll every 30 seconds.
 
@@ -45,11 +45,11 @@ az deployment group wait \
   --created --timeout 1800
 ```
 
-## Error Recovery
+## Error Recovery <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When a deployment fails, follow this workflow:
 
-### Step 1 — Identify the error
+### Step 1 — Identify the error <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 az deployment operation group list \
@@ -59,7 +59,7 @@ az deployment operation group list \
   -o json
 ```
 
-### Step 2 — Resolve
+### Step 2 — Resolve <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `microsoft_docs_search` with the error code or message to find current remediation. The legionservicelink retry rule is documented in the main workflow's Error Handling section.
 
@@ -71,14 +71,14 @@ Use `microsoft_docs_search` with the error code or message to find current remed
 | `disableLocalAuth` policy violation | Template defaults to `false` | Set `disableLocalAuth: true` in Bicep params |
 | `defaultOutboundAccess` policy violation | Subnets missing the property | Add `defaultOutboundAccess: false` to subnet properties |
 
-### Step 3 — Present fix to user and get approval
+### Step 3 — Present fix to user and get approval <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Before re-deploying, show the user:
 - What failed and why
 - What file/parameter will be changed
 - The new `vnetName` to use (must be different from the failed run)
 
-### Step 4 — Re-deploy with a new deployment name
+### Step 4 — Re-deploy with a new deployment name <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 # Update main.bicepparam: change vnetName to a new unique name
@@ -88,3 +88,5 @@ az deployment group create \
   --parameters main.bicepparam \
   --name <deployment-name>-retry
 ```
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

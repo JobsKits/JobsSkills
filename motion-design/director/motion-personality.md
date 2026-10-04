@@ -1,8 +1,8 @@
-# Motion Personality
+# <span id="前言">Motion Personality</span>
 
-## Four Archetypes
+## Four Archetypes <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### Playful
+### Playful <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Parameter | Value |
 |-----------|-------|
@@ -15,7 +15,7 @@
 Signature: bounce settle, squash-stretch on press, rotation wobble, bright color pops, varied stagger timing.
 Use for: children's apps, casual games, social media, celebrations, onboarding, creative tools.
 
-### Premium / Luxury
+### Premium / Luxury <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Parameter | Value |
 |-----------|-------|
@@ -28,7 +28,7 @@ Use for: children's apps, casual games, social media, celebrations, onboarding, 
 Signature: slow fades, subtle scale (98%→100%), generous pauses, minimal properties (opacity+one), ultra-smooth.
 Use for: fashion, finance, luxury brands, premium SaaS, portfolios, editorial.
 
-### Corporate / Professional
+### Corporate / Professional <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Parameter | Value |
 |-----------|-------|
@@ -41,7 +41,7 @@ Use for: fashion, finance, luxury brands, premium SaaS, portfolios, editorial.
 Signature: consistent timing, clear state transitions, functional motion, predictable patterns, uniform stagger.
 Use for: enterprise, dashboards, business tools, admin, healthcare, banking.
 
-### Energetic / Dynamic
+### Energetic / Dynamic <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Parameter | Value |
 |-----------|-------|
@@ -54,7 +54,7 @@ Use for: enterprise, dashboards, business tools, admin, healthcare, banking.
 Signature: large scale changes (50-150%), fast color transitions, particle bursts, accelerating stagger, bold edge entrances.
 Use for: gaming, sports, music, events, marketing, fitness apps.
 
-## Keyword Matching
+## Keyword Matching <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Keywords | Archetype |
 |----------|-----------|
@@ -65,14 +65,14 @@ Use for: gaming, sports, music, events, marketing, fitness apps.
 | (unspecified) + UI | Corporate (default) |
 | (unspecified) + illustration | Playful (default) |
 
-## Brand Motion Identity
+## Brand Motion Identity <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Define three constants for recognizable motion:
 
-### 1. Signature Easing (80% of animations)
+### 1. Signature Easing (80% of animations) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 Playful: ease-out-back | Premium: (0.4,0,0.2,1) | Corporate: (0.2,0,0,1) | Energetic: ease-out-expo
 
-### 2. Duration Palette
+### 2. Duration Palette <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Tier | Playful | Premium | Corporate | Energetic |
 |------|---------|---------|-----------|-----------|
@@ -80,10 +80,12 @@ Playful: ease-out-back | Premium: (0.4,0,0.2,1) | Corporate: (0.2,0,0,1) | Energ
 | Standard | 250ms | 500ms | 300ms | 180ms |
 | Slow | 400ms | 800ms | 450ms | 300ms |
 
-### 3. Entrance Pattern
+### 3. Entrance Pattern <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 Playful: bounce up from below | Premium: slow fade + scale 98%→100% | Corporate: slide right + opacity | Energetic: snap from edge + overshoot
 
-## Mixing Archetypes
+## Mixing Archetypes <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 - 90% primary archetype; specific moments can borrow another
 - Ease into personality shifts, don't snap
 - Example: corporate dashboard borrows Playful for success state only
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

@@ -1,4 +1,4 @@
-# Microsoft Foundry Quota Management
+# <span id="前言">Microsoft Foundry Quota Management</span>
 
 Quota and capacity management for Microsoft Foundry. Quotas are **subscription + region** level.
 
@@ -6,7 +6,7 @@ Quota and capacity management for Microsoft Foundry. Quotas are **subscription +
 
 > **Important:** All quota operations are **control plane (management)** operations. Use **Azure CLI commands** (`az cognitiveservices`, `az rest`, `az ai`) as the primary method.
 
-## Quota Types
+## Quota Types <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Type | Description |
 |------|-------------|
@@ -42,9 +42,9 @@ See [detailed guide](./references/workflows.md#regional-quota).
 
 ---
 
-## Core Workflows
+## Core Workflows <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 1. Check Regional Quota
+### 1. Check Regional Quota <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 subId=$(az account show --query id -o tsv)
@@ -62,7 +62,7 @@ Change region: `eastus`, `eastus2`, `westus`, `westus2`, `swedencentral`, `uksou
 
 ---
 
-### 2. Find Best Region for Deployment
+### 2. Find Best Region for Deployment <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Check specific regions for available quota:
 
@@ -78,7 +78,7 @@ See [workflows reference](./references/workflows.md#multi-region-check) for mult
 
 ---
 
-### 3. Check Quota Before Deployment
+### 3. Check Quota Before Deployment <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Verify available quota for your target model:
 
@@ -97,7 +97,7 @@ az rest --method get \
 
 ---
 
-### 4. Monitor Quota by Model
+### 4. Monitor Quota by Model <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Show quota allocation grouped by model:
 
@@ -123,7 +123,7 @@ az cognitiveservices account deployment list --name <resource> --resource-group 
 
 ---
 
-### 5. Delete Deployment (Free Quota)
+### 5. Delete Deployment (Free Quota) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```bash
 az cognitiveservices account deployment delete --name <resource> --resource-group <rg> \
@@ -134,7 +134,7 @@ Quota freed **immediately**. Re-run Workflow #1 to verify.
 
 ---
 
-### 6. Request Quota Increase
+### 6. Request Quota Increase <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Azure Portal Process:**
 1. Navigate to [Azure Portal - All Resources](https://portal.azure.com/#view/HubsExtension/BrowseAll) → Filter "AI Services" → Click resource
@@ -161,7 +161,7 @@ See [detailed quota request guide](./references/workflows.md#request-quota-incre
 
 ---
 
-## Quick Troubleshooting
+## Quick Troubleshooting <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Error | Quick Fix | Detailed Guide |
 |-------|-----------|----------------|
@@ -172,7 +172,7 @@ See [detailed quota request guide](./references/workflows.md#request-quota-incre
 
 ---
 
-## References
+## References <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Detailed Guides:**
 - [Error Resolution Workflows](./references/error-resolution.md) - Detailed workflows for quota exhausted, 429 errors, insufficient quota, deployment limits
@@ -192,3 +192,5 @@ See [detailed quota request guide](./references/workflows.md#request-quota-incre
 **Calculators:**
 - [Azure Pricing Calculator](https://azure.microsoft.com/pricing/calculator/) - Official pricing estimator
 - Azure AI Foundry PTU calculator (Microsoft Foundry → Operate → Quota → Provisioned Throughput Unit tab) - PTU capacity sizing
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

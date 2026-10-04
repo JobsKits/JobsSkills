@@ -27,7 +27,7 @@ description: 当 Codex 需要在任何任务开始前读取跨项目永久记忆
 - 待分类记忆：`60-收集箱/记忆收集箱.md`。
 - 协议与同步游标：`90-系统/记忆协议.md`、`90-系统/同步状态.md`。
 
-## 二、任务前读取
+## 二、任务前读取 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1、先用 `rg --files` 或等价方式扫描 Vault 目录结构，确认入口和项目笔记仍存在。
 
@@ -39,7 +39,7 @@ description: 当 Codex 需要在任何任务开始前读取跨项目永久记忆
 
 5、不要每次全量读取整个 Vault；目录扫描是全量的，正文读取必须按索引和任务命中，避免无关记忆污染上下文。
 
-## 三、写入边界
+## 三、写入边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 只写入这些可复用信息：
 
@@ -52,7 +52,7 @@ description: 当 Codex 需要在任何任务开始前读取跨项目永久记忆
 - 只有当用户明确要求“记住”或信息显然具有跨任务价值时才落库；不得把猜测写成用户偏好。
 - 任务结束前检查是否产生新的持久记忆；有则去重后写入，无则不制造空记录。
 
-## 四、写入方法
+## 四、写入方法 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1、先搜索同类项，优先更新原记忆，不要叠加语义相同的条目。
 
@@ -64,7 +64,7 @@ description: 当 Codex 需要在任何任务开始前读取跨项目永久记忆
 
 5、写入后更新 `00-记忆入口.md`的导航或摘要，再检查 [**Obsidian**](https://obsidian.md) Wiki 链接目标存在。
 
-## 五、每日复盘
+## 五、每日复盘 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 每天凌晨 1 点运行时，完整读取 `90-系统/记忆协议.md`和 `90-系统/同步状态.md`。
 - 从上次游标开始检查最近 Codex 任务和 `~/.codex/memories`中的新增线索，仅提取经确认的持久信息。
@@ -72,7 +72,7 @@ description: 当 Codex 需要在任何任务开始前读取跨项目永久记忆
 - 即使无新增记忆，也记录“无新增”和检查范围，再更新同步游标。
 - 自动化失败时保留原游标，不得把未完成的复盘标成成功。
 
-## 六、验证
+## 六、验证 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 检查 Markdown 头部、属性、路径和 Wiki 链接。
 - 检查新写入内容没有敏感信息、未证实推断和重复项。

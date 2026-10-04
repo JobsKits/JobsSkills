@@ -1,8 +1,8 @@
-# Dataset Versioning — Version Management & Tagging
+# <span id="前言">Dataset Versioning — Version Management & Tagging</span>
 
 Manage dataset versions with naming conventions, tagging, and version pinning for reproducible evaluations. This workflow formalizes dataset lifecycle management using existing MCP tools and local conventions.
 
-## Naming Convention
+## Naming Convention <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use the pattern `<agent-name>-<source>-v<N>`:
 
@@ -19,7 +19,7 @@ Use the pattern `<agent-name>-<source>-v<N>`:
 - `support-bot-dev-synthetic-v2` — second synthetic dataset
 - `support-bot-prod-combined-v5` — fifth production dataset combining traces + manual examples
 
-## Tagging Conventions
+## Tagging Conventions <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Tags are stored in `.foundry/datasets/manifest.json` alongside dataset metadata:
 
@@ -31,11 +31,11 @@ Tags are stored in `.foundry/datasets/manifest.json` alongside dataset metadata:
 | `regression-<date>` | Dataset that caught a regression | When a regression is detected |
 | `deprecated` | Dataset no longer in active use | When replaced by a newer version |
 
-## Version Pinning
+## Version Pinning <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Pin evaluations to a specific dataset version to ensure reproducible, comparable results:
 
-### Local Pinning (JSONL Datasets)
+### Local Pinning (JSONL Datasets) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When using local JSONL files, reference the exact filename in evaluation runs:
 
@@ -45,7 +45,7 @@ When using local JSONL files, reference the exact filename in evaluation runs:
 
 Pass the contents via `inputData` parameter in **`evaluation_agent_batch_eval_create`**.
 
-### Server-Side Version Discovery
+### Server-Side Version Discovery <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `evaluation_dataset_versions_get` to list all versions of a dataset registered in Foundry:
 
@@ -61,7 +61,7 @@ evaluation_dataset_get(projectEndpoint)
 
 > 💡 **Tip:** Server-side versions are available after syncing via [Trace-to-Dataset → Step 5](trace-to-dataset.md#step-5--sync-local-cache-with-foundry-optional). Local `manifest.json` remains useful for lineage metadata (source, harvestRule, reviewedBy) not stored server-side.
 
-## Manifest File
+## Manifest File <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Track all dataset versions, required dataset metadata, tags, and lineage in `.foundry/datasets/manifest.json`:
 
@@ -119,7 +119,7 @@ Track all dataset versions, required dataset metadata, tags, and lineage in `.fo
 
 Keep `stage` stable for the dataset family (`seed`, `traces`, `curated`, or `prod`) and use `tag` for mutable lifecycle labels such as `baseline`, `prod`, or `deprecated`. Persist `datasetUri` as the Foundry-returned dataset reference so deploy and observe workflows can resolve the registered dataset directly.
 
-## Creating a New Version
+## Creating a New Version <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. **Check existing versions**: Read `.foundry/datasets/manifest.json` to find the latest version number
 2. **Increment version**: Use `v<N+1>` as the new version
@@ -130,7 +130,7 @@ Keep `stage` stable for the dataset family (`seed`, `traces`, `curated`, or `pro
 
 > ⚠️ **DO NOT stop here.** After creating a new dataset version, continue to the Dataset Update Loop below.
 
-## Dataset Update Loop — Eval → Analyze → Optimize → Re-Eval
+## Dataset Update Loop — Eval → Analyze → Optimize → Re-Eval <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 When a dataset is updated (new rows, better coverage, new failure modes), run this loop to validate the agent against the harder test suite:
 
@@ -153,14 +153,14 @@ When a dataset is updated (new rows, better coverage, new failure modes), run th
 [6] If satisfied → tag v2 as `prod`, archive v1
 ```
 
-### ⛔ Guardrails for This Loop
+### ⛔ Guardrails for This Loop <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **Never remove dataset rows to recover scores.** If eval scores drop after a dataset update, the dataset is likely exposing real gaps. Removing hard cases defeats the purpose.
 - **Never weaken evaluators to recover scores.** Do not lower thresholds, remove evaluators, or switch to easier scoring when scores drop on an expanded dataset.
 - **Distinguish dataset difficulty from agent regression.** A score drop on a harder dataset is expected and healthy — it means test coverage improved. Only flag as regression when the same dataset + same evaluators produce worse scores on a new agent version.
 - **Optimize for NEW failure patterns only.** When optimizing the agent prompt after a dataset update, target the newly added test cases. Do not re-optimize for cases that were already passing.
 
-## Comparing Versions
+## Comparing Versions <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 To understand how a dataset evolved between versions:
 
@@ -174,8 +174,10 @@ jq -r '.query' .foundry/datasets/support-bot-prod-traces-v3.jsonl | sort > /tmp/
 diff /tmp/v2-queries.txt /tmp/v3-queries.txt
 ```
 
-## Next Steps
+## Next Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - **Organize into splits** → [Dataset Organization](dataset-organization.md)
 - **Run evaluation with pinned version** → [observe skill Step 2](../../observe/references/evaluate-step.md)
 - **Track lineage** → [Eval Lineage](eval-lineage.md)
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

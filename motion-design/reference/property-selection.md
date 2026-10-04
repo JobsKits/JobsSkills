@@ -1,6 +1,6 @@
-# Property Selection
+# <span id="前言">Property Selection</span>
 
-## Position
+## Position <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Direction | Meaning |
 |-----------|---------|
@@ -11,7 +11,7 @@
 | Toward center | Focus, convergence |
 | Away from center | Distribution, expansion |
 
-## Scale
+## Scale <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Direction | Meaning |
 |-----------|---------|
@@ -20,7 +20,7 @@
 | Pulse | Attention, heartbeat, life |
 | Breathing | Presence, waiting |
 
-## Rotation
+## Rotation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Range | Meaning |
 |-------|---------|
@@ -29,7 +29,7 @@
 | Full (360°) | Completion, processing |
 | Continuous | Ongoing activity |
 
-## Opacity
+## Opacity <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Direction | Meaning |
 |-----------|---------|
@@ -39,7 +39,7 @@
 
 **Rule**: NEVER opacity alone for important state changes. Combine with position or scale.
 
-## Color
+## Color <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Transition | Meaning |
 |-----------|---------|
@@ -50,7 +50,7 @@
 | Brightening | Activation, focus |
 | Dimming | Deactivation, background |
 
-## Combined Properties
+## Combined Properties <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Combination | Best For |
 |-------------|----------|
@@ -63,7 +63,7 @@
 
 Primary property carries meaning; secondary adds polish. Two properties is the sweet spot.
 
-## Property Selection by Goal
+## Property Selection by Goal <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Goal | Primary | Secondary | Avoid |
 |------|---------|-----------|-------|
@@ -80,7 +80,7 @@ Primary property carries meaning; secondary adds polish. Two properties is the s
 | Selection | scale | color, opacity | rotation |
 | Progress | position or scale | color | opacity |
 
-## Performance
+## Performance <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | Property | Performance |
 |----------|-------------|
@@ -93,3 +93,5 @@ Primary property carries meaning; secondary adds polish. Two properties is the s
 | box-shadow | Poor — expensive paint |
 
 **Rule**: Prefer transform + opacity for all motion.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

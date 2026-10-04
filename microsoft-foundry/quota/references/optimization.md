@@ -1,10 +1,10 @@
-# Quota Optimization Strategies
+# <span id="前言">Quota Optimization Strategies</span>
 
 Comprehensive strategies for optimizing Azure AI Foundry quota allocation and reducing costs.
 
 **Table of Contents:** [1. Identify and Delete Unused Deployments](#1-identify-and-delete-unused-deployments) · [2. Right-Size Over-Provisioned Deployments](#2-right-size-over-provisioned-deployments) · [3. Consolidate Multiple Small Deployments](#3-consolidate-multiple-small-deployments) · [4. Cost Optimization Strategies](#4-cost-optimization-strategies) · [5. Regional Quota Rebalancing](#5-regional-quota-rebalancing)
 
-## 1. Identify and Delete Unused Deployments
+## 1. Identify and Delete Unused Deployments <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Step 1: Discovery with Quota Context**
 
@@ -75,7 +75,7 @@ az cognitiveservices account deployment delete --name <resource> --resource-grou
 
 ---
 
-## 2. Right-Size Over-Provisioned Deployments
+## 2. Right-Size Over-Provisioned Deployments <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Identify over-provisioned deployments:**
 - Check Azure Monitor metrics for actual token usage
@@ -95,7 +95,7 @@ az cognitiveservices account deployment update --name <resource> --resource-grou
 
 ---
 
-## 3. Consolidate Multiple Small Deployments
+## 3. Consolidate Multiple Small Deployments <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 **Pattern:** Multiple 10K TPM deployments → One 30-50K TPM deployment
 
@@ -111,7 +111,7 @@ az cognitiveservices account deployment update --name <resource> --resource-grou
 
 ---
 
-## 4. Cost Optimization Strategies
+## 4. Cost Optimization Strategies <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > **Official Documentation**: [Plan to manage costs for Azure OpenAI](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/manage-costs) and [Fine-tuning cost management](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/fine-tuning-cost-management)
 
@@ -150,7 +150,7 @@ Batch multiple requests together to reduce the total number of API calls and low
 
 ---
 
-## 5. Regional Quota Rebalancing
+## 5. Regional Quota Rebalancing <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 If you have quota spread across multiple regions but only use some:
 
@@ -166,3 +166,5 @@ done
 ```
 
 **Optimization:** Concentrate deployments in fewer regions to maximize quota utilization per region.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

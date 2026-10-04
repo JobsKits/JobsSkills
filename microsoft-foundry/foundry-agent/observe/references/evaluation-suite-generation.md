@@ -1,8 +1,8 @@
-# Evaluation Suite Generation
+# <span id="前言">Evaluation Suite Generation</span>
 
 Use generated suites as the preferred setup path for deployed agents. The suite generation job can create synthetic or trace-derived data plus a rubric-based evaluator from agent, dataset, file, prompt, or trace context.
 
-## Step 1: Ask the User Which Source to Use (MANDATORY)
+## Step 1: Ask the User Which Source to Use (MANDATORY) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > ⚠️ **Do not call `evaluation_suite_generation_job_create` without asking the user first.** The generation source materially changes the suite's coverage and cost. Use `ask_user` / `askQuestions` with these options:
 >
@@ -15,7 +15,7 @@ Use generated suites as the preferred setup path for deployed agents. The suite 
 If the user picks (b), compute `traceStartTime` and `traceEndTime` as unix seconds for the chosen window (default `now - 3*86400` to `now`).
 If the user picks (c), do not assume a Foundry suite exists. Verify or register the local dataset and evaluators first as described below.
 
-## Step 2: Create and Poll
+## Step 2: Create and Poll <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Call `evaluation_suite_generation_job_create` with the selected `projectEndpoint`, `suiteName`, and `generationModelDeploymentName`. Provide the best available source context:
 
@@ -31,7 +31,7 @@ Call `evaluation_suite_generation_job_create` with the selected `projectEndpoint
 
 Set `dataGenerationType` (default `simple_qna`), `category` (default `quality`), `deploymentName` (target model for the evaluator's judge — required for LLM-judge evaluators), and `maxSamples` for generated examples.
 
-### Parameter Requirements (Learned Constraints)
+### Parameter Requirements (Learned Constraints) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > ⚠️ The service rejects requests that miss these:
 > - **`maxSamples` must be between 15 and 1000.** Smaller values (e.g., 10) fail with `Max samples must be between 15 and 1000`. Default to `15` for quick smoke suites, `50–100` for richer baselines.
@@ -48,7 +48,7 @@ Poll with `evaluation_suite_generation_job_get(projectEndpoint, jobId)` until th
 >
 > When the background poll reaches `succeeded`, continue by calling `evaluation_suite_get` and then cache/update metadata before producing the completion summary. When it reaches `failed` or `canceled`, surface the terminal status and route to fallback.
 
-## Existing eval.yaml Source
+## Existing eval.yaml Source <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use this path when the selected agent root has `eval.yaml` and the user chooses it:
 
@@ -59,7 +59,7 @@ Use this path when the selected agent root has `eval.yaml` and the user chooses 
 5. If `name` is populated, call `evaluation_suite_get` before storing it as `suiteName`. If no suite exists, either create/register a reviewed suite or persist a local-draft entry without `suiteName`.
 6. Persist only synced remote refs and local cache paths to `.foundry/agent-metadata*.yaml` with `generationSource: eval-yaml`; do not copy azd-owned deployment context into metadata.
 
-## Cache Artifacts Locally
+## Cache Artifacts Locally <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 > ⚠️ **Mandatory after `succeeded`.** As soon as the background poll reaches `succeeded`, perform **all three** of the following calls and write **all three** files. This is not optional — partial caching (e.g., metadata stub instead of full evaluator definition) is the most common skill bug. Do not write the deployment/eval-setup summary until the three files exist.
 
@@ -73,7 +73,7 @@ Save artifacts under the selected agent root only, using these exact paths and c
 
 For the first two, do not skip fields and do not transform — write the JSON returned by the MCP tool. Do not overwrite user-edited cache files without confirmation. Exception: deterministic re-fetch of the same immutable remote `<name>-v<version>` may replace the generated cache artifact for that exact version when rehydrating a missing, stale, or corrupt local cache.
 
-### Dataset Content Download (USE THIS — DO NOT SKIP)
+### Dataset Content Download (USE THIS — DO NOT SKIP) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 The dataset rows live in a Foundry-managed Azure Storage container (host pattern `sa*.blob.core.windows.net`). User Entra credentials against the container fail (`InvalidAuthenticationInfo: Issuer validation failed`) and the storage account is not exposed as a project connection, BUT a working download path exists:
 
@@ -87,17 +87,17 @@ Only fall back to the portal-export workaround (Foundry portal → suite → Dat
 
 If the dataUri host does NOT match the Foundry-managed `sa*.blob.core.windows.net` pattern (e.g., a customer-owned storage account registered as a project connection), use the connection-resolved credential rather than the SAS flow.
 
-### Job-Returned Direct Artifacts
+### Job-Returned Direct Artifacts <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 If the generation job output includes direct file/session references (rare — most jobs only return remote names/versions), download those artifacts and place them in the same `.foundry/` folders alongside the reference files above.
 
-## Regenerate One Artifact
+## Regenerate One Artifact <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 Use `data_generation_job_create` when the user wants fresh data without replacing the whole suite. It accepts `jobName`, `projectEndpoint`, optional `agentName`/`agentVersion`, `datasetName`/`datasetVersion`, `fileId`, `promptSource`, trace parameters, `generationType`, `questionTypes`, `scenario`, `maxSamples`, and `trainSplit`. Poll with `data_generation_job_get` in the background using the same clean-output rules.
 
 Use `evaluator_generation_job_create` to create or regenerate one rubric-based evaluator. To regenerate, pass the existing `evaluatorName` plus updated source inputs and `modelDeploymentName`; poll with `evaluator_generation_job_get` in the background using the same clean-output rules.
 
-## Review and Sync Back
+## Review and Sync Back <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 After users edit generated dataset rows or evaluator rubrics locally:
 
@@ -106,8 +106,10 @@ After users edit generated dataset rows or evaluator rubrics locally:
 3. For evaluator rubric changes, use `evaluator_catalog_update(createNewVersion: true)` when metadata/dimension edits are sufficient; otherwise regenerate with `evaluator_generation_job_create(evaluatorName, ...)`.
 4. Create an immutable suite version with `evaluation_suite_create` so future agent-target batch evals can resolve the reviewed artifacts with `evaluation_suite_get`.
 
-## Fallback
+## Fallback <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 If suite, data, or evaluator generation fails or returns incomplete artifacts, explain the failure and use the manual fallback: `evaluator_catalog_get`, local seed JSONL generation, `evaluation_dataset_create`, and `evaluationSuites[]` metadata with `generationSource: manual-fallback`.
 
 Do not use `evaluation_suite_run` for batch eval. Use `evaluation_agent_batch_eval_create` after reviewing the generated suite artifacts.
+
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>
