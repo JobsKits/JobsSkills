@@ -61,6 +61,7 @@ description: 当任务涉及 Python 跨端图形软件、主题切换、脚本�
 ### 1.3、代码与验证 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Python 代码优先使用 `pathlib`、`argparse` 或项目既有 CLI 框架处理路径和参数；不要用脆弱字符串拼接处理文件路径。
+- Python 脚本引用项目内文件、资源、输出目录或配套脚本时，必须以脚本文件位置（如 `Path(__file__).resolve().parent`）或明确计算的项目根目录为基准构造相对路径；禁止把本机绝对路径（尤其 `/Users/...`）写死在脚本中。确需访问用户配置或系统目录时，从运行环境动态解析，不能写入当前机器专属路径。
 - 修改 Python 包结构后，至少执行 `python -m compileall` 或项目测试；依赖缺失导致无法跑完整测试时，说明未执行原因。
 - 修改 `.command` 后执行 `zsh -n`；修改 `.bat` 后至少做路径和变量静态审查，能在 Windows 环境验证时再实际运行。
 
