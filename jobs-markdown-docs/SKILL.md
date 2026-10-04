@@ -108,8 +108,8 @@ description: 当任务涉及 Markdown、README、技术文档、表格、流程�
 
 ### 1.3、外链、表格与流程图
 
-- 能外链的第三方工具、框架、语言、平台，优先用官方链接，并按 Jobs 文档习惯写成 `[**名称**](URL)`，例如 [**Homebrew**](https://brew.sh/)、[**Flutter**](https://flutter.dev/)、[**CocoaPods**](https://cocoapods.org/)、[**Mermaid**](https://mermaid.js.org)。
-- 标题、表格、正文第一次出现第三方名词时可以直接加链接；代码块、命令、路径、文件名里的字面量不要加链接。
+- 正文中出现可识别的外部产品、第三方工具、框架、语言或平台时，第一次出现必须使用官方链接并加粗名称，格式为 `[**名称**](URL)`，例如 [**Homebrew**](https://brew.sh/)、[**Flutter**](https://flutter.dev/)、[**CocoaPods**](https://cocoapods.org/)、[**Mermaid**](https://mermaid.js.org)。后续出现时可按阅读需要继续加链接。
+- 标题、表格、正文均按首次出现原则加链接；代码块、命令、路径、文件名里的字面量不要加链接。
 - 表格用于阶段说明、参数说明、目录统计、命令清单；表头短一点，内容能扫读。
 - 复杂流程优先使用 [**Mermaid**](https://mermaid.js.org)。
 - 对用户有风险的地方要写明白，不要藏在代码块后面。危险动作必须在文档里说明确认方式，例如“必须输入 `YES` 才会继续”。
@@ -117,7 +117,8 @@ description: 当任务涉及 Markdown、README、技术文档、表格、流程�
 
 #### 1.3.1、专有名词固定超链接
 
-- 写 [**Markdown**](https://markdown.cn) / README / AGENTS 这类技术文档时，遇到下表里的专有名词，正文第一次出现时优先写成 `[**名称**](URL)`；需要强调或便于点击时，后续也可以继续加链接。
+- 写 [**Markdown**](https://markdown.cn) / README / AGENTS 这类技术文档时，外部产品和第三方专有名词必须在正文第一次出现时写成 `[**名称**](官方URL)`；下表固定名称必须使用给定链接。需要强调或便于点击时，后续也可以继续加链接。
+- 用户指定需要下划线的专有名词，仍须保留加粗超链接；例如 [**Swift**](https://www.swift.org/) 应写成 `<u>[**Swift**](https://www.swift.org/)</u>`。
 - 同一个工具有多个常见写法时，正文优先使用“推荐写法”；括号里的别名只用于识别，不强行改代码块里的命令。
 - 代码块、命令、路径、文件名、变量名里的字面量不要加超链接，例如 `brew install fzf`、`Podfile`、`python3`、`go-task/tap/go-task`。
 - 如果用户明确给了新的官方链接，以用户最新指定为准，顺手更新这张表。
@@ -125,7 +126,9 @@ description: 当任务涉及 Markdown、README、技术文档、表格、流程�
   | 推荐写法                                                               | 识别别名                                              | 固定链接                                           |
   | ------------------------------------------------------------------ | ------------------------------------------------- | ---------------------------------------------- |
   | [**Markdown**](https://markdown.cn)                                | `Markdown` / `md`                                 | `https://markdown.cn`                          |
-  | [**Swift**](https://www.swift.org/)                                | `Swift`                                           | `https://www.swift.org/`                       |
+  | <u>[**Swift**](https://www.swift.org/)</u>                          | `Swift`                                           | `https://www.swift.org/`                       |
+  | [**Go**](https://go.dev/)                                           | `Go`                                              | `https://go.dev/`                              |
+  | [**TiDB**](https://docs.pingcap.com/tidb/stable/)                   | `TiDB`                                            | `https://docs.pingcap.com/tidb/stable/`        |
   | [**SnapKit**](https://github.com/SnapKit/SnapKit)                   | `SnapKit`                                         | `https://github.com/SnapKit/SnapKit`           |
   | [**Dart**](https://dart.dev)                                       | `Dart`                                            | `https://dart.dev`                             |
   | [**Flutter**](https://flutter.dev/)                                | `Flutter`                                         | `https://flutter.dev/`                         |
