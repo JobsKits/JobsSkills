@@ -16,6 +16,15 @@
 - `💻JobsCodexConfigs/skills` 是 `JobsCodexConfigs` 父仓对本仓库的 Git 子模块挂载点，便于父仓记录所使用的 `JobsSkills` 版本；自动配置注入不反向覆盖现行工作树。需要手动同步时，使用本目录 `同步Skills.command` 明确选择方向和范围，预览确认后执行。
 - 外援 `Skill` 依旧由其上游仓库管理源码和版本；本仓库只记录来源和运行态链接映射。
 
+| 当前目录 / 文件 | 职责 |
+| --- | --- |
+| `jobs-*/SKILL.md`、[hacker/SKILL.md](./hacker/SKILL.md) | Jobs 自维护专项规则；包内 `references/` 存放按需读取的配套说明。 |
+| [jobs-codex-config-audit/scripts/](./jobs-codex-config-audit/scripts/) | Jobs 配置的只读审计入口。 |
+| [同步Skills.command](./同步Skills.command) | 系统用户级 Skills 与当前检出目录的手动同步入口。 |
+| `microsoft-foundry/`、`graphify/`、`motion-design/` | 外部来源 Skill 及其资源，按各自上游维护。 |
+| [.gitignore](./.gitignore) | 外援链接与运行态文件的精确 Git 排除规则。 |
+| [README.md](./README.md) | 本仓结构、所有权、来源映射及本仓维护脚本的说明。 |
+
 ## 二、Git 管理边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | 类型 | Git 处理 | 信息来源 |
@@ -106,5 +115,29 @@ done
 | `JOBS_SKILLS_SYNC_STATE_DIR` | 日志以外的持久状态及备份根目录 |
 
 每个包通过同文件系统暂存目录合并并重命名切换。途中失败立即停止，已完成的其它包不会自动回滚；完整备份与失败现场保留，具体路径显示在日志中。
+
+## 六、<span id="managed-script-overview">本仓维护的脚本</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+### [同步Skills.command](./同步Skills.command)
+
+> **目的：** 手动选择 Skill 包，在系统用户级工作树与当前目录之间同步，并保留恢复备份。
+
+* 阅读自述，回车继续，选择同步方向和要处理的包。
+  * 默认方向为系统到当前目录；默认选项为全部包，也可搜索、多选或取消。
+* 检查路径与依赖，展示变更预览；目标包中含 `.git` 时停止。
+  * `--dry-run`：交互预览并记录日志，不安装依赖、不备份、不复制。
+* 输入 `YES` 后备份原内容与链接解析后的实体快照，再逐包合并切换。
+  * 同名源文件覆盖，目标独有文件保留；软链接实体化，不写入外援上游。
+* 输出结果、日志和备份位置；失败时保留现场，已完成包不自动回滚。
+
+### [audit_codex_configs.zsh](./jobs-codex-config-audit/scripts/audit_codex_configs.zsh)
+
+> **目的：** 只读检查全局指导、现行 JobsSkills 及配置父仓的规则和版本关系。
+
+* 读取配置仓与 Skills 工作树路径，验证标准源和远端归属。
+  * 路径或标准源无效：报错退出；可通过前两个位置参数指定检查目录。
+* 统计指导文件，检查 Jobs 自有 Skill 的文档结构、中文序号、固定链接和重复候选。
+* 核对运行态全局指导、父仓子模块状态及两个标准仓的已有改动。
+* 汇总警告和错误供人工处理；只输出检查结果，不修改文件、不部署、不提交或推送。
 
 <a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➔点我回到首页</a>
