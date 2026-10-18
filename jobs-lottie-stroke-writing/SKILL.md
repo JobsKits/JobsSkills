@@ -7,15 +7,28 @@ description: 当任务涉及汉字一笔一画手写 Lottie、中文标题笔顺
 
 ![Jobs出品，必属精品](https://picsum.photos/1500/400)
 
-[toc]
+<!-- jobs-toc:start -->
+<!-- jobs-toc:source {"v":2,"token":"[toc]"} -->
+<details>
+<summary>📚 目录（点击展开 / 收起）</summary>
+
+- [🔥 前言](#jobs-toc-heading-1)
+- [一、核心标准](#jobs-toc-heading-2)
+- [二、生成流程](#jobs-toc-heading-3)
+- [三、Lottie 结构约束](#jobs-toc-heading-4)
+- [四、视觉参数](#jobs-toc-heading-5)
+- [五、质量检查](#jobs-toc-heading-6)
+
+</details>
+<!-- jobs-toc:end -->
 
 ---
 
-## 🔥 <font id=前言>前言</font>
+## <span id="jobs-toc-heading-1" data-jobs-toc="v2">🔥 <font id=前言>前言</font></span><!-- jobs-toc:heading-end -->
 
 > 本技能用于复刻 Jobs 认可的汉字手写 Lottie 动画：汉字必须按真实笔顺一笔一画写出来，没有被笔划过的地方不能提前出现。
 
-## 一、核心标准 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-2" data-jobs-toc="v2">一、核心标准 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 必须使用真实汉字笔顺数据，优先用 `hanzi-writer-data` 的 `medians`；不要凭感觉手写 SVG path，也不要让 AI 画近似字形。
 - 每一笔用 Lottie shape path + stroke + trim path 表达，`trim path` 的 end 从 `0 -> 100`，上一笔完成后下一笔再开始。
@@ -23,7 +36,7 @@ description: 当任务涉及汉字一笔一画手写 Lottie、中文标题笔顺
 - 允许保留笔尖、阴影、高光和已完成笔画，但它们都必须跟随同一笔画路径的 trim 进度出现。
 - 最终效果应是“人手按笔顺写出来”，不是“完整汉字先淡出淡入，再顺便画几条线”。
 
-## 二、生成流程 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-3" data-jobs-toc="v2">二、生成流程 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 1、明确要写的文字，例如 `蒸肉`、`主标题`、`豆花`。
 
@@ -43,7 +56,7 @@ description: 当任务涉及汉字一笔一画手写 Lottie、中文标题笔顺
 
 5、修改或新增多个标题时，为每个入口生成独立 JSON，名称要稳定，便于 Controller 按标题映射资源。
 
-## 三、Lottie 结构约束 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-4" data-jobs-toc="v2">三、Lottie 结构约束 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - `layers` 里每一笔至少有一层 `Ink stroke N`，并且该层必须同时包含：
   - `ty: "sh"`：来自当前笔画 median points 的路径。
@@ -54,7 +67,7 @@ description: 当任务涉及汉字一笔一画手写 Lottie、中文标题笔顺
 - 多字标题按字符顺序写；同一字内部按 `hanzi-writer-data` 的 stroke 顺序写；字符之间可以留短暂停顿。
 - 中文坐标需要从 Hanzi Writer 的 `1024 x 1024` 字框映射到 Lottie 画布，并反转 y 轴：`mappedY = startY + ((1024 - y) / 1024) * charSize`。
 
-## 四、视觉参数 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-5" data-jobs-toc="v2">四、视觉参数 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 默认画布可用 `420 x 130`，用于标题区横向文字；多字标题按总宽度居中。
 - 主笔画宽度建议约为 `charSize * 0.08`，阴影略宽，高光约主笔画三分之一。
@@ -62,7 +75,7 @@ description: 当任务涉及汉字一笔一画手写 Lottie、中文标题笔顺
 - 每笔持续时间按路径长度估算，短笔不小于约 `4.2` 帧，长笔不大于约 `10.5` 帧；笔画之间留约 `1.8` 帧呼吸。
 - 笔尖可以是小椭圆，跟随当前笔画路径移动，结束后消失。
 
-## 五、质量检查 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-6" data-jobs-toc="v2">五、质量检查 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 逐帧看动画开头：第一笔未开始前，不能看到任何完整字形或浅色底字。
 - 暂停在中间帧：只能看到已经写过的笔画和正在写的当前笔画，不能看到未来笔画。

@@ -2,15 +2,31 @@
 
 ![Jobs出品，必属精品](https://picsum.photos/1500/400)
 
-[toc]
+<!-- jobs-toc:start -->
+<!-- jobs-toc:source {"v":2,"token":"[toc]"} -->
+<details>
+<summary>📚 目录（点击展开 / 收起）</summary>
+
+- [🔥 前言](#jobs-toc-heading-1)
+- [一、目录职责](#jobs-toc-heading-2)
+- [二、Git 管理边界](#jobs-toc-heading-3)
+- [三、外援软链接溯源](#jobs-toc-heading-4)
+- [四、溯源与恢复检查](#jobs-toc-heading-5)
+- [五、双向选择同步](#jobs-toc-heading-6)
+- [六、本仓维护的脚本](#managed-script-overview)
+  - [同步Skills.command](#jobs-toc-heading-8)
+  - [audit\_codex\_configs.zsh](#jobs-toc-heading-9)
+
+</details>
+<!-- jobs-toc:end -->
 
 ---
 
-## 🔥 <font id=前言>前言</font>
+## <span id="jobs-toc-heading-1" data-jobs-toc="v2">🔥 <font id=前言>前言</font></span><!-- jobs-toc:heading-end -->
 
 > 本仓库管理 [**JobsSkills**](https://github.com/JobsKits/JobsSkills)，可作为 [**Codex**](https://openai.com/codex) 用户级 `Skills` 的运行工作树，也可挂载为配置父仓的子模块。Jobs 自有 `Skill`、外部安装的 `Skill` 和外援软链接可以同时出现，但必须分清所有权、上游来源和 [**Git**](https://git-scm.com/) 跟踪边界。
 
-## 一、目录职责 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-2" data-jobs-toc="v2">一、目录职责 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 唯一标准仓库是 `https://github.com/JobsKits/JobsSkills`，`~/.agents/skills` 是现行、内容最完整的基准工作树。
 - `💻JobsCodexConfigs/skills` 是 `JobsCodexConfigs` 父仓对本仓库的 Git 子模块挂载点，便于父仓记录所使用的 `JobsSkills` 版本；自动配置注入不反向覆盖现行工作树。需要手动同步时，使用本目录 `同步Skills.command` 明确选择方向和范围，预览确认后执行。
@@ -25,7 +41,7 @@
 | [.gitignore](./.gitignore) | 外援链接与运行态文件的精确 Git 排除规则。 |
 | [README.md](./README.md) | 本仓结构、所有权、来源映射及本仓维护脚本的说明。 |
 
-## 二、Git 管理边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-3" data-jobs-toc="v2">二、Git 管理边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | 类型 | Git 处理 | 信息来源 |
 | --- | --- | --- |
@@ -37,7 +53,7 @@ Git 对软链接只保存“目标路径字符串”，不保存链接目标的�
 
 `.gitignore` 中使用完整链接名称，不使用 `/understand*` 之类的宽泛规则，避免误伤以后新增的同前缀自有 `Skill`。
 
-## 三、外援软链接溯源 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-4" data-jobs-toc="v2">三、外援软链接溯源 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 上游项目：[**Understand Anything**](https://github.com/Lum1104/Understand-Anything)
 - 上游 Git 地址：`https://github.com/Lum1104/Understand-Anything.git`
@@ -56,7 +72,7 @@ Git 对软链接只保存“目标路径字符串”，不保存链接目标的�
 | `understand-knowledge` | `understand-anything-plugin/skills/understand-knowledge` |
 | `understand-onboard` | `understand-anything-plugin/skills/understand-onboard` |
 
-## 四、溯源与恢复检查 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-5" data-jobs-toc="v2">四、溯源与恢复检查 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 1、检查上游地址和当前版本：
 
@@ -75,7 +91,7 @@ done
 
 3、链接失效时，先恢复上游仓库，再按本文档映射表重建链接；软链接不进入本仓库 Git 索引，也不把外援源码混入 Jobs 自有 `Skill` 内容。手动同步外援 `Skill` 时生成独立实体副本，来源仍按上游映射追溯。
 
-## 五、双向选择同步 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-6" data-jobs-toc="v2">五、双向选择同步 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 在本目录双击 `同步Skills.command`，或在终端运行：
 
@@ -118,7 +134,7 @@ done
 
 ## 六、<span id="managed-script-overview">本仓维护的脚本</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### [同步Skills.command](./同步Skills.command)
+### <span id="jobs-toc-heading-8" data-jobs-toc="v2">[同步Skills.command](./同步Skills.command)</span><!-- jobs-toc:heading-end -->
 
 > **目的：** 手动选择 Skill 包，在系统用户级工作树与当前目录之间同步，并保留恢复备份。
 
@@ -130,7 +146,7 @@ done
   * 同名源文件覆盖，目标独有文件保留；软链接实体化，不写入外援上游。
 * 输出结果、日志和备份位置；失败时保留现场，已完成包不自动回滚。
 
-### [audit_codex_configs.zsh](./jobs-codex-config-audit/scripts/audit_codex_configs.zsh)
+### <span id="jobs-toc-heading-9" data-jobs-toc="v2">[audit_codex_configs.zsh](./jobs-codex-config-audit/scripts/audit_codex_configs.zsh)</span><!-- jobs-toc:heading-end -->
 
 > **目的：** 只读检查全局指导、现行 JobsSkills 及配置父仓的规则和版本关系。
 

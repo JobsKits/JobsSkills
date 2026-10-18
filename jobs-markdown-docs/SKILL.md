@@ -7,17 +7,31 @@ description: 当任务涉及 Markdown、README、技术文档、表格、流程�
 
 ![Jobs出品，必属精品](https://picsum.photos/1500/400)
 
-[toc]
+<!-- jobs-toc:start -->
+<!-- jobs-toc:source {"v":2,"token":"[toc]"} -->
+<details>
+<summary>📚 目录（点击展开 / 收起）</summary>
+
+- [🔥 前言](#jobs-toc-heading-1)
+- [一、Markdown 文档（\*.md）](#jobs-toc-heading-2)
+  - [1.1、整体风格](#jobs-toc-heading-3)
+  - [1.2、代码块与缩进](#jobs-toc-heading-4)
+  - [1.3、外链、表格与流程图](#jobs-toc-heading-5)
+    - [1.3.1、专有名词固定超链接](#jobs-toc-heading-6)
+  - [1.4、README 固定内容](#jobs-toc-heading-7)
+
+</details>
+<!-- jobs-toc:end -->
 
 ---
 
-## 🔥 <font id=前言>前言</font>
+## <span id="jobs-toc-heading-1" data-jobs-toc="v2">🔥 <font id=前言>前言</font></span><!-- jobs-toc:heading-end -->
 
 > 本技能由 `💻JobsCodexConfigs/AGENTS.md` 拆分而来，保留原有 Jobs 工作规范。只有当前任务命中本技能描述时才加载本文件，避免把所有细则长期塞进全局上下文。
 
-## 一、[**Markdown**](https://markdown.cn) 文档（`*.md`） <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-2" data-jobs-toc="v2">一、[**Markdown**](https://markdown.cn) 文档（`*.md`） <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1.1、整体风格 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-3" data-jobs-toc="v2">1.1、整体风格 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - Jobs 的 `.md` 文档默认使用中文技术笔记风格，结构清楚、标题醒目、能直接复制命令执行。
 - 修改 `AGENTS.md` 本身时，也必须反哺本文件：把它当成普通 [**Markdown**](https://markdown.cn) 技术文档同步套用本章规则，专有名词按固定链接表补链，归属于上一条的补充内容必须右缩进。
@@ -84,7 +98,7 @@ description: 当任务涉及 Markdown、README、技术文档、表格、流程�
   <a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>
   ```
 
-### 1.2、代码块与缩进 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-4" data-jobs-toc="v2">1.2、代码块与缩进 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 命令示例统一使用 fenced code block，并标注语言。
 - 凡是内容属于上一条说明的补充、示例或展开，都必须向右缩进两个空格，让视觉层级归属于上一条；包括代码块、表格、引用、图片、[**Mermaid**](https://mermaid.js.org) 流程图、子列表。
@@ -116,7 +130,7 @@ description: 当任务涉及 Markdown、README、技术文档、表格、流程�
 
 - [**Markdown**](https://markdown.cn) 中的路径、命令、文件名、变量名都用反引号包起来，例如 `LOG_FILE`、`$TMPDIR/脚本名.log`、`README.md`。
 
-### 1.3、外链、表格与流程图 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-5" data-jobs-toc="v2">1.3、外链、表格与流程图 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 正文中出现可识别的外部产品、第三方工具、框架、语言或平台时，第一次出现必须使用官方链接并加粗名称，格式为 `[**名称**](URL)`，例如 [**Homebrew**](https://brew.sh/)、[**Flutter**](https://flutter.dev/)、[**CocoaPods**](https://cocoapods.org/)、[**Mermaid**](https://mermaid.js.org)。后续出现时可按阅读需要继续加链接。
 - 标题、表格、正文均按首次出现原则加链接；代码块、命令、路径、文件名里的字面量不要加链接。
@@ -125,7 +139,7 @@ description: 当任务涉及 Markdown、README、技术文档、表格、流程�
 - 对用户有风险的地方要写明白，不要藏在代码块后面。危险动作必须在文档里说明确认方式，例如“必须输入 `YES` 才会继续”。
 - 文档语气可以保留 Jobs 风格短句，例如“Jobs出品，必属精品”“我是有底线的”，但正文要优先服务操作，不堆装饰。
 
-#### 1.3.1、专有名词固定超链接 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+#### <span id="jobs-toc-heading-6" data-jobs-toc="v2">1.3.1、专有名词固定超链接 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 写 [**Markdown**](https://markdown.cn) / README / AGENTS 这类技术文档时，外部产品和第三方专有名词必须在正文第一次出现时写成 `[**名称**](官方URL)`；下表固定名称必须使用给定链接。需要强调或便于点击时，后续也可以继续加链接。
 - 用户指定需要下划线的专有名词，仍须保留加粗超链接；例如 [**Swift**](https://www.swift.org/) 应写成 `<u>[**Swift**](https://www.swift.org/)</u>`。
@@ -183,7 +197,7 @@ description: 当任务涉及 Markdown、README、技术文档、表格、流程�
   | [**JobsKits**](https://github.com/JobsKits)                        | `JobsKits`                                        | `https://github.com/JobsKits`                  |
   | [**JobsDocs Shell 脚本代码片段**](https://github.com/JobsKits/JobsDocs/blob/main/🔥Shell脚本代码片段.md/Shell脚本代码片段.md) | `Shell脚本代码片段` / `JobsDocs 脚本片段`        | `https://github.com/JobsKits/JobsDocs/blob/main/🔥Shell脚本代码片段.md/Shell脚本代码片段.md` |
 
-### 1.4、README 固定内容 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-7" data-jobs-toc="v2">1.4、README 固定内容 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 每个可双击脚本目录优先放同名脚本和 `README.md`；Python 工具系列如果采用外层多平台入口脚本 + 内层 Python 工程结构，不要求每个 `.bat` / `.command` 单独配套 `README.md`，由外层总 `README.md` 统一说明各入口。
 - 脚本 README 是 Jobs 脚本“三层自述”的第一层：它位于脚本文件之外，通常与主脚本平级，面向用户运行前阅读；它必须描述脚本行为特征，但不能替代脚本头部注释自述和运行时内置自述。

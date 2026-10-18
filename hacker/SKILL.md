@@ -7,39 +7,57 @@ description: 当任务涉及 Hacker、安全研究、恶意仓库静态审阅、
 
 ![Jobs出品，必属精品](https://picsum.photos/1500/400)
 
-[toc]
+<!-- jobs-toc:start -->
+<!-- jobs-toc:source {"v":2,"token":"[toc]"} -->
+<details>
+<summary>📚 目录（点击展开 / 收起）</summary>
+
+- [🔥 前言](#jobs-toc-heading-1)
+- [一、核心边界](#jobs-toc-heading-2)
+  - [1.1、允许做什么](#jobs-toc-heading-3)
+  - [1.2、不能做什么](#jobs-toc-heading-4)
+- [二、处理流程](#jobs-toc-heading-5)
+  - [2.1、先确认任务类型](#jobs-toc-heading-6)
+  - [2.2、仓库资料](#jobs-toc-heading-7)
+  - [2.3、输出格式](#jobs-toc-heading-8)
+- [三、执行原则](#jobs-toc-heading-9)
+  - [3.1、本地操作](#jobs-toc-heading-10)
+  - [3.2、证据优先](#jobs-toc-heading-11)
+
+</details>
+<!-- jobs-toc:end -->
 
 ---
 
-## 🔥 <font id=前言>前言</font>
+## <span id="jobs-toc-heading-1" data-jobs-toc="v2">🔥 <font id=前言>前言</font></span><!-- jobs-toc:heading-end -->
 
 > 本技能用于把 Hacker / 攻防工具相关任务收束到授权、安全、可审计的工作流里。遇到高风险仓库时，优先做静态理解、风险拆解、检测建议和防御侧落地，不把工具变成可直接滥用的操作手册。
 
-## 一、核心边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-2" data-jobs-toc="v2">一、核心边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1.1、允许做什么 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-3" data-jobs-toc="v2">1.1、允许做什么 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 可以帮助用户做授权范围内的安全研究、代码审阅、仓库结构理解、风险等级判断、依赖和构建面梳理。
 - 可以从恶意或双用途项目中提取防御信息：可疑行为、网络特征、文件落点、配置项、IOC、日志关注点、检测规则思路、加固建议。
 - 可以辅助合法的靶场、实验室、CTF、内部红队和蓝队演练，但必须保持在用户明确授权的系统、账号、域名、IP、样本和测试窗口内。
 - 可以解释工具的高层用途、模块边界和防守视角的使用方式，避免给出可复制执行的攻击链。
 
-### 1.2、不能做什么 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-4" data-jobs-toc="v2">1.2、不能做什么 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 不提供 RAT 部署、远控上线、持久化、提权、横向移动、免杀、绕过检测、窃取凭据、数据外传或真实攻击的步骤。
 - 不帮助用户攻击第三方目标、扫描公网随机目标、绕过登录或访问控制、隐藏痕迹、规避安全产品。
 - 不生成或改造恶意载荷、钓鱼内容、后门、逃逸逻辑、漏洞武器化脚本。
 - 对高风险请求要改写为防御版输出：说明风险、给出安全替代方案、提供检测和加固路径。
 
-## 二、处理流程 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-5" data-jobs-toc="v2">二、处理流程 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 2.1、先确认任务类型 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-6" data-jobs-toc="v2">2.1、先确认任务类型 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 用户要求理解仓库、总结能力、审计代码、做检测规则或写防御文档时，直接进入静态分析流程。
 - 用户要求运行、安装、连接、攻击、绕过、投放、上线、控制目标时，先检查是否是明确授权实验环境；如果授权不清晰，拒绝攻击性步骤并改为防御分析。
 - 用户给出样本、日志、网络流量或告警时，优先做证据整理：时间线、入口点、行为链、影响面、处置建议。
 
-### 2.2、仓库资料 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-7" data-jobs-toc="v2">2.2、仓库资料 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 遇到本技能内置仓库时，按需读取 `references/repositories.md`：
   - [**NYAN-x-CAT/AsyncRAT-C-Sharp**](https://github.com/NYAN-x-CAT/AsyncRAT-C-Sharp)
@@ -49,7 +67,7 @@ description: 当任务涉及 Hacker、安全研究、恶意仓库静态审阅、
 - 读取仓库时优先看 `README`、许可证、目录结构、构建文件、配置文件、网络通信代码、插件/模块入口、示例文件和 issue 中的风险提示。
 - 不要为了理解而默认执行高风险项目。需要本地复现时，必须确认授权范围、隔离环境、网络出口策略、日志留存和回滚方式。
 
-### 2.3、输出格式 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-8" data-jobs-toc="v2">2.3、输出格式 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 防御审阅优先输出：
   - 项目定位
@@ -68,16 +86,16 @@ description: 当任务涉及 Hacker、安全研究、恶意仓库静态审阅、
   - 证据留存
   - 回滚方案
 
-## 三、执行原则 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-9" data-jobs-toc="v2">三、执行原则 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 3.1、本地操作 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-10" data-jobs-toc="v2">3.1、本地操作 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 默认只读，不主动运行未知二进制、脚本、安装器、恶意样本或攻击框架。
 - 需要读取代码时，先检查仓库是否有 `.codegraph/`；存在则优先用 CodeGraph 理解调用链，不存在再用 `rg`、语言生态工具和手工阅读。
 - 批量扫描时跳过 `.git`、`node_modules`、`Pods`、`.dart_tool`、`build`、`DerivedData`、虚拟环境、编译产物和下载缓存。
 - 任何会改系统配置、开监听端口、发网络请求、修改防火墙、启动代理、安装依赖或执行样本的动作，都必须先说明影响面并确认任务需要。
 
-### 3.2、证据优先 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-11" data-jobs-toc="v2">3.2、证据优先 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 安全判断要标注依据：文件路径、函数名、配置项、日志字段、网络端点或文档链接。
 - 区分“已在当前材料中确认”和“基于同类工具的推断”，不要把推断说成事实。

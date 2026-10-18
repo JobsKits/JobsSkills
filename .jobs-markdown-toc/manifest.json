@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "files": [
+    ".jobs-markdown-toc/README.md",
+    "README.md",
+    "hacker/SKILL.md",
+    "hacker/references/repositories.md",
+    "jobs-auth-switch-motion/SKILL.md",
+    "jobs-codex-config-audit/SKILL.md",
+    "jobs-dart-flutter/SKILL.md",
+    "jobs-git-repository/SKILL.md",
+    "jobs-lottie-stroke-writing/SKILL.md",
+    "jobs-macos-shell/SKILL.md",
+    "jobs-markdown-docs/SKILL.md",
+    "jobs-objective-c-pods/SKILL.md",
+    "jobs-obsidian-memory/SKILL.md",
+    "jobs-podspec/SKILL.md",
+    "jobs-python/SKILL.md",
+    "jobs-swift/SKILL.md"
+  ]
+}

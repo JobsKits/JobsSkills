@@ -1,0 +1,19 @@
+
+# jobs-markdown-toc:start
+"/.jobs-markdown-toc/README.md" filter=jobs-markdown-toc
+"/README.md" filter=jobs-markdown-toc
+"/hacker/SKILL.md" filter=jobs-markdown-toc
+"/hacker/references/repositories.md" filter=jobs-markdown-toc
+"/jobs-auth-switch-motion/SKILL.md" filter=jobs-markdown-toc
+"/jobs-codex-config-audit/SKILL.md" filter=jobs-markdown-toc
+"/jobs-dart-flutter/SKILL.md" filter=jobs-markdown-toc
+"/jobs-git-repository/SKILL.md" filter=jobs-markdown-toc
+"/jobs-lottie-stroke-writing/SKILL.md" filter=jobs-markdown-toc
+"/jobs-macos-shell/SKILL.md" filter=jobs-markdown-toc
+"/jobs-markdown-docs/SKILL.md" filter=jobs-markdown-toc
+"/jobs-objective-c-pods/SKILL.md" filter=jobs-markdown-toc
+"/jobs-obsidian-memory/SKILL.md" filter=jobs-markdown-toc
+"/jobs-podspec/SKILL.md" filter=jobs-markdown-toc
+"/jobs-python/SKILL.md" filter=jobs-markdown-toc
+"/jobs-swift/SKILL.md" filter=jobs-markdown-toc
+# jobs-markdown-toc:end
