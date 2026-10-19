@@ -1,10 +1,10 @@
-# <span id="前言">Capacity Planning Guide</span>
+# Capacity Planning Guide
 
-Comprehensive guide for planning Azure AI Foundry capacity, including cost analysis, model selection, and workload calculations.
+Comprehensive guide for planning Microsoft Foundry capacity, including cost analysis, model selection, and workload calculations.
 
 **Table of Contents:** [Cost Comparison: TPM vs PTU](#cost-comparison-tpm-vs-ptu) · [Production Workload Examples](#production-workload-examples) · [Model Selection and Deployment Type Guidance](#model-selection-and-deployment-type-guidance)
 
-## Cost Comparison: TPM vs PTU <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Cost Comparison: TPM vs PTU
 
 > **Official Pricing Sources:**
 > - [Azure OpenAI Service Pricing](https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/) - Official pay-per-token rates
@@ -34,7 +34,7 @@ Step 1: Calculate monthly TPM cost
 
 Step 2: Calculate monthly PTU cost
   Monthly PTU cost = Required PTUs × 730 hours/month × $PTU-hour rate
-  (Get Required PTUs from Azure AI Foundry portal: Microsoft Foundry → Operate → Quota → Provisioned Throughput Unit tab)
+  (Get Required PTUs from Microsoft Foundry portal: Microsoft Foundry → Operate → Quota → Provisioned Throughput Unit tab)
 
 Step 3: Compare
   Use PTU when: Monthly PTU cost < (Monthly TPM cost × 0.7)
@@ -50,11 +50,11 @@ Scenario: 1M requests/day, average 1,000 tokens per request
 - **PTU Cost** (estimated 100 PTU at ~$5/PTU-hour): 100 PTU × 730 hours × $5 = ~$365,000/month
 - **Decision**: Use TPM (significantly lower cost for this workload)
 
-> **Important**: Always use the official [Azure Pricing Calculator](https://azure.microsoft.com/pricing/calculator/) and Azure AI Foundry portal PTU calculator (Microsoft Foundry → Operate → Quota → Provisioned Throughput Unit tab) for exact pricing by model, region, and workload. Prices vary by region and are subject to change.
+> **Important**: Always use the official [Azure Pricing Calculator](https://azure.microsoft.com/pricing/calculator/) and Microsoft Foundry portal PTU calculator (Microsoft Foundry → Operate → Quota → Provisioned Throughput Unit tab) for exact pricing by model, region, and workload. Prices vary by region and are subject to change.
 
 ---
 
-## Production Workload Examples <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Production Workload Examples
 
 To estimate quota requirements, use real-world production scenarios with capacity calculations for gpt-4, version 0613 (from Azure Foundry Portal calculator):
 
@@ -75,7 +75,7 @@ To calculate your quota needs for production deployments, follow these steps:
 4. **Calculate total tokens/min**: (Calls/min × (Prompt tokens + Response tokens)) × (1 - Cache %)
 5. **Choose deployment type**:
    - **TPM (Standard)**: Allocate 1.5-2× your calculated tokens/min for headroom
-   - **PTU (Provisioned)**: Use Azure AI Foundry portal PTU calculator for exact PTU count (Microsoft Foundry → Operate → Quota → Provisioned Throughput Unit tab)
+   - **PTU (Provisioned)**: Use Microsoft Foundry portal PTU calculator for exact PTU count (Microsoft Foundry → Operate → Quota → Provisioned Throughput Unit tab)
 
 **Example Calculation (RAG Chat Production):**
 - Peak: 10 calls/min
@@ -90,7 +90,7 @@ For the combined workload (40 calls/min, 135K tokens/min total), use **200 PTU**
 
 ---
 
-## Model Selection and Deployment Type Guidance <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Model Selection and Deployment Type Guidance
 
 > **Official Documentation:**
 > - [Choose the Right AI Model for Your Workload](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/choose-ai-model) - Microsoft Architecture Center
@@ -122,11 +122,9 @@ For the combined workload (40 calls/min, 135K tokens/min total), use **200 PTU**
 To calculate and estimate your capacity requirements:
 
 1. **Calculate your TPM requirements**: Determine required tokens per minute based on your expected workload
-2. **Use the built-in capacity planner**: Available in Azure AI Foundry portal (Microsoft Foundry → Operate → Quota → Provisioned Throughput Unit tab)
+2. **Use the built-in capacity planner**: Available in Microsoft Foundry portal (Microsoft Foundry → Operate → Quota → Provisioned Throughput Unit tab)
 3. **Input your metrics**: Enter input TPM and output TPM based on your workload characteristics
 4. **Get PTU recommendation**: The calculator provides PTU allocation recommendation
 5. **Compare costs**: Evaluate Standard (TPM) vs Provisioned (PTU) using the official pricing calculator
 
 > **Note**: Microsoft does not publish specific "X requests/day = Y TPM" recommendations as capacity requirements vary significantly based on prompt size, response length, cache hit rates, and model choice. Use the built-in capacity planner with your actual workload characteristics.
-
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

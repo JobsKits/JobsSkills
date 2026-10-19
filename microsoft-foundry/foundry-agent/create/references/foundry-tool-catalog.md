@@ -1,13 +1,15 @@
-# <span id="前言">Foundry Tool Catalog — Project Connections for Remote Tools</span>
+# Foundry Tool Catalog — Project Connections for Remote Tools
 
 Reference for wiring a **remote tool** (catalog tile or generic MCP server) into a Foundry project as a `RemoteTool` project connection, so a toolbox can attach to it.
 
+> 🚦 **Toolbox creation gate:** before creating a toolbox/connection, you MUST read the boundary rules in [create-hosted.md → Toolbox creation boundary](../create-hosted.md#toolbox-creation-boundary) and follow them, then continue with the rest of this file.
+
 Three catalog backends cooperate: the **asset-gallery** index discovers connectors, the Logic Apps **managedApis** GET supplies OAuth metadata, and the Logic Apps **apiOperations** GET supplies the operation list and input schemas. Skip these calls only for fully BYO `generic_mcp` servers — every catalog-MCP or connector-namespace flow needs all three.
 
-> 📘 For the toolbox MCP endpoint, protocol, and testing, see [toolbox-reference.md](toolbox-reference.md).
-> 📘 For prompt-agent MCP wiring (without a toolbox), see [tool-mcp.md](tool-mcp.md).
+> 📘 For the toolbox MCP endpoint, protocol, and testing, see [use-toolbox-in-hosted-agent.md](use-toolbox-in-hosted-agent.md).
+> 📘 For prompt-agent MCP wiring (without a toolbox), see [tool-mcp.md](tools/prompt-agent/tool-mcp.md).
 
-## When to use this reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## When to use this reference
 
 Use when the user mentions any of:
 
@@ -21,7 +23,7 @@ Use when the user mentions any of:
 
 Do **not** use for: non-tool connections (Azure OpenAI, AI Search account, Storage), or general toolbox CRUD beyond the attach-and-verify recipe below.
 
-## Inputs to gather upfront <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Inputs to gather upfront
 
 Before generating any PUT body, ask the user in one batched question for:
 
@@ -36,7 +38,7 @@ Before generating any PUT body, ask the user in one batched question for:
 
 The caller's AAD `oid` / `tid` (needed only for the consent-link step) are auto-discovered via `az ad signed-in-user show --query id -o tsv` and `az account show --query tenantId -o tsv`. For a service-principal caller, use `az ad sp show --id <appId>` instead. These values can also be read from the `oid` / `tid` claims on the ARM bearer token; the gateway validates the caller principal owns them.
 
-## ARM endpoint (shared by every variant) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## ARM endpoint (shared by every variant)
 
 ```
 PUT https://management.azure.com/subscriptions/{sub}/resourceGroups/{rg}
@@ -44,20 +46,20 @@ PUT https://management.azure.com/subscriptions/{sub}/resourceGroups/{rg}
     /projects/{proj}/connections/{name}?api-version=2025-04-01-preview
 ```
 
-### Preflight RBAC <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Preflight RBAC
 
-Caller needs **Azure AI Developer** or **Cognitive Services Contributor** on the project scope. Run this before the first PUT to surface 403s early:
+Caller needs **Foundry Project Manager** or **Cognitive Services Contributor** on the project scope. Run this before the first PUT to surface 403s early:
 
 ```pwsh
 $oid = az ad signed-in-user show --query id -o tsv
 $projId = "/subscriptions/$sub/resourceGroups/$rg/providers/Microsoft.CognitiveServices/accounts/$acct/projects/$proj"
-az role assignment list --assignee $oid --scope $projId --all `
-  --query "[?roleDefinitionName=='Azure AI Developer' || roleDefinitionName=='Cognitive Services Contributor'].roleDefinitionName" -o tsv
+az role assignment list --assignee $oid --scope $projId --include-inherited --all `
+  --query "[?roleDefinitionName=='Foundry Project Manager' || roleDefinitionName=='Cognitive Services Contributor'].roleDefinitionName" -o tsv
 ```
 
 Empty output → caller lacks the required role; expect `403 AuthorizationFailed` on PUT until granted.
 
-### Common request template <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Common request template
 
 ```pwsh
 $tok = az account get-access-token --resource "https://management.azure.com" --query accessToken -o tsv
@@ -66,7 +68,7 @@ $uri = "https://management.azure.com/subscriptions/$sub/resourceGroups/$rg/provi
 Invoke-WebRequest -Method PUT -Headers $h -UseBasicParsing -Body $body -Uri $uri
 ```
 
-### Body invariants <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Body invariants
 
 - `properties.target` is **required** for every `authType` (validation rejects empty). The exact value depends on the variant — see each body shape. For `gateway_connector` specifically, the literal string `"https://placeholder"` is the correct value on PUT #1 and is **rewritten by the platform on PUT #2** to the real gateway URL.
 - `properties.group` is server-filled (`GenericProtocol` for `RemoteTool`).
@@ -76,7 +78,7 @@ Invoke-WebRequest -Method PUT -Headers $h -UseBasicParsing -Body $body -Uri $uri
 Allowed `authType` for `category=RemoteTool` (per `api-version=2025-04-01-preview`):
 `None, CustomKeys, OAuth2, ProjectManagedIdentity, DeveloperConnection, UserEntraToken, AgentUserImpersonation, AgenticIdentityToken, AgenticUser, UserTokenAndProjectManagedIdentity`. `ApiKey` is **rejected** for `RemoteTool`. The authoritative list is whatever the [Cognitive Services projects API reference](https://learn.microsoft.com/rest/api/aiservices/) returns for the current API version — if you hit `invalid_payload: unsupported authType`, re-check against the schema for the version you're calling.
 
-## Decision tree <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Decision tree
 
 | User scenario | `authType` | `metadata.type` | Notes |
 |---|---|---|---|
@@ -88,11 +90,11 @@ Allowed `authType` for `category=RemoteTool` (per `api-version=2025-04-01-previe
 | Remote MCP, user's Entra token forwarded | `UserEntraToken` | `generic_mcp` | Per-user identity passthrough. Not supported when the agent is published to Teams. Pair with `metadata.audience` for the upstream resource URI. |
 | Custom OpenAPI / A2A tool (no MCP) | varies | n/a | Use the Custom subtab shapes; outside the MCP toolbox path. See [Custom subtab — OpenAPI / A2A](#custom-subtab--openapi--a2a). |
 
-## Catalog APIs — three backends, three calls <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Catalog APIs — three backends, three calls
 
 There are **three** read endpoints the portal hits to populate a connection form. Programmatic callers should use the same three.
 
-### 1. Asset-gallery (Foundry's index) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### 1. Asset-gallery (Foundry's index)
 
 ```
 POST https://eastus.api.azureml.ms/asset-gallery/v1.0/tools
@@ -124,7 +126,7 @@ Two registries are indexed here — distinguished by `entityContainerId`:
 
 Always query both when surfacing "available tools" to a user — the private MCP entries can fill gaps in the public catalog row.
 
-### 2. Logic Apps **managedApis** — OAuth source-of-truth <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### 2. Logic Apps **managedApis** — OAuth source-of-truth
 
 ```
 GET https://management.azure.com/subscriptions/{sub}
@@ -174,7 +176,7 @@ Derive `authType` from `connectionParameters`:
 - Else any parameter with `type: securestring` → `authType = CustomKeys`.
 - Else → `authType = None` (anonymous) or `ProjectManagedIdentity` if the connector explicitly supports MI.
 
-### 3. Logic Apps **apiOperations** — operation catalog (`gateway_connector` only) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### 3. Logic Apps **apiOperations** — operation catalog (`gateway_connector` only)
 
 For `gateway_connector` you need the list of operations the connector exposes plus each operation's parameter schema, because that's what gets serialized into `metadata.mcpserverConfigProperties` on PUT #2. Asset-gallery does not carry this.
 
@@ -208,11 +210,11 @@ Skip any operation whose `properties.isWebhook` or `isNotification` is `true` �
 
 **Picking ops from a plain-language scenario.** Match the user's words against `properties.summary` and `properties.description`, then prefer the simplest variant (fewest required parameters) and the one whose `annotation.family` aligns with the user intent. For Box "list my files", `ListRootFolder` (zero params) wins over `ListFolder` (requires `id`); if the user asks to list a specific folder, register both.
 
-## Gateway connector full flow <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Gateway connector full flow
 
 For Catalog tiles tagged `Custom · Preview` (Box, Pipedrive, GitHub, Salesforce, Outlook, iManage Work, PDF4me, Qdrant, Medallia, Fulcrum, monday.com, SuperMCP, IA-Connect JML, iMIS, Huddo Boards, The Events Calendar, PUG Gamified Engagement, Nitro Sign Enterprise Verified, Soft1, Elfsquad Product Configurator, MintNFT, …).
 
-### Step 1 — Discover <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Step 1 — Discover
 
 Query the asset-gallery (call #1) for the connector. Extract:
 
@@ -221,7 +223,7 @@ Query the asset-gallery (call #1) for the connector. Extract:
 
 Then call managedApis (call #2) and apiOperations (call #3) for OAuth and operation metadata.
 
-### Step 2 — PUT #1 (create connection) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Step 2 — PUT #1 (create connection)
 
 Verbatim PUT body (captured from the portal's Box wizard, 2026-05-21):
 
@@ -250,7 +252,7 @@ Spelling traps (case-sensitive):
 
 `target = "https://placeholder"` is the **persisted value on PUT #1**, not a stub. There is no follow-up call that rewrites it before PUT #2. Runtime dispatch keys off `metadata.toolEntityId` + `metadata.connectionproperties.connectorName` + OAuth consent state. PUT #2 (register-actions) rewrites `target` to the real gateway URL `https://app-XX.<region>.logic.azure.com/api/connectorGateways/{envId}/mcpServerConfigs/{connectionName}/mcp`.
 
-### Step 3 — Per-caller consent <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Step 3 — Per-caller consent
 
 For every distinct end-user (or service principal), call `listConsentLinks`:
 
@@ -277,11 +279,11 @@ Notes:
 - Returns a per-user OAuth authorization URL (e.g. a `box.com/api/oauth2/authorize?...` link). User navigates → consents → gateway stores the token.
 - Cross-tenant calls return `InvalidConsentLinkParameter` (`objectId` + `tenantId` must match the caller principal).
 
-#### Consent link expiry (~1 hour) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+#### Consent link expiry (~1 hour)
 
 Each `listConsentLinks` response mints a short-lived signed token (≈ 1 hour TTL based on `ExpirationTime` in the base64 payload). A `500` from the consent host when clicking the link is most often caused by an **expired or stale link**, not a server outage. Fix: call `listConsentLinks` again to get a fresh link and use it immediately. Do not reuse a link from a previous step or previous session.
 
-#### Portal popup lifecycle (pending-true happy path) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+#### Portal popup lifecycle (pending-true happy path)
 
 The portal pre-opens a blank popup (`about:blank`) before calling `listConsentLinks`, then drives the flow as follows once the consent URL is in hand. Code-first callers should replicate this:
 
@@ -298,11 +300,11 @@ The portal pre-opens a blank popup (`about:blank`) before calling `listConsentLi
 
 The `{ pending: true }` path is the normal happy-path because the provider closes the popup by redirecting to `ai.azure.com/nextgen/authConsentPopup`, which has no JavaScript opener to post back to. **Don't assume consent is done just because the popup closed.** The "blank Foundry page" seen after authorising in a detached tab is this same redirect arriving without an opener — the gateway token is still stored; retry PUT #2 to confirm.
 
-#### Consent-host hosts <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+#### Consent-host hosts
 
 Links served from `logic-apis-df.consent.azure-apim.net` are the **dogfood / INT** consent host (DF = dogfood). Production region traffic goes through `logic-apis-{region}.consent.azure-apim.net` (e.g. `logic-apis-eastus.consent.azure-apim.net`). Either host can return DF links depending on which Logic Apps environment the connector is deployed in; the caller cannot force the host.
 
-#### Dogfood OAuth-app runtime allowlist trap <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+#### Dogfood OAuth-app runtime allowlist trap
 
 Some connectors (Spotify `spotifyip` confirmed) are backed by a **dogfood-env Microsoft OAuth app** registered in provider "development mode" with a hard-coded test-user allowlist. Consent + `Connected` status work fine code-first for any caller, but `tools/call` at runtime returns:
 
@@ -322,7 +324,7 @@ if ($loc -match 'global-test\.consent\.azure-apim\.net') {
 }
 ```
 
-### Step 4 — PUT #2 (register actions) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Step 4 — PUT #2 (register actions)
 
 After OAuth, the portal issues a **second PUT** against the **same connection name** to register which connector operations the agent can invoke. **Without this PUT the runtime has no actions to dispatch even though `overallStatus` shows `Authenticated`.**
 
@@ -386,7 +388,7 @@ Each operation in `operations[]` corresponds 1:1 to one `apiOperations` entry; `
 
 The portal lets the user multi-select via checkboxes in the wizard's "Configure actions" page; the selection is serialized into this string. When the selection changes later, the portal **replaces `mcpserverConfigProperties` wholesale** — no merge. Your code must do the same: any time the agent-callable op list changes, re-run PUT #2 with the full new list.
 
-### Step 5 — `overallStatus` flip semantics <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Step 5 — `overallStatus` flip semantics
 
 Two independent conditions must BOTH be true for `overallStatus` to flip `Unauthenticated` → `Connected`:
 
@@ -398,7 +400,7 @@ Order-independent observations:
 - PUT #2 before consent → `target` rewrites, status stays `Unauthenticated`.
 - Consent before PUT #2 → status stays `Unauthenticated` until PUT #2 fires; PUT #2 then flips to `Connected` in the same response.
 
-## Body shape — `OAuth2` + `catalog_MCP` (Microsoft-managed OAuth) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Body shape — `OAuth2` + `catalog_MCP` (Microsoft-managed OAuth)
 
 Use when the catalog entry is an MCP server and you accept Microsoft's managed OAuth App + consent flow (no BYO secret):
 
@@ -420,7 +422,7 @@ Use when the catalog entry is an MCP server and you accept Microsoft's managed O
 
 For MCP URL discovery when `connectors-registry-prod-bl` lacks `remotes[]`, look up the peer entry in `registry-prod-bl` (e.g. `github-mcp-server`) — its asset-gallery row sometimes carries the canonical MCP URL. Consent uses the same `listConsentLinks` flow as gateway_connector.
 
-## BYO OAuth App against a catalog MCP server <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## BYO OAuth App against a catalog MCP server
 
 When the user has their own OAuth App (e.g. GitHub `https://github.com/organizations/<org>/settings/applications/<app-id>`) and wants the connection to mint tokens via *their* app instead of Microsoft's managed one. Verified shape, 2026-05-21:
 
@@ -439,7 +441,7 @@ When the user has their own OAuth App (e.g. GitHub `https://github.com/organizat
 }
 ```
 
-### Filling the OAuth fields from the catalog APIs <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Filling the OAuth fields from the catalog APIs
 
 1. **Find the connector `entityId`** — asset-gallery POST with `annotations/name contains <name>`. Pull `objectId` out of the returned `entityId`.
 2. **Look up OAuth metadata** — `GET .../managedApis/<objectId>?api-version=2016-06-01`. From `properties.connectionParameters.token.oAuthSettings`:
@@ -448,14 +450,14 @@ When the user has their own OAuth App (e.g. GitHub `https://github.com/organizat
 3. **Supply your own `clientId` / `clientSecret`** in `credentials`. Do not reuse the catalog `clientId` from step 2 — that's Microsoft's managed OAuth App and you cannot mint with it.
 4. **PUT** the body above.
 
-### Hard rules verified by probe (2026-05-21) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Hard rules verified by probe (2026-05-21)
 
 - **`scopes` MUST be a JSON array.** A space-separated string returns `400 "Error when parsing request; unable to deserialize request body"`.
 - **DO NOT send `useCustomConnector`.** It is ignored on input; server fills `false`.
 - **DO NOT send `metadata.{type=catalog_MCP, toolEntityId, ...}`** for BYO. Those fields anchor the connection to the catalog's managed OAuth App and conflict with your supplied `credentials`.
 - **DO NOT call `listConsentLinks`** for BYO — the gateway handles consent via the standard authorization_code flow using the server-filled `redirectUrl`. Calling `listConsentLinks` against a fresh BYO connection returns `404 AIGatewayConnectionNotFound`.
 
-### Server-filled response fields <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Server-filled response fields
 
 - `credentials` → `null` (scrubbed).
 - `connectorName` → `<gatewayId>-<connectionName>` (your input ignored).
@@ -465,11 +467,11 @@ When the user has their own OAuth App (e.g. GitHub `https://github.com/organizat
   3. Register it as the "Authorization callback URL" on the OAuth App.
   4. PUT again with the real client_secret.
 
-### Caveat: `api.githubcopilot.com/mcp` rejects BYO OAuth-App tokens <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Caveat: `api.githubcopilot.com/mcp` rejects BYO OAuth-App tokens
 
 The GitHub Copilot MCP server requires GitHub-App-minted Copilot tokens (the `microsoft-foundry-agent-service` GitHub App). A token from a user OAuth App will be rejected at runtime even if the connection PUT is 200. For real BYO testing point `target` at a self-hosted GitHub MCP server, or use an OpenAPI tool against `api.github.com` instead.
 
-## `ProjectManagedIdentity` Remote MCP <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## `ProjectManagedIdentity` Remote MCP
 
 For MCP servers that accept Azure-side identity (the project's system MI calls the MCP server's bearer endpoint):
 
@@ -486,7 +488,7 @@ For MCP servers that accept Azure-side identity (the project's system MI calls t
 
 For catalog-listed MCP servers, prefer `metadata.type = catalog_MCP` with `toolEntityId` so `target` is prepopulated. `audience` is **required for MI auth** — it tells Foundry which resource URI to request a token for. Read the required `audience` from the connector's catalog entry or its documentation (typical values: an app ID URI like `api://contoso-mcp`, or an Azure service resource ID like `https://cognitiveservices.azure.com`). If you omit `audience`, the MCP server rejects the call with 401.
 
-### `ProjectManagedIdentity` limitations <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### `ProjectManagedIdentity` limitations
 
 Verified end-to-end against Azure Language `/language/mcp`, 2026-05-21:
 
@@ -494,7 +496,7 @@ Verified end-to-end against Azure Language `/language/mcp`, 2026-05-21:
 2. **Forwarder mints the wrong audience.** The MI token Foundry sends does not have `aud=https://cognitiveservices.azure.com` or `https://ai.azure.com`. Setting `properties.audience` on the connection is accepted but **does not** change what is minted.
 3. Endpoints not on the trust list reject the forwarded MI token with `-32007 PERMISSION_DENIED "Cannot pass Microsoft token to untrusted MCP endpoint"` (e.g. `api.githubcopilot.com/mcp`). This is the expected security gate.
 
-## `CustomKeys` Remote MCP <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## `CustomKeys` Remote MCP
 
 Static header(s) injected on every upstream call. Minimum body:
 
@@ -520,7 +522,7 @@ Always read the canonical header set from the connector's `connectionParameters`
 
 For catalog-listed servers, swap `metadata.type` to `catalog_MCP` and add `toolEntityId`.
 
-## `UserEntraToken` Remote MCP <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## `UserEntraToken` Remote MCP
 
 For MCP servers that consume the *caller's* Entra token directly. Body includes `metadata.audience` so the platform mints the correct token for the upstream:
 
@@ -537,7 +539,7 @@ For MCP servers that consume the *caller's* Entra token directly. Body includes 
 
 Not available when the agent is published to Teams (Teams agents use the project MI).
 
-## Custom subtab — OpenAPI / A2A <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Custom subtab — OpenAPI / A2A
 
 Not catalog-driven — the user provides the spec themselves. Each Save in this subtab maps to a single PUT against the same connections endpoint:
 
@@ -547,7 +549,7 @@ Not catalog-driven — the user provides the spec themselves. Each Save in this 
 | A2A (Preview) | `None` / `CustomKeys` / `UserEntraToken` / `AAD` (mapped from UI) | A2A endpoint | `metadata.agentCardPath` default `/.well-known/agent-card.json`; agent gets `tools=[A2APreviewTool(project_connection_id=...)]`; runtime emits `a2a_preview_call` / `a2a_preview_call_output` events. |
 | MCP | covered above | — | This tile is just a router to the catalog / BYO flows. |
 
-## Toolbox attach — `gateway_connector` tool naming <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Toolbox attach — `gateway_connector` tool naming
 
 Attach the same as `generic_mcp` — the tool block uses `type:"mcp"` and `project_connection_id` set to the **full ARM resource id** of the connection (NOT just the name):
 
@@ -597,7 +599,7 @@ POST {dp}/toolboxes/{tb}/mcp?api-version=v1
 
 (`text` carries a JSON-stringified array of Box file/folder objects; empty `[]` means the root folder is empty.)
 
-### `outlook` connector — verified end-to-end (2026-05-22) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### `outlook` connector — verified end-to-end (2026-05-22)
 
 Uses `identityProvider: oauth2generic` (MSA / consumers tenant). `connectorName = "outlook"`, `toolEntityId` objectId = `outlook`. `tools/call` response wraps in `{ "value": [...] }` (not a bare array like Box):
 
@@ -621,11 +623,11 @@ POST {dp}/toolboxes/{tb}/mcp?api-version=v1
 
 Operations registered for the test: `GetEmailsV2` (read emails with `folderPath` / `top` / `fetchOnlyUnread` agent parameters) and `SendEmailV2` (send with `emailMessage` object param containing required `To`, `Subject`, `Body`). `SendEmailV2`'s top-level schema is `object` — pass it as a single nested `agentParameters` entry; the gateway flattens into the Logic Apps `emailMessage` envelope internally. The follow-up PUT after popup close (pending-true path) immediately returned `overallStatus: Connected` without needing the GET poll loop — outlook's MSA consent round-trips are fast.
 
-## Minimum attach + verify recipe <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Minimum attach + verify recipe
 
 Verifying a fresh connection is the only toolbox operation in scope of this reference. Toolboxes are upserted implicitly by `POST /versions`; no separate container create is needed.
 
-The `$dp` value below is the project's data-plane endpoint, in the same `{project_endpoint}` form used elsewhere in these references — `https://<account>.services.ai.azure.com/api/projects/<project>`. The host segment varies by Foundry account/region; read it from a non-`FOUNDRY_`-prefixed env var (see [toolbox-reference.md § Agent env contract](toolbox-reference.md#agent-env-contract)) rather than hardcoding. The bearer-token resource is `https://ai.azure.com`, NOT ARM.
+The `$dp` value below is the project's data-plane endpoint, in the same `{project_endpoint}` form used elsewhere in these references — `https://<account>.services.ai.azure.com/api/projects/<project>`. The host segment varies by Foundry account/region; read it from a non-`FOUNDRY_`-prefixed env var (see [use-toolbox-in-hosted-agent.md § Set TOOLBOX_ENDPOINT](use-toolbox-in-hosted-agent.md#1-set-toolbox_endpoint)) rather than hardcoding. The bearer-token resource is `https://ai.azure.com`, NOT ARM.
 
 ```pwsh
 # 0. Constants.
@@ -636,7 +638,6 @@ $connId = "/subscriptions/<sub>/resourceGroups/<rg>/providers/Microsoft.Cognitiv
 $tok  = az account get-access-token --resource "https://ai.azure.com" --query accessToken -o tsv
 $hdr  = @{ Authorization      = "Bearer $tok"
            "Content-Type"     = "application/json"
-           "Foundry-Features" = "Toolboxes=V1Preview"   # REQUIRED
            Accept             = "application/json, text/event-stream" }
 
 # 1. Create a toolbox version with the connection attached.
@@ -667,17 +668,17 @@ Invoke-WebRequest -Method POST -Headers $hdr -UseBasicParsing -Body $call `
    -Uri "$dp/toolboxes/$tb/mcp?api-version=v1"
 ```
 
-The `Foundry-Features: Toolboxes=V1Preview` header is mandatory — without it the dataplane returns 404. The response body for `/mcp` is plain JSON (no SSE `data:` framing) despite the `text/event-stream` Accept.
+The response body for `/mcp` is plain JSON (no SSE `data:` framing) despite the `text/event-stream` Accept.
 
-## Required RBAC summary <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Required RBAC summary
 
 | Operation | Role |
 |---|---|
-| PUT any connection above | **Azure AI Developer** on the project (or **Cognitive Services Contributor** on the account) |
+| PUT any connection above | **Foundry Project Manager** on the project (or **Cognitive Services Contributor** on the account) |
 | Drive OAuth consent (`gateway_connector`, `catalog_MCP` managed-OAuth) | The end-user themselves, signed in to the subscription's tenant |
 | `ProjectManagedIdentity` against a Cognitive Services upstream | Project MI needs the upstream's data-plane role (e.g. `Cognitive Services Language Owner` for `/language/mcp`) |
 
-## Pitfalls / common mistakes <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Pitfalls / common mistakes
 
 - **Do not forget PUT #2 for `gateway_connector`** ([Step 4](#step-4--put-2-register-actions)). The first PUT + OAuth flips status to `Authenticated` but the runtime has no actions to dispatch until you PUT again with `metadata.mcpserverConfigProperties`.
 - **Do not invent a "real" target URL** for the `gateway_connector` flow on PUT #1. `"https://placeholder"` is correct on PUT #1; PUT #2 rewrites it.
@@ -691,20 +692,18 @@ The `Foundry-Features: Toolboxes=V1Preview` header is mandatory — without it t
 - **`metadata.audience` is required for `ProjectManagedIdentity`.** Without it the MCP server returns 401.
 - **Header names for `CustomKeys` come from the catalog**, not from a default `Authorization: Bearer` template.
 - **`ApiKey` is rejected** for `category=RemoteTool`. Use `CustomKeys` for static secrets.
-- **OAuth consent is per-user, per-connection, per-project.** Each new caller hits `CONSENT_REQUIRED` (code `-32007`) once and must open the URL the toolbox returns.
+- **OAuth consent is per-user, per-connection, per-project.** Each new caller hits `CONSENT_REQUIRED` once (returned as a nested string code inside an outer `-32006` error) and must open the URL the toolbox returns.
 - **`api.githubcopilot.com/mcp` rejects user OAuth-App tokens.** Use a self-hosted MCP or fall back to OpenAPI.
 - **PMI forwarder drops `target` query strings and mints a fixed audience.** Setting `properties.audience` is accepted but does not change what is sent.
 - **Network-secured Foundry** projects cannot use private-endpoint-only MCP servers — only public endpoints reachable from the Foundry data plane and the Connector Namespace.
 
-## References <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## References
 
 - [Tool Catalog](https://learn.microsoft.com/azure/foundry/agents/concepts/tool-catalog)
 - [Toolbox (preview)](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/toolbox)
 - [Private tools catalog](https://learn.microsoft.com/azure/foundry/agents/concepts/tool-catalog#private-tools-catalog)
 - [Cognitive Services projects REST API](https://learn.microsoft.com/rest/api/aiservices/)
-- [tool-mcp.md](tool-mcp.md) — prompt-agent MCP wiring (no toolbox)
-- [toolbox-reference.md](toolbox-reference.md) — MCP endpoint, auth, testing, troubleshooting
-- [agent-tools.md](agent-tools.md) — the agent-tools index
+- [tool-mcp.md](tools/prompt-agent/tool-mcp.md) — prompt-agent MCP wiring (no toolbox)
+- [use-toolbox-in-hosted-agent.md](use-toolbox-in-hosted-agent.md) — MCP endpoint, auth, testing, troubleshooting
+- [agent-tools.md](tools/prompt-agent/agent-tools.md) — the agent-tools index
 - [use-toolbox-in-hosted-agent.md](use-toolbox-in-hosted-agent.md) — wiring a toolbox into a hosted agent
-
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

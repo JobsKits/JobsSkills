@@ -5,9 +5,9 @@ license: MIT
 allowed-tools: Read, Write, Bash, AskUserQuestion, microsoft_docs_search, microsoft_docs_fetch
 ---
 
-# <span id="前言">Microsoft Foundry Private Networking</span>
+# Microsoft Foundry Private Networking
 
-## Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Quick Reference
 
 | Property | Value |
 |----------|-------|
@@ -16,16 +16,18 @@ allowed-tools: Read, Write, Bash, AskUserQuestion, microsoft_docs_search, micros
 | **MCP Tools** | `AskUserQuestion` - ask user questions; `microsoft_docs_search` - verify facts before presenting; `microsoft_docs_fetch` - fetch full Learn pages for validation |
 | **Workflow** | Ground in Learn → Gather → Plan → Scaffold → Validate → Deploy → Test |
 
-### Key Documentation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Key Documentation
 
 | Topic | URL |
 |-------|-----|
-| Network isolation | https://learn.microsoft.com/azure/ai-foundry/how-to/configure-private-link |
-| Agent Service VNet | https://learn.microsoft.com/azure/ai-services/agents/how-to/virtual-networks |
-| Managed VNet | https://learn.microsoft.com/azure/ai-foundry/how-to/configure-managed-network |
+| Networking options (decision) | https://learn.microsoft.com/azure/foundry/agents/concepts/networking-options |
+| Network isolation | https://learn.microsoft.com/azure/foundry/how-to/configure-private-link |
+| Agent Service VNet | https://learn.microsoft.com/azure/foundry/agents/how-to/virtual-networks |
+| Networking deep dive (subnet/IP) | https://learn.microsoft.com/azure/foundry/agents/concepts/agents-networking-deep-dive |
+| Managed VNet | https://learn.microsoft.com/azure/foundry/how-to/managed-virtual-network |
 | Feature limitations | https://learn.microsoft.com/azure/foundry/how-to/configure-private-link#foundry-feature-limitations |
 
-## When to Use <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## When to Use
 
 - User asks about Foundry networking, private endpoints, or VNet isolation
 - User asks about BYO VNet, Managed VNet, or hybrid patterns
@@ -38,17 +40,17 @@ allowed-tools: Read, Write, Bash, AskUserQuestion, microsoft_docs_search, micros
 
 ---
 
-## Step 0 — Ground in Microsoft Learn <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Step 0 — Ground in Microsoft Learn
 Use `microsoft_docs_fetch` to get docs from Key Documentation sources.
 Use `microsoft_docs_search` to verify any technical fact before presenting it to the user. If Learn contradicts a reference file, **Learn wins**. Cite the URL. If Learn doesn't cover it, say so — do not invent facts, limits, flags, or compatibility claims.
 
 ---
 
-## End-to-End Deployment Workflow <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## End-to-End Deployment Workflow
 
 > **Important:** All following steps are mandatory. Communicate the plan with the user before acting.
 
-## Step 1 — Gather Requirements <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Step 1 — Gather Requirements
 
 Read [references/intake.md](references/intake.md). One pass, three tiers:
 - **Tier 1 (Core):** Subscription, VNet model, agents, region, RG, VNet — determine approach at the end
@@ -59,7 +61,7 @@ Determine the approach (official template / adapt closest / extend user’s IaC)
 
 ---
 
-## Step 2 — Plan Generation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Step 2 — Plan Generation
 
 Use the confirmed requirements from [references/intake.md](references/intake.md).
 
@@ -73,13 +75,13 @@ Get confirmation before proceeding.
 
 ---
 
-## Step 3 — Scaffold & Parameterize <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Step 3 — Scaffold & Parameterize
 
 Read [references/scaffold.md](references/scaffold.md).
 
 ---
 
-## Step 4 — Pre-Deployment Validation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Step 4 — Pre-Deployment Validation
 
 Catch blockers **before** deploying. These checks apply to all paths.
 
@@ -95,15 +97,13 @@ Catch blockers **before** deploying. These checks apply to all paths.
 az cognitiveservices account list-skus --location <region> --kind AIServices -o table
 ```
 
-**Provider Registrations:** `Microsoft.CognitiveServices`, `Microsoft.DocumentDB`, `Microsoft.Search`, `Microsoft.Network`.
-
-**Feature Flags:** For Managed VNet — verify `AI.ManagedVnetPreview` is registered.
+**Provider Registrations:** `Microsoft.CognitiveServices`, `Microsoft.DocumentDB`, `Microsoft.Search`, `Microsoft.Network`, and `Microsoft.App` (required for agent subnet delegation). The template README lists the authoritative set.
 
 > Do NOT deploy until all pre-flight checks pass.
 
 ---
 
-## Step 5 — Deploy & Track <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Step 5 — Deploy & Track
 
 **OFFICIAL / ADAPT path:** Read [references/deploy.md](references/deploy.md) for deployment command, monitoring, and error recovery.
 
@@ -111,7 +111,7 @@ az cognitiveservices account list-skus --location <region> --kind AIServices -o 
 
 ---
 
-## Step 6 — Test & Validate <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Step 6 — Test & Validate
 
 Read [references/post-deployment-validation.md](references/post-deployment-validation.md). These checks apply to all paths — PE verification, RBAC audit, `publicNetworkAccess` audit, and end-to-end agent test work regardless of how the infrastructure was deployed.
 
@@ -119,10 +119,8 @@ If any test fails, run `microsoft_docs_search` for the error before attempting r
 
 ---
 
-## Error Handling <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Error Handling
 
-> ⚠️ **Critical retry rule:** If a deployment fails after the capability host step starts, the agent subnet gets a `legionservicelink` that cannot be removed. On retry, always use a **new VNet name** — never reuse the same agent subnet. See [references/deploy.md](references/deploy.md).
+> ⚠️ **Critical retry rule:** If a deployment fails after the capability host step starts, a service association (`legionservicelink`) stays on the agent subnet. Simplest retry: use a **new VNet name**. To reuse the same subnet, first purge the account and delete the capability host, then wait for the link to clear before redeploying. See [references/deploy.md](references/deploy.md).
 
 For all other errors, check `microsoft_docs_search` for current remediation before acting.
-
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

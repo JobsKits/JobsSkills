@@ -1,8 +1,8 @@
-# <span id="前言">Common Patterns: Create Foundry Resource</span>
+# Common Patterns: Create Foundry Resource
 
 **Table of Contents:** [Pattern A: Quick Setup](#pattern-a-quick-setup) · [Pattern B: Multi-Region Setup](#pattern-b-multi-region-setup) · [Quick Commands Reference](#quick-commands-reference)
 
-## Pattern A: Quick Setup <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Pattern A: Quick Setup
 
 Complete setup in one go:
 
@@ -58,7 +58,7 @@ az cognitiveservices account keys list \
   --resource-group $RG
 ```
 
-## Pattern B: Multi-Region Setup <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Pattern B: Multi-Region Setup
 
 Create resources in multiple regions:
 
@@ -90,7 +90,7 @@ done
 az cognitiveservices account list --resource-group $RG --output table
 ```
 
-## Quick Commands Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Quick Commands Reference
 
 ```bash
 # Count total resource groups to determine which scenario applies
@@ -134,5 +134,3 @@ az cognitiveservices account delete \
   --name my-foundry-resource \
   --resource-group rg-ai-services
 ```
-
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

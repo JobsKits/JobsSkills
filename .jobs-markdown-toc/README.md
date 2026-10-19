@@ -1,4 +1,4 @@
-# Markdown 动态目录过滤器
+# [**Markdown**](https://markdown.cn) 动态目录过滤器
 
 ![Jobs出品，必属精品](https://picsum.photos/1500/400)
 
@@ -97,4 +97,4 @@ node ./MarkdownToc.mjs uninstall
 
 折叠语法依据 [**GitHub 官方文档**](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/organizing-information-with-collapsed-sections)及 [**GitLab 官方文档**](https://docs.gitlab.com/user/markdown/#collapsible-section)；[**Gitee**](https://gitee.com)和自建服务需按实际渲染效果验收，不能将本地预览当作所有平台已验证。
 
-<a id="🔚" href="#前言">我是有底线的➤点我回到首页</a>
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

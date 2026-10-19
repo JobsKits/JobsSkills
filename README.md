@@ -7,39 +7,26 @@
 <details>
 <summary>📚 目录（点击展开 / 收起）</summary>
 
-- [🔥 前言](#jobs-toc-heading-1)
+- [🔥 前言](#%E5%89%8D%E8%A8%80)
 - [一、目录职责](#jobs-toc-heading-2)
 - [二、Git 管理边界](#jobs-toc-heading-3)
 - [三、外援软链接溯源](#jobs-toc-heading-4)
 - [四、溯源与恢复检查](#jobs-toc-heading-5)
-- [五、双向选择同步](#jobs-toc-heading-6)
-- [六、本仓维护的脚本](#managed-script-overview)
-  - [同步Skills.command](#jobs-toc-heading-8)
-  - [audit\_codex\_configs.zsh](#jobs-toc-heading-9)
 
 </details>
 <!-- jobs-toc:end -->
 
 ---
 
-## <span id="jobs-toc-heading-1" data-jobs-toc="v2">🔥 <font id=前言>前言</font></span><!-- jobs-toc:heading-end -->
+## 🔥 <span id="前言">前言</span>
 
-> 本仓库管理 [**JobsSkills**](https://github.com/JobsKits/JobsSkills)，可作为 [**Codex**](https://openai.com/codex) 用户级 `Skills` 的运行工作树，也可挂载为配置父仓的子模块。Jobs 自有 `Skill`、外部安装的 `Skill` 和外援软链接可以同时出现，但必须分清所有权、上游来源和 [**Git**](https://git-scm.com/) 跟踪边界。
+> 本仓库维护 [**JobsSkills**](https://github.com/JobsKits/JobsSkills) 用户级 `Skills`；现行基准工作树 `~/.agents/skills` 供 [**Codex**](https://openai.com/codex) 直接加载，`💻JobsCodexConfigs/skills` 是配置父仓的子模块挂载。Jobs 自有 `Skill`、外部安装的 `Skill` 和外援软链接可以同时出现，但必须分清所有权、上游来源和 [**Git**](https://git-scm.com/) 跟踪边界。
 
 ## <span id="jobs-toc-heading-2" data-jobs-toc="v2">一、目录职责 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 唯一标准仓库是 `https://github.com/JobsKits/JobsSkills`，`~/.agents/skills` 是现行、内容最完整的基准工作树。
-- `💻JobsCodexConfigs/skills` 是 `JobsCodexConfigs` 父仓对本仓库的 Git 子模块挂载点，便于父仓记录所使用的 `JobsSkills` 版本；自动配置注入不反向覆盖现行工作树。需要手动同步时，使用本目录 `同步Skills.command` 明确选择方向和范围，预览确认后执行。
+- `💻JobsCodexConfigs/skills` 仅作为 `JobsCodexConfigs` 父仓对本仓库的 Git 子模块挂载点，便于父仓记录所使用的 `JobsSkills` 版本；它不是可以反向覆盖现行工作树的备份源。
 - 外援 `Skill` 依旧由其上游仓库管理源码和版本；本仓库只记录来源和运行态链接映射。
-
-| 当前目录 / 文件 | 职责 |
-| --- | --- |
-| `jobs-*/SKILL.md`、[hacker/SKILL.md](./hacker/SKILL.md) | Jobs 自维护专项规则；包内 `references/` 存放按需读取的配套说明。 |
-| [jobs-codex-config-audit/scripts/](./jobs-codex-config-audit/scripts/) | Jobs 配置的只读审计入口。 |
-| [同步Skills.command](./同步Skills.command) | 系统用户级 Skills 与当前检出目录的手动同步入口。 |
-| `microsoft-foundry/`、`graphify/`、`motion-design/` | 外部来源 Skill 及其资源，按各自上游维护。 |
-| [.gitignore](./.gitignore) | 外援链接与运行态文件的精确 Git 排除规则。 |
-| [README.md](./README.md) | 本仓结构、所有权、来源映射及本仓维护脚本的说明。 |
 
 ## <span id="jobs-toc-heading-3" data-jobs-toc="v2">二、Git 管理边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
@@ -76,84 +63,19 @@ Git 对软链接只保存“目标路径字符串”，不保存链接目标的�
 
 1、检查上游地址和当前版本：
 
-```shell
-git -C "$HOME/.understand-anything/repo" remote -v
-git -C "$HOME/.understand-anything/repo" rev-parse HEAD
-```
+  ```shell
+  git -C "$HOME/.understand-anything/repo" remote -v
+  git -C "$HOME/.understand-anything/repo" rev-parse HEAD
+  ```
 
 2、检查运行态链接：
 
-```shell
-for skill_name in understand understand-chat understand-dashboard understand-diff understand-domain understand-explain understand-knowledge understand-onboard; do
-  printf '%s -> %s\n' "$skill_name" "$(readlink "$skill_name")"
-done
-```
+  ```shell
+  for skill_name in understand understand-chat understand-dashboard understand-diff understand-domain understand-explain understand-knowledge understand-onboard; do
+    printf '%s -> %s\n' "$skill_name" "$(readlink "$skill_name")"
+  done
+  ```
 
-3、链接失效时，先恢复上游仓库，再按本文档映射表重建链接；软链接不进入本仓库 Git 索引，也不把外援源码混入 Jobs 自有 `Skill` 内容。手动同步外援 `Skill` 时生成独立实体副本，来源仍按上游映射追溯。
+3、链接失效时，先恢复上游仓库，再按本文档映射表重建链接；软链接不进入本仓库 Git 索引，也不把外援源码复制进 Jobs 自有 `Skill` 内容。
 
-## <span id="jobs-toc-heading-6" data-jobs-toc="v2">五、双向选择同步 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
-
-在本目录双击 `同步Skills.command`，或在终端运行：
-
-```shell
-./同步Skills.command
-```
-
-脚本中的仓库端按脚本自身位置解析，系统端使用当前用户的 `.agents/skills`。两种方向互为相反操作：
-
-| 选项 | 同步方向 |
-| --- | --- |
-| `1`（默认） | 系统用户级 Skills → 当前目录 |
-| `2` | 当前目录 → 系统用户级 Skills |
-
-1、先阅读脚本内置自述，按回车继续；`Ctrl+C` 随时取消。
-
-2、选择方向后，由 [**fzf**](https://formulae.brew.sh/formula/fzf) 展示源端可同步的 `Skill` 包。第一项为“全部同步”，默认光标停在这一项，直接回车即全部同步；输入名称搜索，`Tab` / `Shift+Tab` 多选，回车提交所选项，`Esc` 取消。
-
-3、查看所选包和变更预览，输入 `YES` 后执行；其它输入取消。同步按内容校验，以源端同名内容为准，保留目标端独有文件；已有目标先完整备份。源端软链接复制为实体，目标端软链接安全替换，不写入其上游目录。
-
-4、只处理包含 `SKILL.md` 的包；包内嵌套 `Skill` 和配套资源一起同步。根目录的 `.git`、`.gitignore`、`README.md`、同步脚本，以及内置 `.system` 和插件缓存不在全选范围内；包内 Git 元数据及常见构建缓存同样排除。
-
-5、脚本不创建提交、推送或更新父仓 gitlink。同步产生的文件变更由各自工作树正常管理；外援名称的现有精确忽略规则继续有效。
-
-只查看计划时运行 `./同步Skills.command --dry-run`；仍需选择方向和范围，但不安装依赖、不备份或复制。用法说明为 `./同步Skills.command --help`，帮助模式不写文件。目标包中发现 `.git` 时停止，保护嵌套仓库。
-
-日志是系统临时目录中的 `同步Skills.log`，每次运行重新写入。持久备份默认保存在当前用户 `.local/state/jobs-skills-sync/backups/`，也遵循已设置的 `XDG_STATE_HOME`；每次生成唯一的 `YYYY.MM.DD HH-mm-ss.随机后缀` 目录。`original/` 保存原始目录和软链接结构，`resolved/` 保存链接解引用后的完整实体快照，`同步说明.txt` 记录方向、两端路径和所选包。需要恢复实体内容时使用 `resolved/`；需要恢复原链接时先确认其上游仍存在，再使用 `original/`。
-
-依赖仅为可用的 `fzf`、`rsync` 和系统工具。缺失或损坏的 `fzf` 可经现有 [**Homebrew**](https://brew.sh/) 安装或修复：回车跳过，输入任意字符确认；脚本先检查 Homebrew 和 Command Line Tools，安装后复检，失败后停止同步，不自动安装整套环境。
-
-隔离验证或使用其它工作树时可覆盖以下环境变量；路径须为绝对路径，两端须已存在，状态目录不能放在任一 Skills 树内或脚本的父 Git 工作树内：
-
-| 环境变量 | 作用 |
-| --- | --- |
-| `JOBS_SKILLS_SYNC_SYSTEM_DIR` | 系统用户级 Skills 根目录 |
-| `JOBS_SKILLS_SYNC_REPO_DIR` | 当前仓库 Skills 根目录 |
-| `JOBS_SKILLS_SYNC_STATE_DIR` | 日志以外的持久状态及备份根目录 |
-
-每个包通过同文件系统暂存目录合并并重命名切换。途中失败立即停止，已完成的其它包不会自动回滚；完整备份与失败现场保留，具体路径显示在日志中。
-
-## 六、<span id="managed-script-overview">本仓维护的脚本</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
-
-### <span id="jobs-toc-heading-8" data-jobs-toc="v2">[同步Skills.command](./同步Skills.command)</span><!-- jobs-toc:heading-end -->
-
-> **目的：** 手动选择 Skill 包，在系统用户级工作树与当前目录之间同步，并保留恢复备份。
-
-* 阅读自述，回车继续，选择同步方向和要处理的包。
-  * 默认方向为系统到当前目录；默认选项为全部包，也可搜索、多选或取消。
-* 检查路径与依赖，展示变更预览；目标包中含 `.git` 时停止。
-  * `--dry-run`：交互预览并记录日志，不安装依赖、不备份、不复制。
-* 输入 `YES` 后备份原内容与链接解析后的实体快照，再逐包合并切换。
-  * 同名源文件覆盖，目标独有文件保留；软链接实体化，不写入外援上游。
-* 输出结果、日志和备份位置；失败时保留现场，已完成包不自动回滚。
-
-### <span id="jobs-toc-heading-9" data-jobs-toc="v2">[audit_codex_configs.zsh](./jobs-codex-config-audit/scripts/audit_codex_configs.zsh)</span><!-- jobs-toc:heading-end -->
-
-> **目的：** 只读检查全局指导、现行 JobsSkills 及配置父仓的规则和版本关系。
-
-* 读取配置仓与 Skills 工作树路径，验证标准源和远端归属。
-  * 路径或标准源无效：报错退出；可通过前两个位置参数指定检查目录。
-* 统计指导文件，检查 Jobs 自有 Skill 的文档结构、中文序号、固定链接和重复候选。
-* 核对运行态全局指导、父仓子模块状态及两个标准仓的已有改动。
-* 汇总警告和错误供人工处理；只输出检查结果，不修改文件、不部署、不提交或推送。
-
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➔点我回到首页</a>
+<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

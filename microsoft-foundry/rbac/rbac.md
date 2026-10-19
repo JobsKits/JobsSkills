@@ -1,8 +1,8 @@
-# <span id="前言">Microsoft Foundry RBAC Management</span>
+# Microsoft Foundry RBAC Management
 
 Reference for managing RBAC for Microsoft Foundry resources: user permissions, managed identity configuration, and service principal setup for CI/CD.
 
-## Quick Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Quick Reference
 
 | Property | Value |
 |----------|-------|
@@ -10,7 +10,7 @@ Reference for managing RBAC for Microsoft Foundry resources: user permissions, m
 | **Resource Type** | `Microsoft.CognitiveServices/accounts` |
 | **Best For** | Permission management, access auditing, CI/CD setup |
 
-## When to Use <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## When to Use
 
 - Grant user access to Foundry resources or projects
 - Set up developer permissions (Project Manager, Owner roles)
@@ -19,10 +19,11 @@ Reference for managing RBAC for Microsoft Foundry resources: user permissions, m
 - Create service principals for CI/CD pipeline automation
 - Troubleshoot permission errors
 
-## Foundry Built-in Roles <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Foundry Built-in Roles
 
 | Role | Create Projects | Data Actions | Role Assignments |
 |------|-----------------|--------------|------------------|
+| Foundry Agent Consumer | No | Invoke agents only | No |
 | Foundry User | No | Yes | No |
 | Foundry Project Manager | Yes | Yes | Yes (Foundry User only) |
 | Foundry Account Owner | Yes | No | Yes (Foundry User only) |
@@ -30,19 +31,19 @@ Reference for managing RBAC for Microsoft Foundry resources: user permissions, m
 
 > ⚠️ **Warning:** Foundry User is auto-assigned via Portal but NOT via SDK/CLI. Automation must explicitly assign roles.
 
-## Workflows <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Workflows
 
 All scopes follow the pattern: `/subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.CognitiveServices/accounts/<foundry-resource-name>`
 
 For project-level scoping, append `/projects/<project-name>`.
 
-### 1. Assign User Permissions <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### 1. Assign User Permissions
 
 ```bash
 az role assignment create --role "53ca6127-db72-4b80-b1b0-d745d6d5456d" --assignee "<user-email-or-object-id>" --scope "<foundry-scope>" # Foundry User
 ```
 
-### 2. Assign Developer Permissions <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### 2. Assign Developer Permissions
 
 ```bash
 # Project Manager (create projects, assign Foundry User roles)
@@ -52,7 +53,7 @@ az role assignment create --role "eadc314b-1a2d-4efa-be10-5d325db5065e" --assign
 az role assignment create --role "c883944f-8b7b-4483-af10-35834be79c4a" --assignee "<user-email-or-object-id>" --scope "<foundry-scope>" # Foundry Owner
 ```
 
-### 3. Audit Role Assignments <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### 3. Audit Role Assignments
 
 ```bash
 # List all assignments
@@ -65,7 +66,7 @@ az role assignment list --scope "<foundry-scope>" --query "[].{Principal:princip
 az role assignment list --scope "<foundry-scope>" --query "[?contains(roleDefinitionName, 'Foundry')].{Principal:principalName, Role:roleDefinitionName}" --output table
 ```
 
-### 4. Validate Permissions <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### 4. Validate Permissions
 
 ```bash
 # Current user's roles on resource
@@ -79,12 +80,12 @@ az role definition list --name "Foundry User" --query "[].permissions[].actions"
 
 | Action | Required Role(s) |
 |--------|------------------|
-| Deploy models | Foundry User, Foundry Project Manager, Foundry Owner |
+| Deploy models | Foundry Account Owner, Foundry Owner |
 | Create projects | Foundry Project Manager, Foundry Account Owner, Foundry Owner |
 | Assign Foundry User role | Foundry Project Manager, Foundry Account Owner, Foundry Owner |
 | Full data access | Foundry User, Foundry Project Manager, Foundry Owner |
 
-### 5. Configure Managed Identity Roles <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### 5. Configure Managed Identity Roles
 
 ```bash
 # Get managed identity principal ID
@@ -105,7 +106,7 @@ az role assignment create --role "<role-name>" --assignee "$PRINCIPAL_ID" --scop
 | Azure AI Search | Search Index Data Contributor | Query and modify indexes |
 | Azure Cosmos DB | Cosmos DB Account Reader | Read data |
 
-### 6. Create Service Principal for CI/CD <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### 6. Create Service Principal for CI/CD
 
 ```bash
 # Create SP with minimal role
@@ -124,7 +125,7 @@ az role assignment create --role "Contributor" --assignee "$SP_APP_ID" --scope "
 
 | CI/CD Scenario | Recommended Role | Additional Roles |
 |----------------|------------------|------------------|
-| Deploy models only | Foundry User | None |
+| Deploy models only | Foundry Account Owner | None |
 | Manage projects | Foundry Project Manager | None |
 | Full provisioning | Foundry Owner | Contributor (on RG) |
 | Read-only monitoring | Reader | Foundry User (for data) |
@@ -136,11 +137,11 @@ az login --service-principal --username "<app-id>" --password "<client-secret>" 
 az account set --subscription "<subscription-id>"
 ```
 
-## Error Handling <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Error Handling
 
 | Issue | Cause | Resolution |
 |-------|-------|------------|
-| "Authorization failed" when deploying | Missing Foundry User role | Assign Foundry User role at resource scope |
+| "Authorization failed" when deploying models | Missing Foundry Account Owner or Foundry Owner role | Assign Foundry Account Owner at account scope |
 | Cannot create projects | Missing Project Manager or Owner role | Assign Foundry Project Manager role |
 | "Access denied" on connected resources | Managed identity missing roles | Assign appropriate roles to MI on each resource |
 | Portal works but CLI fails | Portal auto-assigns roles, CLI doesn't | Explicitly assign Foundry User via CLI |
@@ -148,11 +149,9 @@ az account set --subscription "<subscription-id>"
 | "Principal does not exist" | User/SP not found in directory | Verify the assignee email or object ID is correct |
 | Role assignment already exists | Duplicate assignment attempt | Use `az role assignment list` to verify existing assignments |
 
-## Additional Resources <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Additional Resources
 
-- [Azure AI Foundry RBAC Documentation](https://learn.microsoft.com/azure/ai-foundry/concepts/rbac-ai-foundry)
+- [Microsoft Foundry RBAC Documentation](https://learn.microsoft.com/azure/ai-foundry/concepts/rbac-ai-foundry)
 - [Azure Built-in Roles](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles)
 - [Managed Identities Overview](https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)
 - [Service Principal Authentication](https://learn.microsoft.com/azure/developer/github/connect-from-azure)
-
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

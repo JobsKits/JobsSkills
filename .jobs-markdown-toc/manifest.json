@@ -10,12 +10,16 @@
     "jobs-dart-flutter/SKILL.md",
     "jobs-git-repository/SKILL.md",
     "jobs-lottie-stroke-writing/SKILL.md",
+    "jobs-lottie-stroke-writing/references/stroke-lottie-quality.md",
     "jobs-macos-shell/SKILL.md",
+    "jobs-markdown-docs/README规范-项目统计条款.md",
     "jobs-markdown-docs/SKILL.md",
+    "jobs-markdown-docs/assets/markdown-toc/README.md",
     "jobs-objective-c-pods/SKILL.md",
     "jobs-obsidian-memory/SKILL.md",
     "jobs-podspec/SKILL.md",
     "jobs-python/SKILL.md",
-    "jobs-swift/SKILL.md"
+    "jobs-swift/SKILL.md",
+    "jobs-swift/references/ios-theme-contrast.md"
   ]
 }

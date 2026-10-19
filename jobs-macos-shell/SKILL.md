@@ -3,7 +3,7 @@ name: jobs-macos-shell
 description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置自述、防误触确认、函数拆分、main 入口编排、Homebrew、自检、批量脚本、压缩包输出或 Sourcetree 自定义动作脚本时使用。
 ---
 
-# Jobs MacOS Shell 脚本规范
+# Jobs [**MacOS**](https://www.apple.com/macos/) Shell 脚本规范
 
 ![Jobs出品，必属精品](https://picsum.photos/1500/400)
 
@@ -12,24 +12,26 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
 <details>
 <summary>📚 目录（点击展开 / 收起）</summary>
 
-- [🔥 前言](#jobs-toc-heading-1)
+- [🔥 前言](#%E5%89%8D%E8%A8%80)
 - [一、MacOS Shell 脚本（.sh / .command）](#jobs-toc-heading-2)
   - [1.1、脚本基座](#jobs-toc-heading-3)
   - [1.2、彩色日志](#jobs-toc-heading-4)
-  - [1.3、交互约定](#jobs-toc-heading-5)
-  - [1.4、Homebrew / MacOS 环境](#jobs-toc-heading-6)
-  - [1.5、脚本目录 / README / 批量输出](#jobs-toc-heading-7)
-  - [1.6、Shell 验证](#jobs-toc-heading-8)
-  - [1.7、脚本运行策略与自检定义](#jobs-toc-heading-9)
-    - [1.7.1、依赖链完整性与条件式自愈](#jobs-toc-heading-10)
-  - [1.8、Sourcetree 自定义动作脚本兼容](#jobs-toc-heading-11)
+    - [1.2.1、来源显示是常规脚本习惯](#script-source-logging)
+  - [1.3、交互约定](#jobs-toc-heading-6)
+  - [1.4、Homebrew / MacOS 环境](#jobs-toc-heading-7)
+  - [1.5、脚本目录 / README / 批量输出](#jobs-toc-heading-8)
+  - [1.6、Shell 验证](#jobs-toc-heading-9)
+  - [1.7、脚本运行策略与自检定义](#jobs-toc-heading-10)
+    - [1.7.1、依赖链完整性与条件式自愈](#jobs-toc-heading-11)
+  - [1.8、Sourcetree 自定义动作脚本兼容](#jobs-toc-heading-12)
+  - [1.9、网络代理选择、回溯与恢复](#network-proxy-recovery)
 
 </details>
 <!-- jobs-toc:end -->
 
 ---
 
-## <span id="jobs-toc-heading-1" data-jobs-toc="v2">🔥 <font id=前言>前言</font></span><!-- jobs-toc:heading-end -->
+## 🔥 <span id="前言">前言</span>
 
 > 本技能由 `💻JobsCodexConfigs/AGENTS.md` 拆分而来，保留原有 Jobs 工作规范。只有当前任务命中本技能描述时才加载本文件，避免把所有细则长期塞进全局上下文。
 
@@ -105,9 +107,30 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
 - 终端输出和日志落盘必须同步，排查时能直接看 `$TMPDIR/脚本名.log`。
 - 成功、警告、错误要有明确前缀。失败分支不要静默吞掉，至少输出失败命令或目标路径。
 
-### <span id="jobs-toc-heading-5" data-jobs-toc="v2">1.3、交互约定 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+#### 1.2.1、<span id="script-source-logging">来源显示是常规脚本习惯</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+- 新建或维护涉及下载、安装 / 升级、克隆 / 拉取、从其它路径复制 / 同步的 Jobs 自维护脚本时，在对应操作前突出显示“正在处理什么、从哪里取得、放到哪里”。已有脚本沿用原日志风格，来源块与外部命令进度分开，不能只显示文件名、目录名、包名或 remote 别名。
+- 来源至少包含对象名称、平台 / 主机或本地源路径、完整 URL 或明确的软件源；有目标路径、版本、分支时一并显示。包管理器尚未解析最终下载 URL 时，先显示已确认的软件源与包 / 版本，并标明地址待解析；得到实际地址后再补充，不猜测。切换镜像或回退来源时，在下一次尝试前更新来源块；成功结果保留最终采用的来源，失败信息关联失败的来源。
+- 配置地址与本次实际使用地址不同时分别列出，地址展示必须来自当前命令和生效配置。仅完成本地规则展开时如实标注，不把它等同于已验证的 HTTP 重定向终点、代理出口或真实网络访问；不能为了打印来源额外安装依赖、联网探测或修改网络 / [**Git**](https://git-scm.com/) 配置。
+- 来源块在支持颜色的终端醒目显示，落盘保留可直接搜索的纯文本；[**Sourcetree**](https://www.sourcetreeapp.com/)、非 TTY、`TERM` 为空 / `dumb`、`NO_COLOR` 或既有纯文本模式下不输出 ANSI。URL 中的凭据、Token、查询参数与其它敏感字段脱敏，展示副本不得回写成业务地址。
+- 同名脚本有多个自维护副本时，在用户指定范围内查齐并同步来源日志实现，保留各自清单、路径、参数、交互及已有改动；只同步共同行为，不能用整文件覆盖不同业务。已有配套 README 同步靠前放置与真实输出一致的例子。Git 来源的地址解析、作用域与递归边界见 [Git 来源显示规范](../jobs-git-repository/SKILL.md#git-source-logging)。
+- 以隔离展示片段或临时夹具核对来源先于真实传输、切换来源后的结果、脱敏与纯文本日志；不为预览日志运行真实安装、目录删除、同步覆盖、提交或推送。日志改动保持原业务语义，发现其它问题另行说明。
+
+结构示例（域名仅作示例，未部署）：
+
+```text
+━━━━━━━━━━ 来源｜下载 ━━━━━━━━━━
+📦 对象：tool.zip
+🌐 平台 / 主机：downloads.example.com
+📥 来源地址：https://downloads.example.com/releases/tool.zip
+📂 目标位置：./cache/tool.zip
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+### <span id="jobs-toc-heading-6" data-jobs-toc="v2">1.3、交互约定 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - MacOS `.sh` / `.command` 脚本统一采用“三层自述”标准，三层各自服务不同场景，不能互相替代：
+
   1、**外部 README 自述**：脚本所在目录可配套 `README.md`，与主脚本平级，用中文描述脚本行为特征、适用场景、运行方式、风险边界、日志位置和常见问题；它面向运行前阅读。是否新增 README 取决于用户要求、现有目录约定和脚本复杂度，但已存在时必须随脚本行为同步维护。
 
   2、**脚本头部注释自述**：脚本文件内部在 shebang（例如 `# shell: zsh`）下一行必须紧跟一段注释自述；这段注释不参与运行时输出，用于打开源码时快速理解脚本名称、核心用途、影响范围和运行提示。
@@ -128,20 +151,47 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
 
 - 每个可独立运行的文本脚本都必须内置简明自述，不能把 `README.md`、网络文档或外部模板作为唯一说明来源。配套 `README.md` 可以存在，但它只是可选的扩展文档，不能替代脚本内置自述。
 - 普通脚本以及脱离 Sourcetree 后在终端独立运行的 Sourcetree 脚本，每次运行时都必须先打印内置自述，再等待用户按回车确认；确认前不能执行安装、删除、写文件、修改索引或环境配置等真实业务。用户可以按 `Ctrl+C` 取消，防止双击或误调用后直接产生副作用。
-- 由 Sourcetree 自定义动作实际发起的脚本属于明确例外：仍然打印内置自述，但不能等待回车或发起任何交互，必须完成参数校验后从一而终执行到结束。
+- 由 Sourcetree 自定义动作实际发起的脚本属于明确例外：仍然打印内置自述，但动作进程不能等待回车或发起任何交互，必须完成参数校验后连续执行或转交独立终端；需要危险确认时遵循 1.8 的终端承接规则。
 - 内置自述保持简明扼要，至少说明脚本名称、核心用途、主要影响范围和取消方式；高风险脚本还应点明关键风险与日志位置。
 
+- `.command` 的运行时自述统一视觉层级：脚本标题、分节标题使用红色加粗（`\033[1;31m`）；序号后的说明正文使用蓝色且不加粗（`\033[0;34m`），其余自述正文同样保持蓝色常规字重。每行结束使用 `\033[0m` 复位，正文必须显式清除前一标题的粗体，不能沿用通用日志函数的粗体蓝色 / 紫色样式。
+- 颜色仅作用于自述展示，不改写业务日志的成功 / 警告 / 错误配色，也不改变原有确认和运行策略。兼容既有编号；新增自述使用 `1、` 等中文顿号编号。缺少自述的自有入口需先补齐用途、影响范围和回车确认，再进入真实业务；仅供 `source` 的模块不增加阻塞交互，转发入口复用内层自述，避免重复确认。
+- 自述颜色必须保留纯文本降级：Sourcetree、非 TTY、`TERM` 为空 / `dumb` 或设置 `NO_COLOR` 时，不输出 ANSI 转义码。只过滤纯展示输出，禁止把含 `read`、状态赋值或业务操作的整段函数放进管道。验证时隔离运行展示片段，检查红色粗体标题、蓝色非粗体编号正文及纯文本输出；不得为预览配色执行安装、清理、推送等真实业务。
+
   ```shell
+  # 仅渲染自述：标题红色加粗，编号正文蓝色常规字重；非彩色终端输出纯文本。
+  jobs_intro_style() {
+    local intro_color=0
+    if [ -t 1 ] && [ -n "${TERM:-}" ] && [ "${TERM:-}" != dumb ] &&
+       [ -z "${NO_COLOR+x}" ] && [ "${PLAIN_OUTPUT:-0}" != 1 ] &&
+       [ "${IS_SOURCETREE_RUNTIME:-0}" != 1 ]; then
+      intro_color=1
+    fi
+    /usr/bin/awk -v color="$intro_color" -v role="${1:-body}" '
+      BEGIN { esc = sprintf("%c", 27) }
+      {
+        gsub(esc "\\[[0-9;]*m", "")
+        gsub(/\\(033|e|x1[bB])\[[0-9;]*m/, "")
+        if (!color || $0 ~ /^[[:space:]]*$/) { print; next }
+        numbered = ($0 ~ /^[[:space:]➤ℹ🔹✔⚠]*([0-9]+[、.)）]|[0-9]+️⃣|[-•])/)
+        heading = ($0 ~ /^[[:space:]]*#{1,6}[[:space:]]/ || $0 ~ /[：:][[:space:]]*$/ || $0 ~ /^[[:space:]]*[=━─-]{3}/)
+        title = (!numbered && (role == "title" || heading))
+        if (role == "auto" && !seen && !numbered) title = 1
+        if ($0 !~ /^[[:space:]]*[=━─-]+[[:space:]]*$/) seen = 1
+        printf "%s%s%s\n", esc (title ? "[1;31m" : "[0;34m"), $0, esc "[0m"
+      }
+    '
+  }
   # 打印脚本内置自述，并等待用户明确确认后再继续。
   show_script_intro_and_wait() {
     clear
-    highlight_echo "============================== 脚本自述 =============================="
-    note_echo "当前脚本：${SCRIPT_PATH}"
-    note_echo "核心用途：这里用一两句话说明脚本解决什么问题。"
-    warn_echo "影响范围：这里说明可能修改的文件、环境或 Git 状态。"
-    gray_echo "取消方式：按 Ctrl+C 终止，不会继续执行后续业务。"
-    highlight_echo "======================================================================="
-    echo ""
+    highlight_echo "============================== 脚本自述 ==============================" | jobs_intro_style title
+    note_echo "当前脚本：${SCRIPT_PATH}" | jobs_intro_style body
+    note_echo "核心用途：这里用一两句话说明脚本解决什么问题。" | jobs_intro_style body
+    warn_echo "影响范围：这里说明可能修改的文件、环境或 Git 状态。" | jobs_intro_style body
+    gray_echo "取消方式：按 Ctrl+C 终止，不会继续执行后续业务。" | jobs_intro_style body
+    highlight_echo "=======================================================================" | jobs_intro_style title
+    echo "" | jobs_intro_style body
     read -r "?👉 已了解脚本用途与影响，按回车继续；按 Ctrl+C 取消：" _
   }
   ```
@@ -186,7 +236,7 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
   }
   ```
 
-### <span id="jobs-toc-heading-6" data-jobs-toc="v2">1.4、[**Homebrew**](https://brew.sh/) / MacOS 环境 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-7" data-jobs-toc="v2">1.4、[**Homebrew**](https://brew.sh/) / MacOS 环境 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - [**Homebrew**](https://brew.sh/) 相关脚本必须识别 Apple Silicon 和 Intel：
 
@@ -202,7 +252,7 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
 - 已安装 [**Homebrew**](https://brew.sh/) 时，不自动执行 `brew update && brew upgrade && brew cleanup && brew doctor && brew -v`，必须询问用户。
 - 涉及 CLT、[**Xcode**](https://developer.apple.com/xcode/)、[**CocoaPods**](https://cocoapods.org/)、[**Flutter**](https://flutter.dev/)、[**Android Studio**](https://developer.android.com/studio?hl=zh-c)、[**Java**](https://www.java.com/)、[**Ruby**](https://www.ruby-lang.org/)、[**Node.js**](https://nodejs.org/) 等工具链时，先检查再执行，失败时输出下一步排查方向。
 
-### <span id="jobs-toc-heading-7" data-jobs-toc="v2">1.5、脚本目录 / README / 批量输出 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-8" data-jobs-toc="v2">1.5、脚本目录 / README / 批量输出 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 不强制每个 `.sh` / `.command` 都使用“同名文件夹 + 主脚本 + README.md”的结构；应先尊重现有仓库目录、调用路径和同类脚本组织方式，不能仅为了形式统一而批量迁移脚本。
 - 只有用户明确要求独立打包、批量整理、压缩包交付，或当前项目已经采用“一脚本一目录”约定时，才使用同名文件夹包裹结构。
@@ -215,13 +265,13 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
   ```
 
 - README 可以使用仓库级公共文档，也可以为复杂、独立交付或高风险脚本提供专属文档；是否单独创建由用户要求、现有项目约定和脚本复杂度共同决定。README 是否存在，都不影响脚本必须内置自述。
-- 编写脚本配套 `README.md` 时必须同时加载 `jobs-markdown-docs`，按 Jobs Markdown 规范生成；README 使用中文全量说明，不写成变更日志。
+- 编写脚本配套 `README.md` 时必须同时加载 `jobs-markdown-docs`，按 Jobs [**Markdown**](https://markdown.cn) 规范生成；README 使用中文全量说明，不写成变更日志。
 - 脚本如果在内置自述之外还要补充读取某个 `README.md`，该文档路径必须稳定可解析；同目录不是无条件要求，但脚本移动后必须同步修正读取路径。
 - 如果原始输入是散落脚本，整理时优先保留原脚本名；只在明显错误、重复或不符合 Jobs 命名时，才做最小必要改名。
 - 批量升级脚本时，默认做结构优化：统一 `# shell: zsh`、路径变量、彩色日志、自述阻塞、防误触、`main "$@"`、[**Homebrew**](https://brew.sh/) 自检和升级交互；只有命中本节约定时才额外调整目录和 README。
 - 输出压缩包前应做静态检查和结构检查；无法执行 MacOS 专属命令时，README 或最终说明里写清楚“未实际执行”。
 
-### <span id="jobs-toc-heading-8" data-jobs-toc="v2">1.6、Shell 验证 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-9" data-jobs-toc="v2">1.6、Shell 验证 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - Shell 脚本优先做静态检查：
 
@@ -232,11 +282,11 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
 - 修改 `.command` 后确认 shebang、`SCRIPT_DIR` / `LOG_FILE`、内置自述、回车确认、`main "$@"`、路径引号、危险操作 `YES` 确认、普通升级动作不是默认执行。
 
 
-### <span id="jobs-toc-heading-9" data-jobs-toc="v2">1.7、脚本运行策略与自检定义 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-10" data-jobs-toc="v2">1.7、脚本运行策略与自检定义 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 本节只补充 1.3 中自述 / 交互规则的运行策略：入口脚本必须先进入 `show_script_intro_and_wait()` 或等价函数；确认前不得执行环境安装、文件写入、Git 索引修改或其它真实业务。
 - 日志初始化、`setopt`、`trap` 注册、参数解析、路径切换等准备逻辑要排在自述确认之后；确需提前准备的展示变量，只能下沉到无副作用的展示准备函数中。
-- Sourcetree 脚本必须支持双运行模式：明确识别为 Sourcetree 自定义动作时，打印自述后无交互连续执行；同一脚本在系统终端独立运行时，打印自述并等待回车确认。
+- Sourcetree 脚本必须支持双运行模式：明确识别为 Sourcetree 自定义动作时，打印自述后无交互连续执行，需交互的业务按 1.8 转交独立终端；同一脚本在系统终端独立运行时，打印自述并等待回车确认。
 - 不能仅凭 `! -t 0`、`TERM=dumb` 或输出不是 TTY 就判定为 Sourcetree；这些条件只能决定输出降级。跳过回车必须以明确的 Sourcetree 运行态识别结果为准。
 - 非 Sourcetree 且没有可交互标准输入时，应报错退出并提示改用终端执行，不能静默跳过确认后继续真实业务。
 
@@ -311,7 +361,7 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
 - 自检类脚本的定义统一为：检测目标是否存在；如果已经存在，则进入升级 / 更新逻辑；如果没有检测到已安装，则安装最新版本。
 - 自检、安装、升级都必须先检查再执行，并遵守交互确认：普通动作不能默认执行，危险动作必须输入 `YES`；新写或升级脚本继续统一使用 `# shell: zsh`，除非目标环境明确不是 MacOS / zsh。
 
-#### <span id="jobs-toc-heading-10" data-jobs-toc="v2">1.7.1、依赖链完整性与条件式自愈 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+#### <span id="jobs-toc-heading-11" data-jobs-toc="v2">1.7.1、依赖链完整性与条件式自愈 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 当目标命令依赖运行时、包管理器或系统引导工具时，编码前先画出当前执行路径的完整依赖链或依赖图，区分必须同时满足的依赖和可以互相替代的安装来源。不能只检查最末端命令，例如通过 npm 安装或升级 [**CodeGraph**](https://github.com/colbymchenry/codegraph) 时，应识别 `CodeGraph → npm → Node.js → Homebrew → bash / curl / Command Line Tools` 这条可恢复链。
 - “已安装”不等于“可用”。`command -v` 只负责发现候选路径；每一层还必须通过 `--version`、只读状态命令或等价的最小健康检查验证真实可执行性。PATH 中存在残缺 shim、损坏安装或不可执行文件时，统一按该层不可用处理。
@@ -325,16 +375,18 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
 - 批量整改后必须同时扫描四类结构问题：一是函数外是否仍有散落执行语句，二是 `main()` 是否严格只含“单行函数调用 + 行尾职责注释”，三是每个调用是否都有同行业务职责注释，四是 `main()` 的第一条函数调用是否为运行时内置自述；不能只做 `zsh -n` 就视为完成。
 
 
-### <span id="jobs-toc-heading-11" data-jobs-toc="v2">1.8、Sourcetree 自定义动作脚本兼容 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-12" data-jobs-toc="v2">1.8、Sourcetree 自定义动作脚本兼容 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 所有 Sourcetree 自定义动作脚本固定采用双位置维护：运行目录为 `/Users/jobs/SourceTree.command`，备灾目录为 `/Users/jobs/Documents/Github/JobsGenesis/SourceTree.command`。新增、修改或重命名脚本包时，必须按相同相对路径同步两边的 `.command`、同名 `README.md` 和脚本行为文档，不能只改其中一处。
 - 双位置同步后必须使用 `cmp` 或内容哈希确认对应文件完全一致；修改 `.command` 时，还必须对运行副本与备灾副本分别执行 `zsh -n`。任一位置缺失、内容不一致或语法校验失败，都不能视为任务完成。
 - 新增或修改 Sourcetree 脚本的默认完成定义必须包含“已经实际挂载到当前用户 Sourcetree 自定义操作”：同时更新脚本包内和 `~/Library/Application Support/SourceTree/actions.plist` 中的动作配置，确保动作目标指向运行副本、仓库动作参数为 `$REPO`，并在 Sourcetree 运行时完成重载验证。只交付脚本、README 或待用户手工配置步骤，一律不能标记完成。
-- Codex 负责动作目标路径、参数、仓库 / 文件动作类型、输出窗口策略、执行权限、双位置脚本副本和配置安装；用户最多只需要在 Sourcetree 中按个人偏好修改菜单显示标题。更新已存在动作时，应按稳定目标路径识别并保留用户当前显示标题；只有用户明确要求时才改名，避免用脚本默认标题覆盖用户定制。
+- 新增、修改或重命名动作时，必须同步关联 `【MacOS】安装SourceTree自定义菜单.command/` 内安装脚本的动作登记、`actions.plist` 模板及 `README.md`，再对齐运行库、仓库备灾库与当前用户菜单；不能只修改当前用户菜单而让新电脑安装遗漏动作。动作登记按稳定脚本路径补齐默认项，更新已有项保留用户标题；重命名时同步旧路径迁移，不遗留重复动作。
+- [**Codex**](https://openai.com/codex) 负责动作目标路径、参数、仓库 / 文件动作类型、输出窗口策略、执行权限、双位置脚本副本和配置安装；用户最多只需要在 Sourcetree 中按个人偏好修改菜单显示标题。更新已存在动作时，应按稳定目标路径识别并保留用户当前显示标题；只有用户明确要求时才改名，避免用脚本默认标题覆盖用户定制。
 - 修改任何现行 `actions.plist` 前必须创建带时间戳的可恢复备份；修改后校验 plist 可解档、动作唯一、目标脚本存在且可执行。Sourcetree 正在运行时按安全方式重启或重新加载，再从当前用户配置中反查动作名称、`$REPO` 参数和目标路径，证明菜单已经挂载。
 - `Sourcetree` 自定义动作运行 `.command` 时，环境可能和系统终端双击运行不同：`TERM` 可能为空、`$0` 可能只是脚本名而不是绝对路径、标准输入可能不可交互、输出窗口可能不解析 ANSI 彩色码。
 - 写 `SourceTree.command` 目录下的脚本时，必须显式探测运行环境；只有明确确认由 Sourcetree 发起时，才进入无交互连续执行模式，不要影响用户双击脚本后在系统终端里的正常交互体验。
-- Sourcetree 模式必须从一而终：禁止调用 `read`、`select`、`fzf` 选择、`YES` 确认或任何需要外界输入的交互；所需目标应来自自定义动作参数、当前工作目录、环境变量或安全默认值。必要参数缺失时直接打印错误并退出，不能停在输入等待状态。
+- Sourcetree 动作进程必须从一而终：禁止调用 `read`、`select`、`fzf` 选择、`YES` 确认或任何需要外界输入的交互；所需目标应来自自定义动作参数、当前工作目录、环境变量或安全默认值。必要参数缺失时直接打印错误并退出，不能停在输入等待状态。
+- 需要用户选择或危险确认的动作，由 Sourcetree 入口校验参数后打开独立 `Terminal.app`，在真正可交互的终端中重新展示内置自述、回车确认与后续选择；使用明确的终端运行标志避免再次转发，安全引用脚本与仓库路径，并保留最终退出码。打开终端失败或终端仍无 TTY 时停止，不能回退到无交互执行危险动作。终端承接后按终端模式显示红色风险提醒；只有用户精确输入大写 `YES` 才允许舍弃改动，回车、其它输入、输入流结束和任何无交互模式均不能绕过门禁。
 - 终端独立运行模式必须保留防误触：打印相同的脚本内置自述并等待用户回车，确认后才进入与 Sourcetree 模式共用的真实业务流程。
 - Sourcetree 识别应组合检查相关环境变量、脚本解析路径和父进程链；`! -t 0`、`! -t 1`、`TERM=dumb`、`NO_COLOR` 只能用于判断交互能力或纯文本输出，不能单独作为 Sourcetree 身份依据。
 - 凡是 Sourcetree 脚本，只要识别为 Sourcetree 自定义动作，就必须在任何 `log`、`color_echo`、`highlight_echo`、`note_echo`、内置自述或外部命令输出之前完成纯文本输出初始化；第一屏自述也不能出现 `[0m`、`\033[0m` 或任何 ANSI 控制字符。
@@ -359,15 +411,15 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
   }
   # 打印内置自述，并按真实运行入口决定是否等待回车。
   show_script_intro_and_wait() {
-    highlight_echo "============================== 脚本内置自述 =============================="
-    note_echo "脚本名称：${SCRIPT_BASENAME}"
-    note_echo "核心用途：这里简要说明 Sourcetree 动作将执行的业务。"
-    note_echo "运行策略：Sourcetree 内无交互连续执行；终端独立运行需回车确认。"
-    gray_echo "日志文件：${LOG_FILE}"
-    highlight_echo "============================================================================"
+    highlight_echo "============================== 脚本内置自述 ==============================" | jobs_intro_style title
+    note_echo "脚本名称：${SCRIPT_BASENAME}" | jobs_intro_style title
+    note_echo "核心用途：这里简要说明 Sourcetree 动作将执行的业务。" | jobs_intro_style body
+    note_echo "运行策略：Sourcetree 内无交互连续执行；终端独立运行需回车确认。" | jobs_intro_style body
+    gray_echo "日志文件：${LOG_FILE}" | jobs_intro_style body
+    highlight_echo "============================================================================" | jobs_intro_style title
 
     if [[ "${IS_SOURCETREE_RUNTIME:-0}" == "1" ]]; then
-      gray_echo "已识别为 Sourcetree 自定义动作，将跳过交互并连续执行。"
+      gray_echo "已识别为 Sourcetree 自定义动作，将跳过交互并连续执行。" | jobs_intro_style body
       return 0
     fi
     if [[ ! -t 0 ]]; then
@@ -382,5 +434,17 @@ description: 当任务涉及 MacOS 原生 Shell、zsh、.sh、.command、内置�
 - 调用 `clear` 前必须确认是完整终端，例如同时满足 `-t 1`、`TERM` 非空且不是 `dumb`，并且不是 `Sourcetree` 瘦身环境；否则跳过 `clear`，避免出现 `TERM environment variable not set.`。
 - 彩色日志必须支持纯文本降级：如果检测到 `Sourcetree`、非 TTY、`TERM=dumb` 或用户设置 `NO_COLOR`，不要输出 `\033` 这类 ANSI 转义码，避免日志和 SourceTree 窗口里出现 `[0m` 乱码；此规则对所有 SourceTree 脚本强制生效。
 - `Sourcetree` 脚本如果会递归处理工程目录，默认跳过 `.git`、`Pods`、`.dart_tool`、`build`、`DerivedData`，并在最后输出总数、失败数和日志路径；只要有子任务失败，脚本最终也要返回失败状态，方便 `Sourcetree` 判断执行结果。
+
+### 1.9、<span id="network-proxy-recovery">网络代理选择、回溯与恢复</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+- 启用、停用或切换网络代理前，运行时自述必须醒目说明：这是侵入性网络环境变更，为什么需要、影响哪些进程或配置、流量将经过哪里、可能中断哪些连接，以及如何切回原状态；同时给出日志和恢复入口。已有授权可以覆盖本次选择，不额外堆叠重复确认，但不能省略警示。
+- 有交互的入口应明确提供“使用代理 / 不使用本次显式代理”选择，显示默认值、取消方式和各模式真实含义。默认值按用户对当前脚本的要求设置，不能把某个启动器的“直接回车使用代理”推广为其它脚本的默认行为；没有授权时保留原环境或取消。无交互入口只能使用已授权的明确参数，缺少必要选择时停止。
+- 优先通过单条命令、子 Shell 或新启动进程传入环境，仅影响目标应用及其子进程。不得为一次启动顺手修改系统网络服务、全局 `launchctl` 环境、Shell 启动文件、全局路由或持久化配置；确需扩大作用域时，先说明具体范围并取得对应授权。
+- 原地修改或持久化写入前，精确保存将要改动的每项状态及本次写入值：环境变量须区分原本未设置、已设置为空字符串、已设置为非空值；配置还须保留原启用状态、地址、端口、绕过规则及归属作用域。只采集本次需要的键，不转储整个进程环境或无关配置。含敏感值的恢复快照按最小权限保存，与脱敏审计日志分开。仅向子命令或新应用注入环境、父 Shell 和持久状态均未改变时，无需采集未修改的父环境敏感值或建立全量快照；记录注入范围，并提供退出目标应用后按原生方式重新启动的撤回入口。
+- “恢复原状态”必须按快照还原，原本未设置的键用 `unset`，原本为空的键还原为空；不能用清空全部代理代替恢复。仅恢复本次实际修改的项，写回前核对当前值仍等于本次写入值；发现其它进程或用户已改动时，保留新状态并报告冲突，禁止用旧快照覆盖并发修改。
+- 提供可随时调用、可重复执行的恢复入口，并说明异常退出时的恢复办法；需要恢复的持久状态在受控失败或中断时执行清理。进程内代理随目标进程退出结束；后台应用继续运行时仍保有启动环境，恢复父 Shell 或关闭终端不代表该应用已恢复。切换已有应用的模式须完整退出并按所选模式重启，先提示重启对在途任务的影响，不能复用旧进程后声称新环境已生效。
+- “不使用本次显式代理”只表示清除或不注入本脚本负责的代理项；系统代理、自动代理规则、透明隧道和应用自有代理仍可能生效。未核实实际路由时不得称为“全系统直连”；恢复原状态也不等于强制直连。
+- 审计记录使用独立运行编号或追加日志，保留时间、所选模式、作用域、修改项名称、原状态类别、执行与验证结果、恢复尝试及结果；后次运行不能抹掉前次恢复依据。不记录代理密码、凭据、完整环境或含认证信息的代理 URL，日志中只保留必要的脱敏摘要。
+- 配置读回、进程是否重新启动、目标连接是否成功分别验证；端口可连接或配置已写入不能替代应用真实连接结果。恢复失败、状态冲突或验证不通过必须显式报错并返回失败状态，保留快照和人工恢复路径，不能输出“已恢复”或静默继续。
 
 <a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

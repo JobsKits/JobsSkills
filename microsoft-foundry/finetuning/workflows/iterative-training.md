@@ -1,8 +1,8 @@
-# <span id="前言">Iterative Training Workflow</span>
+# Iterative Training Workflow
 
 Systematically improve a fine-tuned model through successive experiments.
 
-## The Core Loop <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## The Core Loop
 
 ```
 1. Train with current config
@@ -15,7 +15,7 @@ Systematically improve a fine-tuned model through successive experiments.
 
 **Rule**: Change ONE variable per experiment.
 
-## Experiment Tracking <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Experiment Tracking
 
 | Run | Base model | Dataset | Epochs | LR | Batch | Best val_loss | Combined eval |
 |-----|-----------|---------|--------|-----|-------|--------------|---------------|
@@ -23,14 +23,14 @@ Systematically improve a fine-tuned model through successive experiments.
 | R2 | gpt-4.1-mini | v1 (335 ex) | 2 | 0.5 | default | 0.310 | 9.15 |
 | ... | ... | ... | ... | ... | ... | ... | ... |
 
-## What to Try (Priority Order) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## What to Try (Priority Order)
 
-### Priority 1: Data Quality (highest leverage) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Priority 1: Data Quality (highest leverage)
 - **Fix inconsistencies**: Contradicting examples confuse the model
 - **Add diversity**: Add examples for input types the model fails on
 - **Reduce noise**: Remove "correct but not ideal" outputs
 
-### Priority 2: Hyperparameters <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Priority 2: Hyperparameters
 
 See `references/hyperparameters.md` for full guide.
 
@@ -40,7 +40,7 @@ See `references/hyperparameters.md` for full guide.
 3. Underfitting → lr=1.5 or epochs=3
 4. Good LR found → try batch_size=16 or 32
 
-### Priority 3: Base Model <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Priority 3: Base Model
 
 | Model | Best for |
 |-------|----------|
@@ -50,12 +50,12 @@ See `references/hyperparameters.md` for full guide.
 | Ministral-3B | Lightweight, fast inference |
 | Qwen-3-32B, Llama-3.3-70B | Multilingual or specialized tasks |
 
-### Priority 4: Training Type <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Priority 4: Training Type
 - SFT plateaued + need better reasoning → RFT (if model supports it)
 - Need style alignment → DPO
 - See `references/training-types.md` before switching
 
-## Diagnostic Decision Tree <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Diagnostic Decision Tree
 
 ```
 Training curves healthy (no overfitting)?
@@ -70,21 +70,21 @@ Training curves healthy (no overfitting)?
       └─ Dataset large → Lower LR dramatically (0.1-0.3)
 ```
 
-## When to Stop <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## When to Stop
 
 1. Beaten baseline by meaningful margin (>5%) and last 3 experiments didn't improve
 2. Diminishing returns: each experiment improves < 0.1 points
 3. Model is "good enough" for production
 4. Budget exhausted (time or money)
 
-## Multi-Model Strategy <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Multi-Model Strategy
 
 Run the same dataset through 2-3 base models:
 1. **gpt-4.1-mini** — primary candidate
 2. **gpt-oss-20b** — large-dataset specialist (500+ examples)
 3. **gpt-4.1-nano** — fast inference option
 
-## Common Mistakes <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Common Mistakes
 
 1. Not establishing a baseline first
 2. Changing multiple variables at once
@@ -92,5 +92,3 @@ Run the same dataset through 2-3 base models:
 4. Ignoring training curves (they tell you what to change next)
 5. More data without quality check (lower-quality data often makes things worse)
 6. Not cleaning up old deployments (wastes quota and money)
-
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

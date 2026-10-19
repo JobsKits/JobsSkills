@@ -3,7 +3,7 @@ name: jobs-codex-config-audit
 description: 当任务涉及 Codex 的 AGENTS.md、用户级 Skills、JobsCodexConfigs / JobsSkills 仓库关系、规则去重压缩、语义防回退、中文数字序号、专有名词链接、子模块一致性或每周配置巡检时使用。
 ---
 
-# Jobs Codex 配置审计
+# Jobs [**Codex**](https://openai.com/codex) 配置审计
 
 ![Jobs出品，必属精品](https://picsum.photos/1500/400)
 
@@ -12,7 +12,7 @@ description: 当任务涉及 Codex 的 AGENTS.md、用户级 Skills、JobsCodexC
 <details>
 <summary>📚 目录（点击展开 / 收起）</summary>
 
-- [🔥 前言](#jobs-toc-heading-1)
+- [🔥 前言](#%E5%89%8D%E8%A8%80)
 - [一、唯一配置源与允许范围](#jobs-toc-heading-2)
   - [1.1、分开维护两个标准仓库](#jobs-toc-heading-3)
   - [1.2、先保护已有工作区](#jobs-toc-heading-4)
@@ -41,7 +41,7 @@ description: 当任务涉及 Codex 的 AGENTS.md、用户级 Skills、JobsCodexC
 
 ---
 
-## <span id="jobs-toc-heading-1" data-jobs-toc="v2">🔥 <font id=前言>前言</font></span><!-- jobs-toc:heading-end -->
+## 🔥 <span id="前言">前言</span>
 
 > 本技能维护 Jobs 的 [**Codex**](https://openai.com/codex) 全局指导与专项 Skills。目标是减少重复上下文、修正文档规范漂移，并保持 `JobsCodexConfigs`、`JobsSkills`、子模块指针和用户级运行位置的边界清晰；“压缩”只能消除表达重复，不能删除触发条件、工程边界、例外、验证步骤或 Jobs 特征。
 
@@ -99,17 +99,17 @@ git -C /Users/jobs/.agents/skills diff
 - 同一文件中连续出现、语义完全相同的句子。
 - 只重复口号、背景或显而易见解释，不携带行为约束的段落。
 - AGENTS 中已经由专项 Skill 完整承载的实现细节；AGENTS 保留触发索引和全局边界。
-- 多个 Skill 中完全相同的 Markdown 外观规则；收口到 `jobs-markdown-docs`，专项 Skill 只保留必须遵守该规范的声明。
+- 多个 Skill 中完全相同的 [**Markdown**](https://markdown.cn) 外观规则；收口到 `jobs-markdown-docs`，专项 Skill 只保留必须遵守该规范的声明。
 
 ### <span id="jobs-toc-heading-8" data-jobs-toc="v2">2.3、禁止以“去重”为名删除 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - Jobs 代码所有权边界与第三方排除规则。
 - `JobsCodexConfigs`、`JobsSkills`、子模块指针和现行基准工作树的方向。
 - `.command` 防误触、自述、日志、安装 / 更新确认和 `main` 入口规则。
-- [**Swift**](https://www.swift.org/) / Objective-C DSL、“一镜到底”和返回对象类型约束。
+- <u>[**Swift**](https://www.swift.org/)</u> / [**Objective-C**](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html) DSL、“一镜到底”和返回对象类型约束。
 - Markdown 首次出现专有名词的固定官方链接。
 - 中文序号使用顿号 `、` 的书写习惯。
-- 构建、语法、Dry Run、SourceTree 或 CodeGraph 等验证步骤。
+- 构建、语法、Dry Run、[**Sourcetree**](https://www.sourcetreeapp.com/) 或 [**CodeGraph**](https://github.com/colbymchenry/codegraph) 等验证步骤。
 - 规则中的例外，例如带行尾注释的 `return` 不应用 `};return`。
 
 这些内容即使在多个文件中看似相近，也可能处在不同触发范围；没有完成语义账本前不得合并。
@@ -148,7 +148,7 @@ git -C /Users/jobs/.agents/skills diff
 
 ### <span id="jobs-toc-heading-12" data-jobs-toc="v2">3.3、独立文档结构 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-`AGENTS.md` 和 Jobs 本人维护或已明确接管的每个 `SKILL.md` 至少检查；第三方实体目录与外援软链接只核对清单、来源和 Git 边界，不把 Jobs 文档样式强加给上游内容：
+`AGENTS.md` 和 Jobs 本人维护或已明确接管的每个 `SKILL.md` 至少检查；第三方实体目录与外援软链接只核对清单、来源和 [**Git**](https://git-scm.com/) 边界，不把 Jobs 文档样式强加给上游内容：
 
 - YAML front matter 仅对 `SKILL.md` 强制，且必须位于第一行。
 - 一级标题、2D 封面、`[toc]`、分隔线和前言顺序正确。
@@ -213,6 +213,8 @@ git -C /Users/jobs/Documents/Github/JobsGenesis/JobsConfigOS/💻JobsCodexConfig
 ### <span id="jobs-toc-heading-19" data-jobs-toc="v2">5.1、维护原则 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 全局规则只在 `JobsCodexConfigs/AGENTS.md` 中维护，专项规则只在现行 `JobsSkills` 工作树中维护。修改 `JobsSkills` 后先单独提交、推送子仓，再在 `JobsCodexConfigs` 中更新 `skills` 子模块指针；不在父仓保留第二份直接跟踪的 Skills 文件。
+
+每次新增或修改全局 `AGENTS.md`，必须在同一任务结束前按标准源同步到 `/Users/jobs/.codex/AGENTS.md` 并执行 `cmp`，不能仅报告差异后留待用户提醒。同步前保留已有改动，运行态有效独有规则先并回标准源；该本地部署要求不授权 Git 提交、推送、Skills 文件复制或 gitlink 更新。
 
 配置注入脚本只部署 `AGENTS.md`，并扫描现行 `JobsSkills` 生成受控注册块；不复制、删除或覆盖 `JobsSkills` 工作树。
 

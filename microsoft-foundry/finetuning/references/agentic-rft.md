@@ -1,10 +1,10 @@
-# <span id="前言">Agentic RFT — Tool Calling</span>
+# Agentic RFT — Tool Calling
 
 Train reasoning models (o4-mini) for agentic scenarios where the model invokes external tools during chain-of-thought reasoning.
 
-> ⚠️ **Access required**: Agentic RFT with tool calling and GPT-5 RFT are behind feature flags. You must request access through the Azure AI Foundry portal or your Microsoft account team. o4-mini RFT without tools is generally available.
+> ⚠️ **Access required**: Agentic RFT with tool calling and GPT-5 RFT are behind feature flags. You must request access through the Microsoft Foundry portal or your Microsoft account team. o4-mini RFT without tools is generally available.
 
-## Tool Definition Format <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Tool Definition Format
 
 ```python
 tools = [
@@ -25,7 +25,7 @@ tools = [
 ]
 ```
 
-## Submitting an Agentic RFT Job <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Submitting an Agentic RFT Job
 
 ```python
 job = client.fine_tuning.jobs.create(
@@ -49,7 +49,7 @@ job = client.fine_tuning.jobs.create(
 )
 ```
 
-## Tool Response Format <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Tool Response Format
 
 Your tool endpoint must return:
 
@@ -62,7 +62,7 @@ Your tool endpoint must return:
 }
 ```
 
-## Tool Endpoint Requirements <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Tool Endpoint Requirements
 
 | Constraint | Limit |
 |-----------|-------|
@@ -76,7 +76,7 @@ Your tool endpoint must return:
 
 **Infrastructure**: Use Always On, sufficient compute (S2+), multiple instances. Under-provisioned endpoints can cause jobs to hang during post-training eval.
 
-## RFT Hyperparameters <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## RFT Hyperparameters
 
 | Parameter | Description | Recommended Start |
 |-----------|-------------|-------------------|
@@ -90,11 +90,9 @@ Your tool endpoint must return:
 
 **Notes:** Higher LR increases output verbosity without improving accuracy. Compute multiplier 1.5 balances rollout quality and training time. Platform may early-stop before all epochs.
 
-## When to Use Agentic RFT <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## When to Use Agentic RFT
 
 - Model needs to **decide when to call tools** (not just follow instructions)
 - Task involves **multi-step reasoning** with external data lookups
 - Model needs to learn **tool selection** — choosing the right tool for the job
 - Standard RFT (without tools) can't capture the agentic behavior
-
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

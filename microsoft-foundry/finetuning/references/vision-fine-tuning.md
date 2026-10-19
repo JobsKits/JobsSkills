@@ -1,15 +1,15 @@
-# <span id="前言">Vision Fine-Tuning</span>
+# Vision Fine-Tuning
 
 Fine-tune models with image data to customize visual understanding. Uses the same chat-completions JSONL format as text SFT, but with image content blocks in user messages.
 
-## Supported Models <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Supported Models
 
 | Model | Version |
 |-------|---------|
 | gpt-4o | 2024-08-06 |
 | gpt-4.1 | 2025-04-14 |
 
-## Image Requirements <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Image Requirements
 
 | Constraint | Limit |
 |-----------|-------|
@@ -22,7 +22,7 @@ Fine-tune models with image data to customize visual understanding. Uses the sam
 
 **Important**: Images can only appear in `user` messages, never in `assistant` responses.
 
-## Data Format <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Data Format
 
 Each training example follows the standard SFT `messages` format. Images are included as `image_url` content blocks within user messages.
 
@@ -30,7 +30,7 @@ Each training example follows the standard SFT `messages` format. Images are inc
 {"messages": [{"role": "system", "content": "You are a helpful AI assistant that describes images."}, {"role": "user", "content": [{"type": "text", "text": "Describe this image."}, {"type": "image_url", "image_url": {"url": "https://example.com/photo.png", "detail": "high"}}]}, {"role": "assistant", "content": "The image shows a cityscape with tall buildings against a blue sky."}]}
 ```
 
-### Image Sources <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Image Sources
 
 Images can be provided in two ways:
 
@@ -44,7 +44,7 @@ Images can be provided in two ways:
 {"type": "image_url", "image_url": {"url": "data:image/png;base64,iVBORw0KGgo..."}}
 ```
 
-### Detail Control <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Detail Control
 
 The `detail` parameter controls image processing fidelity and cost:
 
@@ -60,7 +60,7 @@ The `detail` parameter controls image processing fidelity and cost:
 
 Use `low` for tasks where fine visual detail doesn't matter (classification, general description). Use `high` for tasks needing precise detail (OCR, diagram reading, defect detection).
 
-## Content Moderation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Content Moderation
 
 Images are screened before training. The following are **automatically excluded**:
 
@@ -70,7 +70,7 @@ Images are screened before training. The following are **automatically excluded*
 
 This screening may add latency to file upload validation.
 
-## Best Practices <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Best Practices
 
 - **Diverse examples**: Vary image content, angles, lighting, and resolution
 - **Consistent annotations**: Keep assistant response style and detail level uniform
@@ -78,7 +78,7 @@ This screening may add latency to file upload validation.
 - **Check for excluded images**: After upload, verify the training count matches expectations — some images may be silently skipped due to content moderation
 - **Mixed text+image**: You can include both text-only and image examples in the same training file
 
-## Training Workflow <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Training Workflow
 
 Vision fine-tuning follows the exact same workflow as text SFT:
 
@@ -101,7 +101,7 @@ job = client.fine_tuning.jobs.create(
 )
 ```
 
-## Troubleshooting <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Troubleshooting
 
 | Issue | Resolution |
 |-------|-----------|
@@ -111,8 +111,6 @@ job = client.fine_tuning.jobs.create(
 | Wrong color mode | Convert to RGB or RGBA |
 | Low quality results | Try `detail: high`, add more diverse examples, increase dataset size |
 
-## Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Reference
 
 - [Official docs](https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/fine-tuning-vision)
-
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

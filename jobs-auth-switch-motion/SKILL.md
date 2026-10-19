@@ -16,60 +16,62 @@ description: >
 <details>
 <summary>📚 目录（点击展开 / 收起）</summary>
 
-- [🔥 前言](#jobs-toc-heading-1)
-- [一、核心目标](#jobs-toc-heading-2)
-- [二、模式选择](#jobs-toc-heading-3)
-- [三、共同动效基因](#jobs-toc-heading-4)
-- [四、方案一：Morphing Panel](#jobs-toc-heading-5)
-  - [4.1、静态结构](#jobs-toc-heading-6)
-  - [4.2、登录态](#jobs-toc-heading-7)
-  - [4.3、注册态](#jobs-toc-heading-8)
-  - [4.4、动画事务](#jobs-toc-heading-9)
-- [五、方案二：Sliding Cards](#jobs-toc-heading-10)
-  - [5.1、静态结构](#jobs-toc-heading-11)
-  - [5.2、切到注册](#jobs-toc-heading-12)
-  - [5.3、切回登录](#jobs-toc-heading-13)
-  - [5.4、动画事务](#jobs-toc-heading-14)
-- [六、键盘顶起](#jobs-toc-heading-15)
-- [七、跨端落地](#jobs-toc-heading-16)
-- [八、质量检查](#jobs-toc-heading-17)
+- [🔥 前言](#%E5%89%8D%E8%A8%80)
+- [一、核心目标](#core-goals)
+- [二、模式选择](#mode-selection)
+- [三、共同动效基因](#motion-principles)
+- [四、方案一：Morphing Panel](#morphing-panel)
+  - [4.1、静态结构](#morphing-structure)
+  - [4.2、登录态](#morphing-login)
+  - [4.3、注册态](#morphing-register)
+  - [4.4、动画事务](#morphing-animation)
+- [五、方案二：Sliding Cards](#sliding-cards)
+  - [5.1、静态结构](#sliding-structure)
+  - [5.2、切到注册](#sliding-register)
+  - [5.3、切回登录](#sliding-login)
+  - [5.4、动画事务](#sliding-animation)
+- [六、键盘顶起](#keyboard-lift)
+- [七、跨端落地](#platform-implementation)
+- [八、质量检查](#quality-checks)
 
 </details>
 <!-- jobs-toc:end -->
 
 ---
 
-## <span id="jobs-toc-heading-1" data-jobs-toc="v2">🔥 <font id=前言>前言</font></span><!-- jobs-toc:heading-end -->
+## 🔥 <span id="前言">前言</span>
 
 > 本技能用于蒸馏 JobsAppDoor 登录 / 注册切换动效。重点保留运动骨架、状态关系、节奏和层级，不复刻旧界面的视觉包袱。
 
-## <span id="jobs-toc-heading-2" data-jobs-toc="v2">一、核心目标 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+## 一、<span id="core-goals">核心目标</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 新建一套登录/注册 UI 时，不要复刻旧界面外观；只复刻动画骨架、状态关系、节奏和层级运动。先做干净的新 UI，再把下面两种动效配方之一套上去。
 
-## <span id="jobs-toc-heading-3" data-jobs-toc="v2">二、模式选择 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+- 绘制、复刻或修改 [**iOS**](https://developer.apple.com/ios/) 登录 / 注册页面前，必须读取并执行 [iOS 主题对比共同规范](../jobs-swift/references/ios-theme-contrast.md)；白天浅底深字、黑夜深底浅字，副标题弱于主标题但保持可读。输入文字、占位、辅助说明、切换栏及提交按钮都按各自实际背景检查，验收覆盖两套认证状态与三态主题的稳定展示态。
+
+## 二、<span id="mode-selection">模式选择</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - `JobsAppDoor-1 / morphing-panel`: 登录和注册共用同一个内容面板。切换时面板尺寸变高、竖向切换按钮从右边换到左边，登录输入框横向让位，注册额外输入框出现。
 - `JobsAppDoor-2 / sliding-cards`: 登录卡片和注册卡片是两个独立视图。切换时旧卡片滑出屏幕左侧，新卡片从屏幕外滑到中心，客服按钮跟随当前卡片底部落点移动。
 - 如果用户只说“像 JobsAppDoor 登录注册切换”，默认优先用 `morphing-panel`；如果用户明确要两个页面/两张卡片/横向切换，用 `sliding-cards`。
 
-## <span id="jobs-toc-heading-4" data-jobs-toc="v2">三、共同动效基因 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+## 三、<span id="motion-principles">共同动效基因</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 入口动效：主卡片、Logo、客服按钮在首次出现时做 `scale 0.01 -> 1.1 -> 1.0` 的 keyframe pop，持续 `1s`，`easeInEaseOut`。这是“先吸出来，再轻微过冲回落”的入场感。
 - 状态不靠纯透明度表达。切换时必须至少同时改变 `position/frame`，必要时叠加 `alpha`、按钮标题、颜色和输入框边框。
 - 所有登录/注册切换先收键盘，再切状态。输入框编辑中的键盘顶起不属于主切换动画，但要一起兼容。
-- 需要真实几何位置时，优先动画 `frame/center/transform`，或改约束后在动画块里 `layoutIfNeeded`。不要只改 Masonry/SnapKit 约束却不触发布局。
+- 需要真实几何位置时，优先动画 `frame/center/transform`，或改约束后在动画块里 `layoutIfNeeded`。不要只改 [**Masonry**](https://github.com/SnapKit/Masonry)/[**SnapKit**](https://github.com/SnapKit/SnapKit) 约束却不触发布局。
 
-## <span id="jobs-toc-heading-5" data-jobs-toc="v2">四、方案一：Morphing Panel <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+## 四、<span id="morphing-panel">方案一：Morphing Panel</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### <span id="jobs-toc-heading-6" data-jobs-toc="v2">4.1、静态结构 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### 4.1、<span id="morphing-structure">静态结构</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 一个 `contentPanel` 同时承载登录与注册。
 - 一个竖向 `switchRail`，宽度约 `64pt`，登录态贴右边，注册态贴左边。
 - 登录输入框只有账号、密码两项；注册态复用这两个输入框，再追加确认密码、手机号、验证码等输入框。
 - 标题、提交按钮、返回首页按钮都在同一个面板里根据状态改文案和位置。
 
-### <span id="jobs-toc-heading-7" data-jobs-toc="v2">4.2、登录态 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### 4.2、<span id="morphing-login">登录态</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - `contentPanel.frame = loginFrame`，高度较短。
 - `switchRail.frame = right edge`，文案是“新用户注册”一类竖排入口。
@@ -78,7 +80,7 @@ description: >
 - 记住密码、忘记密码等登录辅助项 `alpha = 1`。
 - 提交按钮文案为登录，底部位置按登录面板高度计算。
 
-### <span id="jobs-toc-heading-8" data-jobs-toc="v2">4.3、注册态 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### 4.3、<span id="morphing-register">注册态</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - `contentPanel.frame = registerFrame`，高度明显变高。
 - `switchRail.frame = left edge`，文案改成“返回登录”一类竖排入口。
@@ -87,7 +89,7 @@ description: >
 - 注册额外输入框首次创建在账号/密码下方，以 `inputHeight + verticalGap` 逐项堆叠；后续切换只恢复 `alpha = 1`。
 - 登录辅助项 `alpha = 0`；提交按钮文案为注册，底部位置按注册面板高度计算。
 
-### <span id="jobs-toc-heading-9" data-jobs-toc="v2">4.4、动画事务 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### 4.4、<span id="morphing-animation">动画事务</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 把以下变化放进同一个动画事务，父容器和子面板都要参与同一帧提交：
 
@@ -99,30 +101,30 @@ description: >
 
 这组参数几乎不弹跳，重点是“稳、顺、同屏变形”。切注册时执行：切按钮选中态 -> 改面板 frame -> 改 rail frame/颜色/文案 -> 平移共享输入框 -> 创建或显示注册额外输入框 -> 淡出登录辅助项 -> 更新提交按钮。切登录时按反方向恢复，注册额外输入框淡出到 `alpha = 0`，不要销毁。
 
-## <span id="jobs-toc-heading-10" data-jobs-toc="v2">五、方案二：Sliding Cards <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+## 五、<span id="sliding-cards">方案二：Sliding Cards</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### <span id="jobs-toc-heading-11" data-jobs-toc="v2">5.1、静态结构 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### 5.1、<span id="sliding-structure">静态结构</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - `loginCard` 和 `registerCard` 是两个独立内容视图，尺寸可以不同。
 - 初始：`loginCard.x = 20` 左右边距内居中；`registerCard.x = screenWidth + 20`，放在屏幕右侧外。
 - 两张卡片 `y` 一致，约在屏幕高度 `1/4`；注册卡片高度大于登录卡片。
 - `customerServiceButton` 不属于卡片内部，放在当前卡片下方 `8pt` 左右，并在切换时跟随当前卡片底部。
 
-### <span id="jobs-toc-heading-12" data-jobs-toc="v2">5.2、切到注册 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### 5.2、<span id="sliding-register">切到注册</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 先设置当前页为注册。
 - `loginCard` 退出：滑到屏幕左侧外，目标 `x = -(card.width + card.x)`，`y` 回到初始 y。
 - `registerCard` 进入：`centerX = screenWidth / 2`，`centerY` 可按传入 offset 微调，默认 offset 为 `0`。
 - `customerServiceButton.y = registerCard.top + registerCard.height + 8`。
 
-### <span id="jobs-toc-heading-13" data-jobs-toc="v2">5.3、切回登录 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### 5.3、<span id="sliding-login">切回登录</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 先设置当前页为登录。
 - `registerCard` 按同样方式退出到屏幕左侧外。
 - `loginCard` 从当前屏幕外位置回到中心。
 - `customerServiceButton.y = loginCard.top + loginCard.height + 8`。
 
-### <span id="jobs-toc-heading-14" data-jobs-toc="v2">5.4、动画事务 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### 5.4、<span id="sliding-animation">动画事务</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 卡片进出和客服按钮跟随都使用同一组弹簧参数：
 
@@ -134,7 +136,7 @@ description: >
 
 这组参数故意很“弹”：耗时长、速度大、阻尼低，带明显弹簧回拉。要让旧卡和新卡同时动，不要先等退出完成再进入。
 
-## <span id="jobs-toc-heading-15" data-jobs-toc="v2">六、键盘顶起 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+## 六、<span id="keyboard-lift">键盘顶起</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 如果登录/注册表单里输入框较多，记录当前激活输入框 index 和上次激活 index：
 
@@ -142,14 +144,14 @@ description: >
 - 没有输入框编辑时：把这些视图恢复到初始化缓存的 y。
 - 每次键盘通知处理结束后重置 `isEditingAnyInput = false`，避免下一轮残留。
 
-## <span id="jobs-toc-heading-16" data-jobs-toc="v2">七、跨端落地 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+## 七、<span id="platform-implementation">跨端落地</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-- UIKit：`UIView animateWithDuration:delay:usingSpringWithDamping:initialSpringVelocity:options:animations:` 可直接表达两套参数；入口 pop 用 `CAKeyframeAnimation` 的 `transform`。
-- SwiftUI：Pattern 1 用状态驱动 `frame/offset/opacity`，动画用 `.spring(response: 0.7, dampingFraction: 1)` 近似；Pattern 2 用低阻尼 spring 和较长 response 近似。
-- Web/React：Pattern 1 用高阻尼 spring 或 cubic ease-in-out；Pattern 2 用低阻尼 spring。不要用只改 display/opacity 的切换。
+- [**UIKit**](https://developer.apple.com/documentation/uikit)：`UIView animateWithDuration:delay:usingSpringWithDamping:initialSpringVelocity:options:animations:` 可直接表达两套参数；入口 pop 用 `CAKeyframeAnimation` 的 `transform`。
+- [**SwiftUI**](https://developer.apple.com/documentation/swiftui)：Pattern 1 用状态驱动 `frame/offset/opacity`，动画用 `.spring(response: 0.7, dampingFraction: 1)` 近似；Pattern 2 用低阻尼 spring 和较长 response 近似。
+- Web/[**React**](https://react.dev/)：Pattern 1 用高阻尼 spring 或 cubic ease-in-out；Pattern 2 用低阻尼 spring。不要用只改 display/opacity 的切换。
 - 新 UI 可以改色、排版、圆角、字体和素材，但必须保留：切换触发点、面板/卡片运动方向、时长层级、按钮/辅助项跟随逻辑。
 
-## <span id="jobs-toc-heading-17" data-jobs-toc="v2">八、质量检查 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+## 八、<span id="quality-checks">质量检查</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Pattern 1 验收：同一面板在屏幕上变形；竖向按钮左右换边；账号/密码不是重建，而是横向让位；注册额外项出现；登录辅助项淡出。
 - Pattern 2 验收：登录和注册是两张独立卡片；旧卡滑出左侧；新卡滑到中心；客服按钮跟着目标卡片底部移动；整体有明显弹簧感。

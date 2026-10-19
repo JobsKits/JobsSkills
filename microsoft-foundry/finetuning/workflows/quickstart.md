@@ -1,16 +1,16 @@
-# <span id="前言">Quickstart: Fine-Tune Your First Model</span>
+# Quickstart: Fine-Tune Your First Model
 
 6 steps from zero to a fine-tuned model using SFT with synthetic data.
 
 > **Time**: ~20 min active + 1-3 hours training.
 
-## Prerequisites <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Prerequisites
 
-- Azure AI Foundry project with a deployed model (e.g., `gpt-4.1-mini`)
+- Microsoft Foundry project with a deployed model (e.g., `gpt-4.1-mini`)
 - Python 3.10+ with `openai` installed
 - Project endpoint URL and API key (Foundry portal → Project Settings)
 
-## Step 1: Connect to Your Project <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Step 1: Connect to Your Project
 
 ```bash
 export OPENAI_BASE_URL="https://<your-resource>.services.ai.azure.com/api/projects/<your-project>/openai/v1/"
@@ -26,7 +26,7 @@ resp = client.chat.completions.create(model="gpt-4.1-mini", messages=[{"role": "
 print(resp.choices[0].message.content)
 ```
 
-## Step 2: Generate Training Data <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Step 2: Generate Training Data
 
 ```python
 import json, re
@@ -60,7 +60,7 @@ for split, name, rng in [("train", "train.jsonl", examples[:40]), ("val", "val.j
 
 Validate: `python scripts/validate/validate_sft.py train.jsonl`
 
-## Step 3: Baseline the Base Model <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Step 3: Baseline the Base Model
 
 ```python
 with open("val.jsonl") as f:
@@ -74,7 +74,7 @@ for ex in test_examples:
     print(f"Base model: {resp.choices[0].message.content}\n")
 ```
 
-## Step 4: Upload Data and Submit Job <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Step 4: Upload Data and Submit Job
 
 ```python
 import time
@@ -103,15 +103,15 @@ Or via script:
 python scripts/submit_training.py --model gpt-4.1-mini --training-file train.jsonl --validation-file val.jsonl --type sft --suffix my-first-ft --epochs 2
 ```
 
-## Step 5: Monitor <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Step 5: Monitor
 
 ```bash
 python scripts/monitor_training.py --job-id <your-job-id>
 ```
 
-Or check [Azure AI Foundry portal](https://ai.azure.com) → Fine-tuning → Jobs.
+Or check [Microsoft Foundry portal](https://ai.azure.com) → Fine-tuning → Jobs.
 
-## Step 6: Deploy, Test, and Compare <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Step 6: Deploy, Test, and Compare
 
 ```bash
 python scripts/deploy_model.py --model-id <fine-tuned-model-name> --name my-ft-deployment --capacity 50
@@ -126,11 +126,9 @@ for ex in test_examples:
     print(f"Fine-tuned: {ft.choices[0].message.content}\n")
 ```
 
-## What's Next <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## What's Next
 
 - **Scale data**: 200-500 examples → `workflows/dataset-creation.md`
 - **Try RFT**: For verifiable answers → `references/training-types.md`
 - **Debug**: `workflows/diagnose-poor-results.md`
 - **Full guide**: `workflows/full-pipeline.md`
-
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

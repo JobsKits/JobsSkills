@@ -1,8 +1,8 @@
-# <span id="前言">Deploy & Track</span>
+# Deploy & Track
 
 Applies to all private network deployments.
 
-## Deploy <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Deploy
 
 ```bash
 az deployment group create \
@@ -14,7 +14,20 @@ az deployment group create \
 
 > ⚠️ Capability host provisioning is **asynchronous** (10–20 min). The CLI produces no output during this phase.
 
-## Monitor Progress <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Managed VNet — Required Post-Deploy Step
+
+After the deployment succeeds, you **must** create the managed network's outbound private endpoint rules:
+
+- A **self-referencing private endpoint** back to the Foundry account.
+- Private endpoints to its dependent data resources.
+
+> ⚠️ **Without them, hosted agents fail with `500 (403: Public access is disabled)`** — the agent container in Microsoft's managed VNet can't reach the account privately. Prompt agents are unaffected.
+
+The account's managed identity must hold `Azure AI Enterprise Network Connection Approver` so the rules auto-approve.
+
+See the Managed VNet doc (Key Documentation) for current steps, or the template README for its specific script.
+
+## Monitor Progress
 
 Use exponential backoff — do NOT poll every 30 seconds.
 
@@ -45,11 +58,11 @@ az deployment group wait \
   --created --timeout 1800
 ```
 
-## Error Recovery <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Error Recovery
 
 When a deployment fails, follow this workflow:
 
-### Step 1 — Identify the error <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Step 1 — Identify the error
 
 ```bash
 az deployment operation group list \
@@ -59,26 +72,26 @@ az deployment operation group list \
   -o json
 ```
 
-### Step 2 — Resolve <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Step 2 — Resolve
 
 Use `microsoft_docs_search` with the error code or message to find current remediation. The legionservicelink retry rule is documented in the main workflow's Error Handling section.
 
 | Error | Likely cause | Fix |
 |-------|-------------|-----|
-| `legionservicelink` / subnet in use | Orphaned service link from prior attempt | Use a new `vnetName` — do not reuse the prior VNet |
+| `legionservicelink` / subnet in use | Capability host association still linked to the agent subnet | Use a new `vnetName`, or purge the account and delete the capability host, then wait for the link to clear before reusing the subnet |
 | `AuthorizationFailed` on `validate/action` | Missing Contributor role | Assign Contributor + User Access Administrator to deploying identity |
 | `SubnetDelegationAlreadyExists` | Agent subnet already delegated to another resource | Use a new VNet or open a support ticket to remove the delegation |
 | `disableLocalAuth` policy violation | Template defaults to `false` | Set `disableLocalAuth: true` in Bicep params |
 | `defaultOutboundAccess` policy violation | Subnets missing the property | Add `defaultOutboundAccess: false` to subnet properties |
 
-### Step 3 — Present fix to user and get approval <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Step 3 — Present fix to user and get approval
 
 Before re-deploying, show the user:
 - What failed and why
 - What file/parameter will be changed
 - The new `vnetName` to use (must be different from the failed run)
 
-### Step 4 — Re-deploy with a new deployment name <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Step 4 — Re-deploy with a new deployment name
 
 ```bash
 # Update main.bicepparam: change vnetName to a new unique name
@@ -88,5 +101,3 @@ az deployment group create \
   --parameters main.bicepparam \
   --name <deployment-name>-retry
 ```
-
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>
