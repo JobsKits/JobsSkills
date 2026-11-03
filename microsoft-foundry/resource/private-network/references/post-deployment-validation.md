@@ -1,10 +1,10 @@
-# <span id="前言">Post-Deployment Validation</span>
+# Post-Deployment Validation
 
 Run after deployment succeeds. Steps 1-3 can run from anywhere (management plane). Steps 4-5 require VNet access.
 
-## 1. Infrastructure Verification <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## 1. Infrastructure Verification
 
-### 1.1 Resource State <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### 1.1 Resource State
 
 Verify all resources are in `Succeeded` state:
 
@@ -14,7 +14,7 @@ az deployment operation group list \
   --query "[].{resource:properties.targetResource.resourceType,state:properties.provisioningState}" -o table
 ```
 
-### 1.2 Private Endpoint Connections <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### 1.2 Private Endpoint Connections
 
 Verify all PE connections are `Approved`:
 
@@ -24,7 +24,7 @@ az network private-endpoint list \
   --query "[].{name:name,status:privateLinkServiceConnections[0].privateLinkServiceConnectionState.status,resource:privateLinkServiceConnections[0].groupIds[0]}" -o table
 ```
 
-### 1.3 Public Network Access Audit <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### 1.3 Public Network Access Audit
 
 Verify all resources have public access disabled:
 
@@ -46,15 +46,27 @@ All should return `Disabled`.
 
 > **T10 (Private Basic):** Steps 2-5 below do not apply — T10 has no agents, no capability host, and no BYO resources. Setup is complete after Step 1.
 
-## 2. RBAC Role Assignment (no VNet required) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### 1.4 Managed VNet — Outbound Private Endpoint Rules
+
+For Managed VNet, verify the managed network's **outbound** private endpoint rules exist, especially the self-referencing private endpoint back to the account:
+
+```bash
+az rest --method get \
+  --url "https://management.azure.com/subscriptions/<sub>/resourceGroups/<rg>/providers/Microsoft.CognitiveServices/accounts/<ai-account>/managedNetworks/default/outboundRules?api-version=2025-10-01-preview" \
+  --query "value[].{name:name,type:properties.type,status:properties.status}" -o table
+```
+
+Expect a self-referencing private endpoint to the account plus private endpoints to its dependent data resources. A missing self-endpoint causes hosted agents to return `500 (403)`.
+
+## 2. RBAC Role Assignment (no VNet required)
 
 The template does not assign data-plane roles automatically.
 
-Assign `Azure AI Developer` at the **account** scope (management-plane):
+Assign `Foundry Account Owner` at the **account** scope (management-plane):
 
 ```bash
 az role assignment create \
-  --role "Azure AI Developer" \
+  --role "Foundry Account Owner" \
   --assignee <your-object-id-or-email> \
   --scope /subscriptions/<sub>/resourceGroups/<rg>/providers/Microsoft.CognitiveServices/accounts/<ai-account-name>
 ```
@@ -70,7 +82,7 @@ az role assignment create \
 
 > ⚠️ RBAC propagation can take 1–5 minutes.
 
-## 3. Deploy a Model (no VNet required) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## 3. Deploy a Model (no VNet required)
 
 ```bash
 az cognitiveservices account deployment create \
@@ -88,8 +100,6 @@ Fall back to `Standard` SKU if `GlobalStandard` quota is exhausted.
 
 ---
 
-## 4. VNet Access & End-to-End Test <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## 4. VNet Access & End-to-End Test
 
 For the remaining steps (VNet access setup, DNS resolution, agent lifecycle test, isolation proof, cleanup), read [end-to-end-test.md](end-to-end-test.md).
-
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

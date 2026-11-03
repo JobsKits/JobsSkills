@@ -1,10 +1,10 @@
-# <span id="前言">Detailed Workflows: Quota Management</span>
+# Detailed Workflows: Quota Management
 
 **Table of Contents:** [Workflow 1: View Current Quota Usage](#workflow-1-view-current-quota-usage---detailed-steps) · [Workflow 2: Find Best Region for Model Deployment](#workflow-2-find-best-region-for-model-deployment---detailed-steps) · [Workflow 3: Check Quota Before Deployment](#workflow-3-check-quota-before-deployment---detailed-steps) · [Workflow 4: Monitor Quota Across Deployments](#workflow-4-monitor-quota-across-deployments---detailed-steps) · [Quick Command Reference](#quick-command-reference) · [MCP Tools Reference](#mcp-tools-reference-optional-wrappers)
 
-## Workflow 1: View Current Quota Usage - Detailed Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Workflow 1: View Current Quota Usage - Detailed Steps
 
-### Step 1: Show Regional Quota Summary (REQUIRED APPROACH) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Step 1: Show Regional Quota Summary (REQUIRED APPROACH)
 
 > **CRITICAL AGENT INSTRUCTION:**
 > - When showing quota: Query REGIONAL quota summary, NOT individual resources
@@ -31,7 +31,7 @@ for region in "${regions[@]}"; do
 done
 ```
 
-### Step 2: If User Asks for Specific Resource (ONLY IF EXPLICITLY REQUESTED) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Step 2: If User Asks for Specific Resource (ONLY IF EXPLICITLY REQUESTED)
 
 ```bash
 # User must provide resource name
@@ -56,9 +56,9 @@ foundry_models_deployments_list(
 - `Limit`: Maximum quota available in region
 - `Available`: Calculated as `limit - currentValue`
 
-## Workflow 2: Find Best Region for Model Deployment - Detailed Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Workflow 2: Find Best Region for Model Deployment - Detailed Steps
 
-### Step 1: Check Single Region <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Step 1: Check Single Region
 
 ```bash
 # Get subscription ID
@@ -72,7 +72,7 @@ az rest --method get \
   -o table
 ```
 
-### Step 2: Check Multiple Regions (Common Regions) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Step 2: Check Multiple Regions (Common Regions)
 
 Check these regions in sequence by changing the `region` variable:
 - `eastus`, `eastus2` - US East Coast
@@ -94,7 +94,7 @@ Repeat for each target region.
 - For PTU: `OpenAI.ProvisionedManaged.<model-name>`
 - Focus on 2-3 regions relevant to your location rather than checking all regions
 
-## Workflow 3: Check Quota Before Deployment - Detailed Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Workflow 3: Check Quota Before Deployment - Detailed Steps
 
 **Steps:**
 1. Check current usage (workflow #1)
@@ -102,7 +102,7 @@ Repeat for each target region.
 3. Compare: `available >= required_capacity`
 4. If insufficient: Use workflow #2 to find region with capacity, or request increase
 
-## Workflow 4: Monitor Quota Across Deployments - Detailed Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Workflow 4: Monitor Quota Across Deployments - Detailed Steps
 
 **Recommended Approach - Regional Quota Overview:**
 
@@ -137,7 +137,7 @@ az cognitiveservices account deployment list \
 
 > **Note:** Don't automatically iterate through all resources in the subscription. Show regional quota summary or ask for specific resource name.
 
-## Quick Command Reference <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Quick Command Reference
 
 ```bash
 # View quota for specific model using REST API
@@ -162,7 +162,7 @@ az cognitiveservices account deployment delete \
   --deployment-name <deployment-name>
 ```
 
-## MCP Tools Reference (Optional Wrappers) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## MCP Tools Reference (Optional Wrappers)
 
 **Note:** All quota operations are control plane (management) operations. MCP tools are optional convenience wrappers around Azure CLI commands.
 
@@ -174,5 +174,3 @@ az cognitiveservices account deployment delete \
 | `foundry_resource_get` | Get resource details and endpoint | `az cognitiveservices account show` |
 
 **Recommended:** Use Azure CLI commands directly for control plane operations.
-
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

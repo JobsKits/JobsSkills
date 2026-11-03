@@ -1,8 +1,8 @@
-# <span id="前言">Custom Template Adaptation</span>
+# Custom Template Adaptation
 
 For the EXTEND path — when the user has existing Bicep or Terraform templates.
 
-## Instructions <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Instructions
 
 1. **Read** the user's existing template files. Understand the resource graph: what's defined, how resources reference each other, what naming conventions are used.
 
@@ -20,8 +20,7 @@ For the EXTEND path — when the user has existing Bicep or Terraform templates.
 
 6. **Implement** the approved changes. After implementation, the flow continues to Step 4 (Pre-Deployment Validation) in the main workflow.
 
-## Retry Safety <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Retry Safety
 
 > ⚠️ If a deployment fails after the capability host step starts, Azure Container Apps leaves a `legionservicelink` service association on the agent subnet that **cannot be removed**. On retry, use a **new subnet or new VNet** — never reuse the same agent subnet.
 
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

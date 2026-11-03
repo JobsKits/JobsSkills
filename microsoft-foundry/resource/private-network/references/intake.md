@@ -1,12 +1,12 @@
-# <span id="前言">Intake</span>
+# Intake
 
 Collect all inputs in one pass, tiered by priority. Extract implicit answers from the user’s message before asking. Use `AskUserQuestion` for unanswered items — batch related questions.
 
 ---
 
-## Tier 1 — Core <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Tier 1 — Core
 
-### 1.0 Verify Subscription <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### 1.0 Verify Subscription
 
 Run:
 
@@ -20,7 +20,7 @@ Confirm with user. Switch if needed:
 az account set --subscription "<name-or-id>"
 ```
 
-### 1.1 Extract Known Answers <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### 1.1 Extract Known Answers
 
 Scan the user's message before asking:
 
@@ -34,11 +34,11 @@ Scan the user's message before asking:
 | "I have a Bicep/Terraform template" | Extend existing IaC |
 | "add Foundry to my existing infra" | Extend existing IaC |
 
-### 1.2 Architecture Questions <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### 1.2 Architecture Questions
 
 For unanswered items, use `AskUserQuestion`:
 
-**VNet model:** BYO VNet or Managed VNet (preview)?
+**VNet model:** BYO VNet or Managed VNet?
 
 **Agents:** Agent workloads, or just models/projects?
 
@@ -54,7 +54,7 @@ If empty, warn the user and suggest alternatives.
 
 **VNet:** New or existing? If new: address space (default `192.168.0.0/16`), subnet CIDRs (agent `/24`, PE `/24`).
 
-### 1.3 Determine Approach <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### 1.3 Determine Approach
 
 Based on the answers collected, select one of three paths:
 
@@ -77,11 +77,11 @@ Confirm the approach with the user before continuing to Tier 2.
 
 ---
 
-## Tier 2 — Architecture <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Tier 2 — Architecture
 
 *Skip questions already answered or not applicable.*
 
-### BYO VNet only <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### BYO VNet only
 
 **Topology:** Standalone, hub-spoke, or Azure vWAN?
 
@@ -99,9 +99,7 @@ Confirm the approach with the user before continuing to Tier 2.
 
 **Team ownership:** Same team controls VNet, DNS, NSG, and policy? If different team, block and get pre-approval before deploying.
 
-### Managed VNet only <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
-
-**Feature flag:** Run `az feature show` to verify `AI.ManagedVnetPreview` is registered. If not, register and wait 15–30 min.
+### Managed VNet only
 
 **Outbound mode:** Internet outbound (default) or approved outbound only?
 
@@ -109,7 +107,7 @@ Confirm the approach with the user before continuing to Tier 2.
 
 **Client access:** Where will clients connect from? (Same VNet, peered VNet, on-prem via VPN/ER, Azure-hosted service)
 
-### Both paths <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Both paths
 
 **MCP servers:** Needed on VNet?
 
@@ -120,12 +118,13 @@ Confirm the approach with the user before continuing to Tier 2.
 **BYO resources:** Reuse existing Cosmos DB / Storage / AI Search, or create new?
 
 > If reusing, confirm all in same region as VNet.
+> If reusing AI Search, it must accept Entra ID (AAD) data-plane auth — a key-only service makes agents fail with HTTP 403. Enable with `az search service update --name <search-name> --resource-group <search-rg> --auth-options aadOrApiKey --aad-auth-failure-mode http401WithBearerChallenge`.
 
 **Key Vault / App Insights:** If user mentions existing ones, collect resource IDs. Optional.
 
 ---
 
-## Tier 3 — Enterprise <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Tier 3 — Enterprise
 
 **Agent tools:** Which tools? (AI Search, Cosmos DB, Storage, MCP, external APIs, Bing grounding, Code Interpreter)
 
@@ -153,20 +152,22 @@ Confirm the approach with the user before continuing to Tier 2.
 
 ---
 
-## Validate Against Learn <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Validate Against Learn
 
 After collecting all requirements, validate the user's configuration against current documentation. Use `microsoft_docs_fetch` on the relevant pages below, then `microsoft_docs_search` for any requirement-specific concerns not covered.
 
-### Reference Pages <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Reference Pages
 
 | Topic | URL |
 |-------|-----|
-| Network isolation overview | https://learn.microsoft.com/azure/ai-foundry/how-to/configure-private-link |
-| Agent Service private networking | https://learn.microsoft.com/azure/ai-services/agents/how-to/virtual-networks |
-| Managed VNet configuration | https://learn.microsoft.com/azure/ai-foundry/how-to/configure-managed-network |
+| Networking options (decision) | https://learn.microsoft.com/azure/foundry/agents/concepts/networking-options |
+| Network isolation overview | https://learn.microsoft.com/azure/foundry/how-to/configure-private-link |
+| Agent Service private networking | https://learn.microsoft.com/azure/foundry/agents/how-to/virtual-networks |
+| Networking deep dive (subnet/IP) | https://learn.microsoft.com/azure/foundry/agents/concepts/agents-networking-deep-dive |
+| Managed VNet configuration | https://learn.microsoft.com/azure/foundry/how-to/managed-virtual-network |
 | Agent Service FAQ — VNet | https://learn.microsoft.com/azure/foundry/agents/faq#virtual-networking |
-| Supported regions & availability | https://learn.microsoft.com/azure/ai-foundry/reference/region-support |
-| NSP | https://learn.microsoft.com/en-us/azure/networking/network-security-perimeter |
+| Supported regions & availability | https://learn.microsoft.com/azure/foundry/reference/region-support |
+| NSP | https://learn.microsoft.com/azure/foundry/how-to/add-foundry-to-network-security-perimeter |
 | Feature Limitations | https://learn.microsoft.com/en-us/azure/foundry/how-to/configure-private-link#foundry-feature-limitations |
 
 > These URLs may change. If a fetch returns 404, use `microsoft_docs_search` to find the current page.
@@ -180,10 +181,8 @@ Do NOT proceed until all conflicts are resolved or accepted.
 
 ---
 
-## Confirmation <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Confirmation
 
 Present a summary of all gathered requirements. Ask: **"Confirm this is accurate before I generate a deployment plan."**
 
 > Do NOT proceed to Plan Generation until you validated requirements against documents and the user confirms.
-
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

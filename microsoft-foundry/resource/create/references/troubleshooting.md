@@ -1,8 +1,8 @@
-# <span id="前言">Troubleshooting: Create Foundry Resource</span>
+# Troubleshooting: Create Foundry Resource
 
-## Resource Creation Failures <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Resource Creation Failures
 
-### ResourceProviderNotRegistered <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### ResourceProviderNotRegistered
 
 **Solution:**
 1. If you have Owner/Contributor role, register the provider:
@@ -12,7 +12,7 @@
 2. If you lack permissions, ask a subscription Owner or Contributor to register it
 3. Alternatively, ask them to grant you the `/register/action` privilege
 
-### InsufficientPermissions <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### InsufficientPermissions
 
 **Solution:**
 ```bash
@@ -24,7 +24,7 @@ az role assignment list --assignee <your-user-id> --subscription <subscription-i
 
 Use `microsoft-foundry:rbac` skill to manage permissions.
 
-### LocationNotAvailableForResourceType <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### LocationNotAvailableForResourceType
 
 **Solution:**
 ```bash
@@ -35,7 +35,7 @@ az provider show --namespace Microsoft.CognitiveServices \
 # Choose different region from the list
 ```
 
-### ResourceNameNotAvailable <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### ResourceNameNotAvailable
 
 Resource name must be globally unique. Try adding a unique suffix:
 
@@ -50,7 +50,7 @@ az cognitiveservices account create \
   --yes
 ```
 
-## Resource Shows as Failed <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Resource Shows as Failed
 
 **Check provisioning state:**
 ```bash
@@ -77,7 +77,7 @@ az cognitiveservices account create \
   --yes
 ```
 
-## Cannot Access Keys <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Cannot Access Keys
 
 **Error:** `AuthorizationFailed` when listing keys
 
@@ -85,10 +85,8 @@ az cognitiveservices account create \
 
 Use `microsoft-foundry:rbac` skill to grant appropriate permissions.
 
-## External Resources <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## External Resources
 
 - [Create multi-service resource](https://learn.microsoft.com/en-us/azure/ai-services/multi-service-resource?pivots=azcli)
 - [Azure AI Services documentation](https://learn.microsoft.com/en-us/azure/ai-services/)
 - [Azure regions with AI Services](https://azure.microsoft.com/global-infrastructure/services/?products=cognitive-services)
-
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

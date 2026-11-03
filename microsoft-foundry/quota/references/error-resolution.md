@@ -1,8 +1,8 @@
-# <span id="前言">Error Resolution Workflows</span>
+# Error Resolution Workflows
 
 **Table of Contents:** [Workflow 7: Quota Exhausted Recovery](#workflow-7-quota-exhausted-recovery) · [Workflow 8: Resolve 429 Rate Limit Errors](#workflow-8-resolve-429-rate-limit-errors) · [Workflow 9: Resolve DeploymentLimitReached](#workflow-9-resolve-deploymentlimitreached) · [Workflow 10: Resolve InsufficientQuota](#workflow-10-resolve-insufficientquota) · [Workflow 11: Resolve QuotaExceeded](#workflow-11-resolve-quotaexceeded)
 
-## Workflow 7: Quota Exhausted Recovery <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Workflow 7: Quota Exhausted Recovery
 
 **A. Deploy to Different Region**
 ```bash
@@ -24,7 +24,7 @@ az cognitiveservices account deployment delete --name <resource> --resource-grou
 
 ---
 
-## Workflow 8: Resolve 429 Rate Limit Errors <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Workflow 8: Resolve 429 Rate Limit Errors
 
 **Identify Deployment:**
 ```bash
@@ -51,7 +51,7 @@ az cognitiveservices account deployment create --name <resource> --resource-grou
 
 ---
 
-## Workflow 9: Resolve DeploymentLimitReached <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Workflow 9: Resolve DeploymentLimitReached
 
 **Root Cause:** 10-20 slots per resource.
 
@@ -79,7 +79,7 @@ az cognitiveservices account create --name "my-foundry-2" --resource-group <rg> 
 
 ---
 
-## Workflow 10: Resolve InsufficientQuota <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Workflow 10: Resolve InsufficientQuota
 
 **Root Cause:** Requested capacity exceeds available quota.
 
@@ -109,7 +109,7 @@ az cognitiveservices account deployment delete --name <resource> --resource-grou
 
 ---
 
-## Workflow 11: Resolve QuotaExceeded <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Workflow 11: Resolve QuotaExceeded
 
 **Root Cause:** Deployment exceeds regional quota.
 
@@ -143,4 +143,3 @@ az cognitiveservices account deployment create --name <resource> --resource-grou
 
 ---
 
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

@@ -3,7 +3,7 @@ name: jobs-python
 description: 当任务涉及 Python 跨端图形软件、主题切换、脚本、命令行入口、日志、异常、依赖、格式化、lint 或测试规则时使用。
 ---
 
-# Jobs Python 写作规范
+# Jobs [**Python**](https://www.python.org) 写作规范
 
 ![Jobs出品，必属精品](https://picsum.photos/1500/400)
 
@@ -12,33 +12,41 @@ description: 当任务涉及 Python 跨端图形软件、主题切换、脚本�
 <details>
 <summary>📚 目录（点击展开 / 收起）</summary>
 
-- [🔥 前言](#jobs-toc-heading-1)
-- [一、Python 写作规范](#jobs-toc-heading-2)
-  - [1.1、Python 工具目录结构](#jobs-toc-heading-3)
-  - [1.2、跨平台打包边界](#jobs-toc-heading-4)
-  - [1.3、代码与验证](#jobs-toc-heading-5)
-  - [1.4、跨端图形软件主题](#jobs-toc-heading-6)
+- [🔥 前言](#%E5%89%8D%E8%A8%80)
+- [一、Python 写作规范](#python-conventions)
+  - [1.1、Python 工具目录结构](#python-tool-layout)
+  - [1.2、跨平台打包边界](#cross-platform-packaging)
+  - [1.3、代码与验证](#python-code-validation)
+  - [1.4、跨端图形软件主题](#cross-platform-themes)
 
 </details>
 <!-- jobs-toc:end -->
 
 ---
 
-## <span id="jobs-toc-heading-1" data-jobs-toc="v2">🔥 <font id=前言>前言</font></span><!-- jobs-toc:heading-end -->
+## 🔥 <span id="前言">前言</span>
 
 > 本技能由 `💻JobsCodexConfigs/AGENTS.md` 拆分而来，保留原有 Jobs 工作规范。只有当前任务命中本技能描述时才加载本文件，避免把所有细则长期塞进全局上下文。
 
-## <span id="jobs-toc-heading-2" data-jobs-toc="v2">一、[**Python**](https://www.python.org/) 写作规范 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+涉及 Python 桌面产品规划、跨端打包交付或验收方案时，必须按任务读取共用[《软件项目开发与交付规范》的桌面产品要求](../jobs-software-project/软件项目开发与交付规范.md#desktop)、[分级验收](../jobs-software-project/软件项目开发与交付规范.md#acceptance)与[发布交接](../jobs-software-project/软件项目开发与交付规范.md#release-delivery)中的命中章节，不无条件加载全文。普通脚本或局部修复不因此扩大交付范围；保留既有项目确认方案，Python、打包器、运行依赖及目标系统版本重新核验。
 
-### <span id="jobs-toc-heading-3" data-jobs-toc="v2">1.1、Python 工具目录结构 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+完整 0 到 1 项目先按[主 Skill](../jobs-software-project/SKILL.md)生成需求与评审文档；前端路线未明确时询问“标准型／通用型／混合型”。缺失项留白、不确定项用红字标记，不把规范默认路线视为已确认方案。
 
-- Python 工具如果需要同时面向 Windows / macOS 独立打包，外层交付目录优先采用“外层入口 + 内层 Python 工程”的结构：
+## 一、<span id="python-conventions">[**Python**](https://www.python.org) 写作规范</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+### 1.1、<span id="python-tool-layout">Python 工具目录结构</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+- Python 工具如果需要同时面向 [**Windows**](https://www.microsoft.com/windows) / [**macOS**](https://www.apple.com/macos/) 独立打包，外层交付目录优先采用“外层入口 + 内层 Python 工程”的结构：
 
   ```text
   ToolName.py/
   ├── README.md
-  ├── 【MacOS】📦生成dmg.command
-  ├── 【Windows】📦生成exe.bat
+  ├── 【MacOS】📦生成dmg.command/
+  │   ├── 【MacOS】📦生成dmg.command
+  │   └── README.md
+  ├── 【Windows】📦生成exe.bat/
+  │   ├── 【Windows】📦生成exe.bat
+  │   └── README.md
   └── ToolName/
       ├── pyproject.toml
       ├── src/
@@ -47,38 +55,41 @@ description: 当任务涉及 Python 跨端图形软件、主题切换、脚本�
       └── scripts/
   ```
 
-- `ToolName/` 内层目录保存 Python 源码、依赖声明、测试、资源、构建辅助脚本和项目配置；外层目录只保留用户双击入口、交付产物和总说明。
+- `ToolName/` 内层目录保存 Python 源码、依赖声明、测试、资源、构建辅助脚本和项目配置；外层目录保留用户入口脚本包、交付产物和总说明。
 - 外层入口按工具真实分发方式取舍，不强制提供源码运行脚本；如果工具应通过打包产物运行，外层只保留 macOS / Windows 打包入口即可。
 - 根据 Python 源文件在 macOS 平台生成 `*.dmg` 的外层脚本固定命名为 `【MacOS】📦生成dmg.command`；根据 Python 源文件在 Windows 平台生成 `*.exe` 的外层脚本固定命名为 `【Windows】📦生成exe.bat`，大小写按这里保持。
-- 外层 `.bat` / `.command` 不使用“同名文件夹 + 脚本 + README.md”的包裹结构；除非用户另有要求，也不为每个入口脚本单独写 `README.md`。
-- Python 工具系列的说明收口到外层 `README.md`：分别解释每个 `.bat` / `.command` 的平台、用途、环境检查、输出目录、日志位置、风险边界和是否会安装依赖。
-- 通用 Shell / Git 仓库里“一脚本一目录、一脚本一 README”的标准不直接套用到 Python 工具系列；Python 工具以“外层总 README + 内层 Python 工程”为准。
+- Python 工具的脚本与外层 `.bat` / `.command` 入口同样遵守[脚本同名包装与命名主规则](../jobs-macos-shell/SKILL.md#script-package-naming)：默认每个脚本用完整文件名（含后缀）的目录包装，内含真正脚本及对应 `README.md`，只有用户明确拒绝时才应用其例外。不能因是 Python 工具、内部 helper 或测试脚本自行省略包装。
+- `.py` 本体依赖 Python 运行时，不加 `【MacOS】` / `【MacOS@…】` 前缀；macOS Shell 包装入口仍按主规则标注平台或挂载宿主，并在 README 写明真实 Python 依赖。Python 包必需的纯模块源码按语言布局保留，不机械包装 `__init__.py` 等模块文件。
+- Python 工具系列的外层 `README.md` 负责功能总览与入口导航，各脚本包内的 README 分别解释该入口的平台、用途、环境检查、输出目录、日志位置、风险边界和是否会安装依赖；外层总说明不能代替对应入口说明。
 - 外层脚本只负责环境检查、进入内层 Python 工程、启动源码或触发构建；业务逻辑应留在 Python 包内，避免把核心逻辑写进 `.bat` / `.command`。
 - 移动目录后必须同步修正脚本中的项目根路径、`PYTHONPATH`、`pyproject.toml` 路径、构建输出路径、日志说明和 README 里的目录树。
 
-### <span id="jobs-toc-heading-4" data-jobs-toc="v2">1.2、跨平台打包边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### 1.2、<span id="cross-platform-packaging">跨平台打包边界</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - macOS 安装包在 macOS 本机生成，Windows EXE 在 Windows 本机生成；不要默认从 macOS 交叉生成 Windows EXE。
-- 打包脚本生成的 `.app` / `.dmg` / `.exe` 应包含 Python 运行时和项目依赖；普通用户运行成品时不应再要求手动安装 Python 包。
+- 打包脚本生成的 `.app` / `.dmg` / `.exe` 应包含 Python 运行时、项目依赖及运行必需的辅助程序、脚本与资源，并纳入明确的打包清单；普通用户运行成品时不应再要求手动安装 Python 包或取得构建机源码。macOS 跨机 / AirDrop 分发同时执行 [AppTranslocation 与包内资源规则](../jobs-macos-shell/SKILL.md#portable-app-resources)，不在本文件重复整套寻址与安全边界。
+- 使用 [**PyInstaller**](https://pyinstaller.org/) 时，`.spec` 按 spec / 源码实际位置解析入口、`pathex`、`datas`、`binaries` 和 Hook 输入，不依赖调用工作目录或开发机绝对路径。必需 Hook 保存在源码树或本次受控构建目录并明确传给构建器，不能只在构建机用户目录生成后隐式依赖；相关输入随项目移动后仍可重建。
+- 成品资源从包内或冻结运行时的资源根定位，不能在缺失时回退到开发机源码路径；缺失应显示具体资源与诊断信息。用户数据、配置与缓存使用目标机器的运行环境动态目录，不混入只读资源根，也不把构建机用户目录固化为分发依赖。
 - 源码运行脚本可以按需准备开发 / 构建环境，但必须先打印内置自述并等待确认；缺少依赖时才安装，不主动升级已有环境。
 - 缺失当前任务必需的依赖属于阻塞条件，联网安装 / 下载确认统一为“直接回车安装；输入任意字符后回车取消”。任何非空输入（含空格）都取消整个当前流程，不得跳过必需依赖后继续运行、清理旧产物或打包。没有交互输入时停止，不把 EOF 当成确认；安装失败或安装后复检仍不可用时立即停止并显示日志。
 - 先检查必需依赖是否可用，健康环境直接复用；只有缺失时进入上述确认。此专项规则优先于通用 Shell 的普通安装默认跳过规则，覆盖 Python 工程的 `.py` / `.command` / `.bat`、共享环境函数、构建依赖及必需外部工具下载。已有依赖的可选升级、主动更新词库等非阻塞动作仍采用“直接回车跳过；输入任意字符后回车执行”，不得混用同一个确认函数。
 
 - 每次生成跨端软件前必须清理该应用既定 `dist` 中的旧产物，再生成新包；清理失败立即停止，不得混入旧版本。路径必须锚定当前工程固定输出目录，拒绝符号链接、空路径、工程根目录和任意外部目录；不得清理源码、用户数据或其它应用目录。打包前自述明确提示旧产物将被删除。
-- `dist` 中每次构建的交付内容必须位于 `dist/YYYY.MM.DD HH-mm-ss/`，按构建机本地时间依次表示年、月、日、时、分、秒，例如 `dist/2020.06.04 12-23-21/`；Python 使用 `datetime.now().strftime("%Y.%m.%d %H-%M-%S")`，Shell 使用 `date "+%Y.%m.%d %H-%M-%S"`，Windows PowerShell 使用 `Get-Date -Format "yyyy.MM.dd HH-mm-ss"`，不依赖区域化 `%DATE%` / `%TIME%`。日期与时间之间固定一个空格，不使用下划线或连续数字串；时间分隔符使用短横线，不用冒号。含空格路径在 Shell / BAT 中必须整体加双引号，Python 以参数列表传递；Windows `for /f` 读取时间必须使用 `"delims="`，保留完整日期和时间。同次构建只取一次时间，APP / DMG / EXE / ZIP、配套依赖和说明共用该目录；应用名、Bundle ID 和包内结构保持稳定。清理仍锚定该应用固定 `dist` 根目录，不能因增加时间层误清其它目录；快捷方式、产物验证、打开目录、启动路径、自述和 README 同步指向本次时间目录。已有产物缺少可靠构建时间时，不用修改时间或迁移时间冒充构建时间。
-- 最终用户打开具体 `ToolName.py/` 文件夹时，第一层必须能直接接触平台打包脚本和最新产物入口。`dist/` 统一放在该交付层，与打包脚本、产物快捷方式平级；真实产物仍保存在 `dist/`，不要在第一层复制完整应用或安装包。
+- `dist` 中每次构建的交付内容必须位于 `dist/YYYY.MM.DD HH-mm-ss/`，按构建机本地时间依次表示年、月、日、时、分、秒，例如 `dist/2020.06.04 12-23-21/`；Python 使用 `datetime.now().strftime("%Y.%m.%d %H-%M-%S")`，Shell 使用 `date "+%Y.%m.%d %H-%M-%S"`，Windows [**PowerShell**](https://learn.microsoft.com/powershell/) 使用 `Get-Date -Format "yyyy.MM.dd HH-mm-ss"`，不依赖区域化 `%DATE%` / `%TIME%`。日期与时间之间固定一个空格，不使用下划线或连续数字串；时间分隔符使用短横线，不用冒号。含空格路径在 Shell / BAT 中必须整体加双引号，Python 以参数列表传递；Windows `for /f` 读取时间必须使用 `"delims="`，保留完整日期和时间。同次构建只取一次时间，APP / DMG / EXE / ZIP、配套依赖和说明共用该目录；应用名、Bundle ID 和包内结构保持稳定。清理仍锚定该应用固定 `dist` 根目录，不能因增加时间层误清其它目录；快捷方式、产物验证、打开目录、启动路径、自述和 README 同步指向本次时间目录。已有产物缺少可靠构建时间时，不用修改时间或迁移时间冒充构建时间。
+- 最终用户打开具体 `ToolName.py/` 文件夹时，第一层必须能直接接触平台打包脚本包和最新产物入口。`dist/` 统一放在该交付层，与打包脚本包、产物快捷方式平级；真实产物仍保存在 `dist/`，不要在第一层复制完整应用或安装包。
 - 成功构建并验证真实产物后，为本机可运行程序及生成的安装包 / 压缩包创建第一层快捷方式：macOS 使用相对符号链接（APP / DMG），Windows 使用普通用户可创建的 `.lnk`（EXE 及分发包），设置真实目标和工作目录。每次构建更新到最新产物；清理旧 dist 前仅移除指向当前 dist 的旧入口，构建失败不发布指向缺失产物的入口。不得覆盖同名真实文件或无关快捷方式。快捷方式属于本机生成物，纳入 Git 忽略；没有实际产物时不得伪造入口。
-- 打包成功并确认本机产物存在后，最后依次完成两个动作：1、打开产物的磁盘位置（Windows 使用资源管理器，macOS 使用 Finder）；2、启动本次生成的软件（Windows EXE / macOS APP）。成功结尾不再等待回车或 `pause`；失败时不启动旧包，错误和日志保留可见。打开 DMG 不能代替启动 APP，源码运行不能代替运行打包成品。
+- 打包成功并确认本机产物存在后，最后依次完成两个动作：1、打开产物的磁盘位置（Windows 使用资源管理器，macOS 使用 [**Finder**](https://support.apple.com/guide/mac-help/welcome/mac)）；2、启动本次生成的软件（Windows EXE / macOS APP）。成功结尾不再等待回车或 `pause`；失败时不启动旧包，错误和日志保留可见。打开 DMG 不能代替启动 APP，源码运行不能代替运行打包成品。
 - 上述行为同时落实到实际构建器、外层入口自述和 README；直接调用内层构建入口也必须遵守，保留构建开始前的防误触确认。
 
-### <span id="jobs-toc-heading-5" data-jobs-toc="v2">1.3、代码与验证 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### 1.3、<span id="python-code-validation">代码与验证</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Python 代码优先使用 `pathlib`、`argparse` 或项目既有 CLI 框架处理路径和参数；不要用脆弱字符串拼接处理文件路径。
-- Python 脚本引用项目内文件、资源、输出目录或配套脚本时，必须以脚本文件位置（如 `Path(__file__).resolve().parent`）或明确计算的项目根目录为基准构造相对路径；禁止把本机绝对路径（尤其 `/Users/...`）写死在脚本中。确需访问用户配置或系统目录时，从运行环境动态解析，不能写入当前机器专属路径。
+- Python 源码脚本引用项目内文件、资源、输出目录或配套脚本时，必须以脚本文件位置（如 `Path(__file__).resolve().parent`）或明确计算的项目根目录为基准构造相对路径；禁止把本机绝对路径（尤其 `/Users/...`）写死在脚本中。确需访问用户配置或系统目录时，从运行环境动态解析，不能写入当前机器专属路径；冻结成品的资源定位按[跨平台打包边界](#cross-platform-packaging)执行。
+- 改动 spec、Hook 或资源清单后，核对全部必需输入均可随项目移动定位，并在缺少构建机源码 / 用户目录的夹具中验证成品资源解析；实际构建与目标平台运行分别报告，不能只因构建机启动成功就声称跨机可用。
 - 修改 Python 包结构后，至少执行 `python -m compileall` 或项目测试；依赖缺失导致无法跑完整测试时，说明未执行原因。
 - 修改 `.command` 后执行 `zsh -n`；修改 `.bat` 后至少做路径和变量静态审查，能在 Windows 环境验证时再实际运行。
 
-### <span id="jobs-toc-heading-6" data-jobs-toc="v2">1.4、跨端图形软件主题 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### 1.4、<span id="cross-platform-themes">跨端图形软件主题</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 使用 Python 编写的跨端图形软件必须提供可发现的主题切换入口，包含“白天 / 黑夜 / 跟随系统”三种模式；纯命令行工具不要求图形主题入口。
 - 默认跟随系统，保存用户选择并在重启后恢复；跟随系统模式必须监听系统外观变化并即时刷新，手动白天 / 黑夜模式不被系统变化覆盖。

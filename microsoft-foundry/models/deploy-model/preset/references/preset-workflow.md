@@ -1,10 +1,10 @@
-# <span id="前言">Preset Deployment Workflow - Detailed Implementation</span>
+# Preset Deployment Workflow - Detailed Implementation
 
 This file contains the full step-by-step bash/PowerShell scripts for preset (optimal region) model deployment. Referenced from the main [SKILL.md](../SKILL.md).
 
 ---
 
-## Phase 1: Verify Authentication <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Phase 1: Verify Authentication
 
 Check if user is logged into Azure CLI:
 
@@ -28,7 +28,7 @@ az account set --subscription <subscription-id>
 
 ---
 
-## Phase 2: Get Current Project <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Phase 2: Get Current Project
 
 **Check for PROJECT_RESOURCE_ID environment variable first:**
 
@@ -36,10 +36,10 @@ az account set --subscription <subscription-id>
 if [ -n "$PROJECT_RESOURCE_ID" ]; then
   echo "Using project resource ID from environment: $PROJECT_RESOURCE_ID"
 else
-  echo "PROJECT_RESOURCE_ID not set. Please provide your Azure AI Foundry project resource ID."
+  echo "PROJECT_RESOURCE_ID not set. Please provide your Microsoft Foundry project resource ID."
   echo ""
   echo "You can find this in:"
-  echo "  • Azure AI Foundry portal → Project → Overview → Resource ID"
+  echo "  • Microsoft Foundry portal → Project → Overview → Resource ID"
   echo "  • Format: /subscriptions/{sub-id}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{account}/projects/{project}"
   echo ""
   echo "Example: /subscriptions/abc123.../resourceGroups/rg-prod/providers/Microsoft.CognitiveServices/accounts/my-account/projects/my-project"
@@ -100,7 +100,7 @@ echo "  Region: $PROJECT_REGION"
 
 ---
 
-## Phase 3: Get Model Name <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Phase 3: Get Model Name
 
 **If model name provided as skill parameter, skip this phase.**
 
@@ -158,7 +158,7 @@ echo "Model format: $MODEL_FORMAT"
 
 ---
 
-## Phase 4: Check Current Region Capacity <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Phase 4: Check Current Region Capacity
 
 Before checking other regions, see if the current project's region has capacity:
 
@@ -186,7 +186,7 @@ fi
 
 ---
 
-## Phase 5: Query Multi-Region Capacity (If Needed) <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Phase 5: Query Multi-Region Capacity (If Needed)
 
 Only execute this phase if current region has no capacity.
 
@@ -279,7 +279,7 @@ fi
 
 ---
 
-## Phase 6: Select Region and Project <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Phase 6: Select Region and Project
 
 **Ask user to select region from available options.**
 
@@ -348,8 +348,8 @@ az cognitiveservices account create \
   --sku "S0" \
   --yes
 
-# Create AI Foundry project
-echo "Creating AI Foundry project: $NEW_PROJECT_NAME..."
+# Create Microsoft Foundry project
+echo "Creating Microsoft Foundry project: $NEW_PROJECT_NAME..."
 
 az cognitiveservices account create \
   --name "$NEW_PROJECT_NAME" \
@@ -366,11 +366,11 @@ RESOURCE_GROUP="$NEW_RESOURCE_GROUP"
 
 ---
 
-## Phase 7: Deploy Model <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Phase 7: Deploy Model
 
 **Generate unique deployment name:**
 
-The deployment name should match the model name (e.g., "gpt-4o"), but if a deployment with that name already exists, append a numeric suffix (e.g., "gpt-4o-2", "gpt-4o-3"). This follows the same UX pattern as Azure AI Foundry portal.
+The deployment name should match the model name (e.g., "gpt-4o"), but if a deployment with that name already exists, append a numeric suffix (e.g., "gpt-4o-2", "gpt-4o-3"). This follows the same UX pattern as Microsoft Foundry portal.
 
 Use the `generate_deployment_name` script to check existing deployments and generate a unique name:
 
@@ -420,7 +420,7 @@ else
 fi
 ```
 
-### If MODEL_FORMAT is NOT "Anthropic" — Standard CLI Deployment <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### If MODEL_FORMAT is NOT "Anthropic" — Standard CLI Deployment
 
 > 💡 **Note:** The Azure CLI supports all non-Anthropic model formats directly.
 
@@ -456,7 +456,7 @@ az cognitiveservices account deployment create `
 
 > 💡 **Note:** For non-OpenAI MaaS models (Meta-Llama, Mistral, Cohere, etc.), `$DEPLOY_CAPACITY` is `1` (set in capacity calculation above).
 
-### If MODEL_FORMAT is "Anthropic" — REST API Deployment with modelProviderData <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### If MODEL_FORMAT is "Anthropic" — REST API Deployment with modelProviderData
 
 The Azure CLI does not support `--model-provider-data`. You must use the ARM REST API directly.
 
@@ -625,7 +625,7 @@ fi
 
 ---
 
-## Phase 8: Display Deployment Details <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Phase 8: Display Deployment Details
 
 **Show deployment information:**
 ```bash
@@ -657,7 +657,7 @@ echo "Capacity: $(format_capacity $DEPLOY_CAPACITY)"
 echo "Endpoint: $ENDPOINT"
 echo ""
 
-# Generate direct link to deployment in Azure AI Foundry portal
+# Generate direct link to deployment in Microsoft Foundry portal
 DEPLOYMENT_URL=$(bash "$(dirname "$0")/scripts/generate_deployment_url.sh" \
   --subscription "$SUBSCRIPTION_ID" \
   --resource-group "$RESOURCE_GROUP" \
@@ -665,7 +665,7 @@ DEPLOYMENT_URL=$(bash "$(dirname "$0")/scripts/generate_deployment_url.sh" \
   --project "$PROJECT_NAME" \
   --deployment "$DEPLOYMENT_NAME")
 
-echo "🔗 View in Azure AI Foundry Portal:"
+echo "🔗 View in Microsoft Foundry Portal:"
 echo ""
 echo "$DEPLOYMENT_URL"
 echo ""
@@ -688,9 +688,7 @@ echo "  --output table"
 echo ""
 
 echo "Next steps:"
-echo "• Click the link above to test in Azure AI Foundry playground"
+echo "• Click the link above to test in Microsoft Foundry playground"
 echo "• Integrate into your application"
 echo "• Set up monitoring and alerts"
 ```
-
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

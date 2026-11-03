@@ -1,19 +1,19 @@
-# <span id="前言">Standard Agent Setup</span>
+# Standard Agent Setup
 
 > ⚠️ **Warning:** This page covers Foundry's **Standard Agent Setup** (capability host + bring-your-own Cosmos DB / Azure Storage / Azure AI Search). The default `azd ai agent` flow uses **Basic Agent Setup** and does **not** provision a `capabilityHosts/agents` resource — *stop reading this page* if you arrived from `azd ai agent`. See [foundry-agent/create/create-hosted.md](../foundry-agent/create/create-hosted.md) and the canonical env vars in [environment-variables.md](https://github.com/Azure/azure-dev/blob/main/cli/azd/docs/environment-variables.md).
 
 > **MANDATORY:** Read [Standard Agent Setup docs](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/standard-agent-setup?view=foundry) before proceeding with standard setup.
 
-## Overview <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Overview
 
-Azure AI Foundry supports two agent setup configurations:
+Microsoft Foundry supports two agent setup configurations:
 
 | Setup | Capability Host | Description |
 |-------|----------------|-------------|
 | **Basic** | None | Default setup. All resources are Microsoft-managed. No additional connections required. |
 | **Standard** | Azure AI Services | Advanced setup. Bring-your-own storage and search connections for full control over data residency and scaling. |
 
-## Standard Setup Connections <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Standard Setup Connections
 
 | Connection | Service | Required | Purpose |
 |------------|---------|----------|---------|
@@ -24,7 +24,7 @@ Azure AI Foundry supports two agent setup configurations:
 
 > 💡 **Tip:** Standard setup is recommended for production workloads that require control over data storage, custom vector search, or integration with models from a separate AI Services resource.
 
-## Prerequisites <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Prerequisites
 
 Before starting deployment, confirm the following with the user:
 
@@ -32,7 +32,7 @@ Before starting deployment, confirm the following with the user:
 2. **Subscription quota:** Verify the target region has available quota for AI Services. If quota is exhausted, try an alternate region (e.g., `swedencentral`, `eastus`, `westus3`).
 3. **Azure Policy compliance:** Some subscriptions enforce policies (e.g., storage accounts must disable public network access). If the Bicep template fails due to policy violations, patch the template to comply (e.g., set `publicNetworkAccess: 'Disabled'` and `defaultAction: 'Deny'` on the storage account).
 
-## Deployment <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Deployment
 
 - Standard setup always creates a **new Foundry resource and a new project**. Do not ask the user for a project endpoint — one will be provisioned as part of the deployment.
 - **Always use the official Bicep template:**
@@ -40,16 +40,14 @@ Before starting deployment, confirm the following with the user:
 
 > ⚠️ **Warning:** Capability host provisioning is **asynchronous** and can take 10–20 minutes. After deploying the Bicep template, you **must poll** the deployment status until it succeeds. Do not assume the setup is complete immediately.
 
-## Post-Deployment: Model & Agent <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Post-Deployment: Model & Agent
 
 After infrastructure provisioning succeeds:
 
 1. **Deploy a model** to the new AI Services account (e.g., `gpt-4o`). If `GlobalStandard` SKU quota is exhausted, fall back to `Standard` SKU.
 2. **Create the agent** using MCP tools (`agent_update`) or the Python SDK (`client.agents.create_version`). See [SDK Operations](../foundry-agent/create/references/sdk-operations.md) for details.
 
-## References <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## References
 
 - [Capability Hosts — Agent Setup Types](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/capability-hosts?view=foundry)
 - [Standard Agent Setup](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/standard-agent-setup?view=foundry)
-
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

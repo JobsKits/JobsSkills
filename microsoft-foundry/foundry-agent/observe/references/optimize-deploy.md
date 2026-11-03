@@ -1,6 +1,6 @@
-# <span id="前言">Steps 6–7 — Optimize Prompt & Deploy New Version</span>
+# Steps 6–7 — Optimize Prompt & Deploy New Version
 
-## Step 6 — Optimize Prompt <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Step 6 — Optimize Prompt
 
 > ⛔ **Guardrail:** When optimizing after a dataset update, do NOT remove dataset rows or weaken evaluators to recover scores. Score drops on a harder dataset are expected — they mean test coverage improved, not that the agent regressed. Optimize for NEW failure patterns only.
 
@@ -17,7 +17,7 @@ Use **`prompt_optimize`** with:
 
 > Use the optimized prompt returned by the tool. Do NOT manually rewrite.
 
-## Step 7 — Deploy New Version <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Step 7 — Deploy New Version
 
 > **Always confirm before deploying.** Show the user a diff or summary of prompt changes and wait for explicit sign-off.
 
@@ -27,8 +27,6 @@ After approval:
 2. Use **`agent_get`** to verify the updated version is `running`
 3. If the updated version is not `running`, read and follow the [troubleshoot skill](../../troubleshoot/troubleshoot.md) before continuing
 
-## Next Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Next Steps
 
 When the new version is running → proceed to [Step 8: Re-Evaluate](compare-iterate.md).
-
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

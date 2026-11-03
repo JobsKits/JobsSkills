@@ -1,19 +1,21 @@
 ---
 name: foundry-create-project
 description: |
-  Create a new Azure AI Foundry project using Azure Developer CLI (azd) to provision infrastructure for hosting AI agents and models.
-  USE FOR: create Foundry project, new AI Foundry project, set up Foundry, azd init Foundry, provision Foundry infrastructure, onboard to Foundry, create Azure AI project, set up AI project.
+  Create a new Microsoft Foundry project using Azure Developer CLI (azd) to provision infrastructure for hosting AI agents and models.
+  USE FOR: create Foundry project, new Microsoft Foundry project, set up Foundry, azd init Foundry, provision Foundry infrastructure, onboard to Foundry, create Azure AI project, set up AI project.
   DO NOT USE FOR: deploying agents to existing projects (use agent/deploy), creating agent code (use agent/create), deploying AI models from catalog (use microsoft-foundry main skill), Azure Functions (use azure-functions).
 allowed-tools: Read, Write, Bash, AskUserQuestion
 ---
 
-# <span id="前言">Create Azure AI Foundry Project</span>
+# Create Microsoft Foundry Project
 
-Create a new Azure AI Foundry project using azd. Provisions: Foundry account, project, Application Insights, managed identity, and RBAC permissions. Optionally enables hosted-agent deployment (adds an Azure Container Registry, and — only when the **Standard Setup** capability-host flag is also enabled — a `capabilityHosts/agents` resource).
+Create a new Microsoft Foundry project using azd. Provisions: Foundry account, project, Application Insights, managed identity, and RBAC permissions. Optionally enables hosted-agent deployment (adds an Azure Container Registry, and — only when the **Standard Setup** capability-host flag is also enabled — a `capabilityHosts/agents` resource).
+
+> **Important:** When the user's goal is to create Foundry agents, use `azd ai agent init` for both new and existing Foundry projects. It is sufficient to scaffold code to create a new Foundry project or scaffold agent code to reuse an existing Foundry project.
 
 **Table of Contents:** [Prerequisites](#prerequisites) · [Workflow](#workflow) · [Best Practices](#best-practices) · [Troubleshooting](#troubleshooting) · [Related Skills](#related-skills) · [Resources](#resources)
 
-## Prerequisites <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Prerequisites
 
 Run checks in order. STOP on any failure and resolve before proceeding.
 
@@ -32,16 +34,16 @@ If multiple subscriptions, ask which to use, then `az account set --subscription
 **3. Role permissions:**
 
 ```bash
-az role assignment list --assignee "$(az ad signed-in-user show --query id -o tsv)" --query "[?contains(roleDefinitionName, 'Owner') || contains(roleDefinitionName, 'Contributor') || contains(roleDefinitionName, 'Foundry')].{Role:roleDefinitionName, Scope:scope}" -o table
+az role assignment list --assignee "$(az ad signed-in-user show --query id -o tsv)" --include-groups --include-inherited --scope "/subscriptions/$(az account show --query id -o tsv)" --query "[?contains(roleDefinitionName, 'Owner') || contains(roleDefinitionName, 'Contributor') || contains(roleDefinitionName, 'Foundry')].{Role:roleDefinitionName, Scope:scope}" -o table
 ```
 
 Requires Owner, Contributor, or Foundry Owner. If insufficient — STOP, request elevated access from admin.
 
 **4. Azure Developer CLI** — `azd version`. If missing: https://aka.ms/azure-dev/install
 
-## Workflow <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Workflow
 
-### Step 1: Verify azd login <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Step 1: Verify azd login
 
 ```bash
 azd auth login --check-status
@@ -49,7 +51,7 @@ azd auth login --check-status
 
 If not logged in, run `azd auth login` and complete browser auth.
 
-### Step 2: Resolve Project Details <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Step 2: Resolve Project Details
 
 Collect only values the user has not already provided. For values not specified, use defaults:
 
@@ -66,10 +68,10 @@ Collect only values the user has not already provided. For values not specified,
      ```
    - Show the generated name to the user before proceeding, but do not block on confirmation — proceed unless the user objects.
    - Examples: `ai-project-3f8a1b2c`, `my-ai-project`, `dev-agents`
-2. **Azure location** (optional) — defaults to North Central US (required for hosted agents preview)
+2. **Azure location** (optional) — defaults to North Central US
 3. **Enable hosted agents?** (yes/no) — enables hosted-agent deployment and provisions an Azure Container Registry. A capability host (`capabilityHosts/agents`, used by Foundry's **Standard Agent Setup** for bring-your-own storage) is also created only when `ENABLE_CAPABILITY_HOST=true`. Defaults to no. See [Step 3](#step-3-create-directory-and-initialize) for how the two flags interact.
 
-### Step 3: Create Directory and Initialize <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Step 3: Create Directory and Initialize
 
 ```bash
 mkdir "<project-name>" && cd "<project-name>"
@@ -100,7 +102,7 @@ azd env set ENABLE_CAPABILITY_HOST false
 
 See the canonical env-var docs: [azure-dev/cli/azd/docs/environment-variables.md](https://github.com/Azure/azure-dev/blob/main/cli/azd/docs/environment-variables.md).
 
-### Step 4: Provision Infrastructure <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Step 4: Provision Infrastructure
 
 ```bash
 azd provision --no-prompt
@@ -108,7 +110,7 @@ azd provision --no-prompt
 
 Takes 5–10 minutes. Creates resource group, Foundry account/project, Application Insights, managed identity, and RBAC roles. If `ENABLE_HOSTED_AGENTS=true`, also creates an Azure Container Registry. A `capabilityHosts/agents` resource is created **only** when `ENABLE_CAPABILITY_HOST=true` (Standard Setup); the default Basic Setup uses `ENABLE_CAPABILITY_HOST=false` and no capability host is provisioned — its absence is correct.
 
-### Step 5: Retrieve Project Details <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Step 5: Retrieve Project Details
 
 ```bash
 azd env get-values
@@ -116,16 +118,9 @@ azd env get-values
 
 Capture `AZURE_AI_PROJECT_ID`, `AZURE_AI_PROJECT_ENDPOINT`, and `AZURE_RESOURCE_GROUP`. Direct user to verify at https://ai.azure.com.
 
-### Step 6: Next Steps <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### Step 6: Next Steps
 
-> **Next — azd Golden Path:** create a hosted agent with [foundry-agent/create/create-hosted.md](../../foundry-agent/create/create-hosted.md). For headless / scripted flows, **pre-bootstrap the workspace with core `azd init`** so subscription + location are populated before model resolution runs:
->
-> ```bash
-> azd init -t Azure-Samples/azd-ai-starter-basic . -e <env-name> --subscription <id> -l <region>
-> azd ai agent init -m <manifest-url> --no-prompt --deploy-mode code --runtime python_3_13 --entry-point main.py
-> ```
->
-> Core `azd init` accepts `--subscription` and `-l/--location`; `azd ai agent init` does not. `azd ai agent init` then resolves the model from the chosen sample's manifest and writes it into `azure.yaml services.<name>.config.deployments[]`; the next `azd provision` creates the deployment through Bicep. **You do not need to deploy a model separately for this path** — no `az cognitiveservices` calls, no `azd env set AI_PROJECT_DEPLOYMENTS`.
+> **Next — azd Golden Path:** create a hosted agent with [foundry-agent/create/create-hosted.md](../../foundry-agent/create/create-hosted.md).
 >
 > Use [models/deploy-model](../../models/deploy-model/SKILL.md) **only** for out-of-band scenarios: adding models to a Foundry project that is not managed by this azd project, or ad-hoc deployments outside the azd lifecycle.
 
@@ -133,15 +128,15 @@ Capture `AZURE_AI_PROJECT_ID`, `AZURE_AI_PROJECT_ENDPOINT`, and `AZURE_RESOURCE_
 - Browse model catalog → `foundry_models_list` MCP tool
 - Manage project → https://ai.azure.com
 
-## Best Practices <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Best Practices
 
-- Use North Central US for hosted agents (preview requirement)
+- Use North Central US for hosted agents
 - Name must be alphanumeric + hyphens only — no spaces, underscores, or special characters
 - Delete unused projects with `azd down` to avoid ongoing costs
 - `azd down` deletes ALL resources — Foundry account, agents, models, Container Registry, and Application Insights data
 - `azd provision` is safe to re-run on failure
 
-## Troubleshooting <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Troubleshooting
 
 | Problem | Solution |
 |---------|----------|
@@ -152,13 +147,11 @@ Capture `AZURE_AI_PROJECT_ID`, `AZURE_AI_PROJECT_ENDPOINT`, and `AZURE_RESOURCE_
 | Region not supported for hosted agents | Use `azd config set defaults.location northcentralus` |
 | Provisioning timeout | Check region availability, verify connectivity, retry `azd provision` |
 
-## Related Skills <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Related Skills
 
 - **agent/deploy** — Deploy agents to the created project
 - **agent/create** — Create a new agent for deployment
 
-## Resources <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## Resources
 
-- [Azure Developer CLI](https://aka.ms/azure-dev/install) · [AI Foundry Portal](https://ai.azure.com) · [Foundry Docs](https://learn.microsoft.com/azure/ai-foundry/) · [azd-ai-starter-basic template](https://github.com/Azure-Samples/azd-ai-starter-basic)
-
-<a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>
+- [Azure Developer CLI](https://aka.ms/azure-dev/install) · [Microsoft Foundry Portal](https://ai.azure.com) · [Foundry Docs](https://learn.microsoft.com/azure/ai-foundry/) · [azd-ai-starter-basic template](https://github.com/Azure-Samples/azd-ai-starter-basic)
