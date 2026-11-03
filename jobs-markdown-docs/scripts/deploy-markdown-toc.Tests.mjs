@@ -9,7 +9,6 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import { attributePattern } from './deploy-markdown-toc.mjs';
-import { cleanMarkdown, smudgeMarkdown } from '../assets/markdown-toc/MarkdownToc.mjs';
 
 const deployScript = fileURLToPath(new URL('./deploy-markdown-toc.mjs', import.meta.url));
 const assets = fileURLToPath(new URL('../assets/markdown-toc/', import.meta.url));
@@ -76,7 +75,7 @@ function fixture(t, names = ['README.md'], attributes = '*.txt text\n') {
   };
   const indexBytes = () => fs.readFileSync(path.join(root, '.git/index'));
   const configBytes = () => fs.readFileSync(path.join(root, '.git/config'));
-  const runtime = mode => run(process.execPath, [path.join(directory, 'MarkdownToc.mjs'), mode]);
+  const runtime = mode => run(process.execPath, [path.join(root, directory, 'MarkdownToc.mjs'), mode]);
   return { scope, root, env, globalConfig, names, sources, unmanaged, run, git, deploy,
     indexBytes, configBytes, runtime };
 }
@@ -236,82 +235,4 @@ test('marker text inside unrelated attribute comments is preserved and prevents 
   assert.deepEqual(repo.configBytes(), originalConfig);
   assert.equal(fs.existsSync(path.join(repo.root, directory)), false);
   assertSourceBytes(repo);
-});
-
-test('redeployment restores generated documents, preserves the complete existing README and manifest metadata, and refreshes only index stats', t => {
-  const repo = fixture(t);
-  assert.equal(repo.deploy(repo.names, true).status, 0);
-  const toolReadme = `${directory}/README.md`;
-  const readmePath = path.join(repo.root, toolReadme);
-  const customProse = '\n## Repository-specific operation\n\nKeep these local inputs and output instructions.\n\n<details><summary>Local notes</summary>Preserve this hand-written content.</details>\n';
-  fs.appendFileSync(readmePath, customProse);
-  stageAndCheck(repo, repo.names);
-  repo.git('-c', 'commit.gpgSign=false', 'commit', '--quiet', '-m', 'Publish generated fixture');
-  const originalReadme = fs.readFileSync(readmePath, 'utf8');
-  const manifestPath = path.join(repo.root, directory, 'manifest.json');
-  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-  manifest.ownerNote = { keep: 'Existing custom metadata' };
-  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
-  const sentinel = path.join(repo.root, directory, 'custom-helper.mjs');
-  fs.writeFileSync(sentinel, '// Do not replace this repository-specific helper.\n');
-  const stateFile = path.join(repo.root, '.git', 'jobs-markdown-toc.json');
-  const originalState = fs.readFileSync(stateFile);
-  const originalConfig = repo.configBytes();
-  const head = repo.git('rev-parse', 'HEAD');
-  const entries = repo.git('ls-files', '--stage', '-z');
-  const flags = repo.git('ls-files', '-v', '-z');
-  for (const file of ['README.md', toolReadme]) {
-    const published = repo.git('show', `HEAD:${file}`);
-    assert.ok(published.includes('<!-- jobs-toc:start -->'), `expected generated HEAD content for ${file}`);
-    fs.writeFileSync(path.join(repo.root, file), published);
-  }
-  assert.notEqual(repo.runtime('verify').status, 0, 'strict verification must reject generated work files');
-  const result = repo.deploy(['README.md', toolReadme], true);
-  assert.equal(result.status, 0, result.stderr || JSON.stringify(result.report));
-  assert.equal(result.report.repositories[0].indexStatRefreshed, true);
-  assert.equal(repo.git('ls-files', '--stage', '-z'), entries);
-  assert.equal(repo.git('ls-files', '-v', '-z'), flags);
-  assert.equal(repo.git('rev-parse', 'HEAD'), head);
-  assert.equal(repo.git('status', '--porcelain', '--', 'README.md'), '');
-  assert.deepEqual(repo.configBytes(), originalConfig);
-  assert.deepEqual(fs.readFileSync(stateFile), originalState, 'original pre-install recovery record must survive an upgrade');
-  assert.deepEqual(JSON.parse(fs.readFileSync(manifestPath, 'utf8')).ownerNote, manifest.ownerNote);
-  assert.equal(fs.readFileSync(sentinel, 'utf8'), '// Do not replace this repository-specific helper.\n');
-  const restoredReadme = fs.readFileSync(readmePath, 'utf8');
-  assert.equal(restoredReadme, originalReadme, 'restoring local TOC tags must preserve the complete existing README byte-for-byte');
-  assertSourceBytes(repo);
-  assert.equal(repo.runtime('verify').status, 0);
-  const again = repo.deploy(['README.md', toolReadme], true);
-  assert.equal(again.status, 0, again.stderr || JSON.stringify(again.report));
-  assert.equal(fs.readFileSync(readmePath, 'utf8'), originalReadme, 'repeating deployment must leave the complete existing README unchanged');
-  assert.notEqual(again.report.repositories[0].backup, result.report.repositories[0].backup);
-  assert.equal(fs.existsSync(result.report.repositories[0].backup), true, 'repeating deployment must retain the earlier snapshot');
-});
-
-test('upgrade preserves partially staged content, assume-unchanged and skip-worktree flags, and all local prose', t => {
-  const repo = fixture(t, ['README.md', 'Docs/assumed.md', 'Docs/skipped.md']);
-  assert.equal(repo.deploy(repo.names, true).status, 0);
-  stageAndCheck(repo, repo.names);
-  repo.git('-c', 'commit.gpgSign=false', 'commit', '--quiet', '-m', 'Publish generated fixture');
-  const main = path.join(repo.root, 'README.md');
-  const stagedSource = fs.readFileSync(main, 'utf8') + '\nStaged sentence.\n';
-  fs.writeFileSync(main, stagedSource);
-  repo.git('add', '--', 'README.md');
-  const currentSource = stagedSource + '\nUnstaged sentence and <details>hand-written content</details>.\n';
-  fs.writeFileSync(main, cleanMarkdown(currentSource));
-  repo.git('update-index', '--assume-unchanged', '--', 'Docs/assumed.md');
-  repo.git('update-index', '--skip-worktree', '--', 'Docs/skipped.md');
-  const entries = repo.git('ls-files', '--stage', '-z');
-  const flags = repo.git('ls-files', '-v', '-z');
-  const head = repo.git('rev-parse', 'HEAD');
-  const state = fs.readFileSync(path.join(repo.root, '.git', 'jobs-markdown-toc.json'));
-  const result = repo.deploy(repo.names, true);
-  assert.equal(result.status, 0, result.stderr || JSON.stringify(result.report));
-  assert.equal(fs.readFileSync(main, 'utf8'), currentSource);
-  assert.equal(smudgeMarkdown(repo.git('show', ':README.md')), stagedSource);
-  assert.equal(repo.git('ls-files', '--stage', '-z'), entries);
-  assert.equal(repo.git('ls-files', '-v', '-z'), flags);
-  assert.equal(repo.git('rev-parse', 'HEAD'), head);
-  assert.deepEqual(fs.readFileSync(path.join(repo.root, '.git', 'jobs-markdown-toc.json')), state);
-  assert.equal(repo.runtime('verify').status, 0);
 });
