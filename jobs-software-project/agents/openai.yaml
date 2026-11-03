@@ -1,0 +1,4 @@
+interface:
+  display_name: "软件项目从零到一"
+  short_description: "根据原始需求生成可补填文档，前端默认原生并进行二次回归"
+  default_prompt: "使用 $jobs-software-project，根据我的原始需求生成项目文档；前端未特别说明时默认原生方案，明确指定跨平台或按端混合时遵从指定，其它缺失信息留白、不确定标红。"
