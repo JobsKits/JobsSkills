@@ -51,15 +51,8 @@ description: 当任务涉及 Objective-C、iOS 页面主题配色、系统类创
 ### 1.1、<span id="project-boundaries">工程背景与目录边界</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - 本规范默认服务 Jobs 的 [**OC**](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html) 工程，尤其是把原工程里的本地代码逐步提取为本地管理 Pods 的场景。
-- <u>[**Swift**](https://www.swift.org/)</u> 侧的 [**iOS**](https://developer.apple.com/ios/) 项目固定指 `../../../../JobsBaseConfig/JobsBaseConfig@JobsSwiftBaseConfigDemo`。
-- OC 侧的新项目固定指 `../../../../JobsOCBaseConfigDemo@ByPods`。
-- OC 侧的老项目固定指 `../../../../JobsBaseConfig/JobsBaseConfig@JobsOCBaseConfigDemo`。
-- OC 新项目由 OC 老项目升级改造而来：新项目把老项目中集成于主工程的一部分能力拆解成本地 Pods 管理，拆解过程中只做极小调整，绝大多数新项目本地 Pod 都能在老项目主工程里找到对应来源或对应功能。
-- OC 新工程与 OC 老工程的唯一架构差异是能力承载形态：新工程把 Jobs 自维护能力下沉到本地 Pod 集中管理，老工程把同一能力集成在主工程；这不是两套产品或两套功能标准。除本地 Pod 形态层之外，对应业务目录中的 Jobs 自维护源码、Demo、资源、行为和文档必须保持一致。
-- 用户只点名任一 OC 工程时，默认授权并要求在同一任务中定位另一工程的对应能力并同步；不能因为用户忘记补充“另一个工程也要改”就只改单侧。开始修改前先建立新工程本地 Pod路径 ↔ 老工程主工程路径的对应关系，结束前复核两侧差异。
-- 允许保留的差异仅限集成形态：新工程的 `JobsByPods/Pod名@Pods`、podspec、Podfile 依赖、聚合头和 Development Pods 装配，对应老工程的主工程源码目录、资源目录、[**Xcode**](https://developer.apple.com/xcode) 文件引用、Build Phases 与 target membership。不能把这些形态差异误判为功能差异，也不能把新工程的 Pod 目录或 podspec 原样复制进老工程。
-- 对应文件没有集成形态差异时应逐字同步；确有形态差异时，归一化 Pod 路径、模块化 import、聚合入口和工程引用后，公开 API、实现语义、Demo 交互、资源内容和文档说明必须一致。若一侧没有对应文件，必须在本轮补齐对应实现，或明确报告因第三方所有权、语言边界或目标能力不适用而“无需修改”，不得静默遗漏。
-- 从 OC 新项目向 OC 老项目平移能力时，要按老项目的主工程集成方式落地：不要把新项目的 `Pod名@Pods` 目录、podspec 或 Podfile 依赖照搬成老项目的新 Pod；应把源码放回老项目主工程的对应功能目录，把资源加入老项目资源目录，把 Demo 入口、聚合头、Build Phases 和 target 引用同步到老项目现有结构。
+- 从零启动或重建 OC 原生 iOS 项目时，读取[原生工程蓝本与专项要求](../jobs-software-project/软件项目开发与交付规范.md#ios-native-baseline)，以 OC 新工程为蓝本，优先复用 JobsByPods；布局用 Masonry，业务网络用 YTKNetwork 及蓝本 Jobs 封装。前端路线尚未确认或仍在需求补填阶段时，先按 [jobs-software-project](../jobs-software-project/SKILL.md)询问选型并生成留白／标红文档。普通局部修改不据此重建工程，其余 DSL、Podfile 和挂载细节继续按本技能及 jobs-podspec 执行。
+- 涉及 <u>[**Swift**](https://www.swift.org/)</u> 基础工程、OC 新工程或 OC 老工程时，必须先读取同目录附件 [项目路径与同步映射](./项目路径与同步映射.md#ios-project-roots)，定位工程并执行其中的新旧工程映射、双侧同步和集成形态例外；不能因只点名单侧而跳过另一侧。
 - OC 新项目里“Jobs 自己写的代码”定义为主工程 + `JobsByPods/` 下 Jobs 自建本地 Pods；排除根目录 `Pods/`、`JobsByPods/ManualByOCPods@Pods/` 和确认的外援第三方源码。扫描、批改、回归和编译都按这个边界执行。
 - OC 修改前必须确认文件所有权：标准 Jobs 文件头、仓库历史或用户明确指定可以作为 Jobs 自有 / 已接管维护的依据，仅有 `Jobs*` 目录名或位于本地 Pod 内不能单独证明所有权。批处理脚本统一检查源码前 100 行：必须存在 `Created by Jobs`，同时出现其它 `Created by` 或非 Jobs `Copyright` 就排除；`.m` / `.mm` 存在同名头时还要联查头文件所有权，防止只改到被换过文件头的外援实现。文件头、版权、路径或上游来源显示为他人编写的 Pod 源码、供应商源码、生成代码一律不改；所有权不明确时先排除并报告，只有用户明确点名授权后才处理。该边界同时覆盖 OC 新工程和 OC 老工程，脚本复用 `scripts/jobs_oc_ownership.rb`，不得各写一套宽松判定。
 - 当文件头与路径 / 仓库历史冲突时，按更严格的外援边界处理：不能因批量统一过 `Created by Jobs` 文件头，就把 `Pods`、`ManualByOCPods@Pods`、`PodsManual`、`Manual_Add_ThirdParty`、应用内 `App工具类/3rd`或已确认的上游 Demo（如 `Demo@Excel/Excel-SpreadsheetView`、`Demo@CoreTextLearning`）误认为 Jobs 自有源码。这些路径是 `jobs_oc_ownership.rb` 的硬排除项；若用户确实要接管某一份外援源码，必须单独点名并手工审核，不通过全局脚本放宽。
@@ -89,9 +82,11 @@ description: 当任务涉及 Objective-C、iOS 页面主题配色、系统类创
 - 默认坚持“一个文件一个类”。除非是 `NS_INLINE`、小型 `typedef`、私有枚举、协议声明、极短生命周期的匿名 category，或者确实必须和主类共生的编译期兼容声明，否则不要把多个 `@interface` / `@implementation` 写进同一个 `.h` / `.m` 文件。
 - 控制器文件尤其不能顺手塞 model、cell、view、helper class。发现 `ViewController*.m`、`*VC.m`、`*Cell.m` 里混入独立类时，优先拆成独立的 `类名.h/.m`，并按真实职责放到同目录或 `Model` / `View` / `Cell` 子目录，再由调用方 `#import` 引用。
 - 拆出来的类必须使用真实类名文件名、完整 Jobs 文件头、独立 `@interface` / `@implementation`，公开 API 放 `.h`，实现细节留 `.m`。不要为了省事写在调用方 `.m` 顶部形成“局部类”。
-- 如果新增文件属于 Xcode 主工程源码，必须同步检查并更新 `*.xcodeproj/project.pbxproj` 的文件引用和 target membership；如果属于本地 Pod，则按 Pod 目录、podspec、README 和 `pod install` 规则处理。不能只在磁盘上新建文件就结束。
+- Jobs 自维护 OC 源码的每组 `*.h` / `*.m` / `*.mm` 必须按完整基名建同名文件夹统一管理，同一组文件放在同一个文件夹内；分类保留 `+Category` 全名。此约定覆盖新旧主工程、Demo、测试支持及本地 Pod 的 `Core` / `Support`，不能因同层只有一组而平铺；Pod 根聚合头仍按下文入口头规则放置。
+- 应用 Demo 统一放在主工程既有“业务逻辑 / 功能模块”下，功能目录使用 `Demo@功能名`；同一 Demo 内的控制器、模型、视图和辅助类继续按各自完整基名包装，不把 Demo 或其配套类散放在仓库根目录。OC 新旧工程的确切落点与已点名模块见[项目路径与同步映射](./项目路径与同步映射.md#oc-project-sync)。
+- 新增、移动或重命名 [**Xcode**](https://developer.apple.com/xcode) 主工程源码时，必须同步检查并更新 `*.xcodeproj/project.pbxproj` 的文件引用、Build Phases、文件同步组的例外清单与 target membership；属于本地 Pod 时，按 Pod 目录、podspec、README 和 `pod install` 规则处理。迁移后核对真实文件存在、旧引用已清理且编译归属保持正确；不能只改磁盘或只改虚拟组，也不能长期用 `Recovered References`、`Jobs Stability Support` 等临时根组代替按职责归档。
 - Jobs 自建 Pod 的磁盘根目录统一为 `Pod名@Pods`：`Core` 必须存在，`Support` / `Resource` 按需创建，不强制空目录；入口头、podspec、README、LICENSE 放在根目录，不放进 `Core` / `Resource`。[**CocoaPods**](https://cocoapods.org/) 的 `Development Pods > Pod名` 只是展示分组，不能当成真实资源目录。
-- `Core` 只放代码。Jobs 自建 Pod 的 `Core` 目录下，所有 `*.h` / `*.m` / `*.mm` 源码都必须用完整基名建同名文件夹包裹；同一组 `.h` / `.m` / `.mm` 放进同一个同名文件夹，分类保留 `+Category` 全名，不允许因为同层只有一组就平铺。例如 `Core/JobsFuseAnimation/JobsFuseOuterRingConfig/JobsFuseOuterRingConfig.h` 和 `Core/JobsFuseAnimation/UIView+JobsFuseAnimation/UIView+JobsFuseAnimation.h`。
+- `Core` 只放代码，同样执行上述完整基名目录规则。例如 `Core/JobsFuseAnimation/JobsFuseOuterRingConfig/JobsFuseOuterRingConfig.h` 和 `Core/JobsFuseAnimation/UIView+JobsFuseAnimation/UIView+JobsFuseAnimation.h`。
 - 聚合头 / 模块入口头必须放在 `Pod名@Pods/` 根目录，和 `Core` / `Resource` / `Support` 齐平。入口头一般使用 `Pod名.h`；若 `Core/Pod名/Pod名.h` 带同名 `.m` 或真实 `@interface`，它是源码头，不按聚合头硬搬，必须先解决命名冲突和公开头设计，避免同名 public header 互相覆盖。
 - `Core` 只能有一层真实目录，禁止磁盘上出现 `Pod名@Pods/Core/Core/...`，也不要用 podspec 虚拟 subspec 再包一层 `Core/**/*`。移动目录后同步检查 podspec 递归通配、公开头边界、README 目录结构和 `pod install` 后的 Development Pods 展示。
 
@@ -188,8 +183,7 @@ description: 当任务涉及 Objective-C、iOS 页面主题配色、系统类创
 
 #### 1.6.1、<span id="api-snippets-sync">OC 双工程文档与公共 CodeSnippets 强制同步</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-- OC 新工程根文档固定为 `/Users/jobs/Documents/Github/JobsOCBaseConfigDemo@ByPods/README.md`，框架文档固定为 `/Users/jobs/Documents/Github/JobsOCBaseConfigDemo@ByPods/OC工程项目框架配置方案@Jobs.md/OC工程项目框架配置方案@Jobs.md`；OC 老工程根文档固定为 `/Users/jobs/Documents/Github/JobsBaseConfig/JobsBaseConfig@JobsOCBaseConfigDemo/README.md`，框架文档固定为 `/Users/jobs/Documents/Github/JobsBaseConfig/JobsBaseConfig@JobsOCBaseConfigDemo/OC工程项目框架配置方案@Jobs.md/OC工程项目框架配置方案@Jobs.md`。
-- Xcode 代码块目录固定为 `/Users/jobs/Library/Developer/Xcode/UserData/CodeSnippets`，是 OC / Swift 共用的 Xcode 资产，不属于任一单独工程。
+- 调整 OC 工程能力、底层自建 API、工程文档或公共 CodeSnippets 时，必须先读取 [文档与公共代码块位置](./项目路径与同步映射.md#oc-sync-paths)，按实际新老工程定位同步对象，再执行下列强制同步。
 - 每次调整任一 OC 工程中的 Jobs 自维护能力，不论改动位于主工程还是本地 Pod，也不论是新增、删除、重命名、公开 API、固定写法、Demo、资源、依赖或行为变化，都必须同步检查并更新两份根 `README.md` 和相关 `.codesnippet`；不能只更新实际落码的一侧。
 - 但凡新增、删除、重命名或改变 `JobsOCDefs`、`JobsBlock`、`JobsMakes`、`JobsOCDSL`、`JobsModelDSL`、公共协议、宏、基础组件公开入口等底层自建 API，同一任务必须同步核对 OC 新老工程对应实现、公开头、相关 Pod / 根 README、宿主 Demo、两份框架文档和公共 CodeSnippets；某项没有对应内容时也必须完成检索，并在交付中明确说明无需修改。
 - 两份根 README 的特色说明、能力矩阵、Demo 代码和使用边界必须保持同步。唯一允许的固定差异是工程形态：本地 Pod 工程只说明“相关功能由本地 Pod 管理”，主工程集成工程只说明“相关功能集成于主工程管理”。
@@ -199,11 +193,7 @@ description: 当任务涉及 Objective-C、iOS 页面主题配色、系统类创
 
 ### 1.7、<span id="dependency-reports">依赖报告与循环引用校正</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-- Pod 之间的上下依赖关系，会在每次 `pod install` 时通过脚本挂载加载：
-
-  ```text
-  ScriptsByPods/【MacOS】🔍查询Xcode工程依赖关系.command/【MacOS】🔍查询Xcode工程依赖关系.command
-  ```
+- Pod 之间的上下依赖关系，会在每次 `pod install` 时通过脚本挂载加载；涉及挂载、依赖报告或循环依赖排查时，必须先读取 [依赖报告脚本入口](./项目路径与同步映射.md#dependency-report-entry)定位真实文件。
 
 - 依赖报告生成物位于：
 
@@ -243,25 +233,47 @@ description: 当任务涉及 Objective-C、iOS 页面主题配色、系统类创
   };
   ```
 
-- [**Objective-C**](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html) `*.m` 文件里，`@end` 必须和上方主内容区域之间空一行；不能把 `@end` 紧贴在上一个方法、实现块或右括号下面。
+- [**Objective-C**](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html) 的 `*.h` / `*.m` / `*.mm` 中，`@interface`、`@implementation` 的完整声明与内容区之间，以及内容区与 `@end` 之间均保留一个空行；`@end` 与后续声明 / 实现也用空行分隔。类、Category、匿名扩展统一遵守；声明跨行或带 ivar 区时保持完整语法结构，不在宏续行、注释、字符串和生成区机械插行。
 
   ```objc
-  -(JobsRetJobsBaseModelByJobsByBtnBlockBlock _Nonnull)byCloseBtnClickAction{
-      @jobs_weakify(self)
-      return ^__kindof JobsBaseModel *_Nullable(jobsByBtnBlock _Nullable data) {
-          @jobs_strongify(self)
-          self.closeBtnClickAction = data;
-          return self;
+  @interface AFSecurityPolicy (Extra)
+
+  +(JobsRetAFSecurityPolicyByAFSSLPinningModeBlock _Nonnull)initBy;
+  +(AFSecurityPolicy *_Nonnull)initByModeNone;
+  +(AFSecurityPolicy *_Nonnull)initByModePublicKey;
+  +(AFSecurityPolicy *_Nonnull)initByModeCertificate;
+
+  @end
+
+  @implementation AFSecurityPolicy (Extra)
+
+  +(JobsRetAFSecurityPolicyByAFSSLPinningModeBlock _Nonnull)initBy{
+      return ^AFSecurityPolicy *_Nonnull(AFSSLPinningMode data){
+          return [AFSecurityPolicy policyWithPinningMode:data];
       };
+  }
+
+  +(AFSecurityPolicy *_Nonnull)initByModeNone{
+      return [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+  }
+
+  +(AFSecurityPolicy *_Nonnull)initByModePublicKey{
+      return [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModePublicKey];
+  }
+
+  +(AFSecurityPolicy *_Nonnull)initByModeCertificate{
+      return [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
   }
 
   @end
   ```
 
+- 纯格式刷新只改空白、换行和缩进，不改 selector、类型、宏、Block、调用顺序或实现。修改前以当前磁盘内容留基线，修改后核对非空白 token、字面量、注释和预处理续行不变，并执行 `git diff --check`。适用于 OC 新旧主工程及 Jobs 自建 `JobsByPods/`；外援 Pod、供应商、生成代码和所有权不明源码继续按 1.1 排除，不因示例使用第三方类名而修改其上游源码。
+
 ### 1.10、<span id="dsl-principles">Jobs DSL 总体思想</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 - Jobs 的 OC / Swift DSL 本质是一套命名和调用思想：用点语法 + 链式语法让对象从创建、配置、事件、装配到布局尽量一路设置下去，减少散落赋值和割裂的中间变量。
-- `JobsMakes`、`JobsOCDSL`、`JobsModelDSL` 及相关自建 Pod 里的当前实现是 OC Jobs API 的唯一权威源；`~/Library/Developer/Xcode/UserData/CodeSnippets` 只是辅助使用记录，不能反过来定义 API。写代码前先核对封装实现，再参考代码块；两者冲突时以最新封装为准，并反哺修正代码块。
+- `JobsMakes`、`JobsOCDSL`、`JobsModelDSL` 及相关自建 Pod 里的当前实现是 OC Jobs API 的唯一权威源；公共 CodeSnippets 只是辅助使用记录，不能反过来定义 API。写代码前先核对封装实现，再参考代码块；两者冲突时以最新封装为准，并反哺修正代码块。
 - Jobs 自维护的上层 OC 代码不直接调用已纳入 Jobs 封装体系的系统 API：创建走 `JobsMake`，属性/方法走 `JobsOCDSL` / `JobsModelDSL`，Block 走 `JobsBlock`，事件、装配、布局走已有 Jobs 入口。发现系统 API 还没有对应封装时，先在正确的自建 Pod / 类型层补齐封装，再回到调用方落地，不把裸调用当成长期兼容方案。
 - Jobs 自维护调用方创建任何 [**Apple**](https://www.apple.com/) 系统类时都必须先进入 Jobs 创建 DSL，不以“这个类型还没有封装”为由保留 `Type.new`、`[Type new]`、`Type.alloc.init` 或 `[[Type alloc] init...]`。无入参构造复用或补齐 `jobsMakeType(^(Type *object) { ... })` 一类“创建对象 + 配置 Block”入口；裸 `new` / `alloc-init` 只允许存在于该入口的底层实现。
 - 带初始化参数的系统类不把构造参数硬塞进通用 `jobsMakeType`。必须在真实系统类型的 Jobs 分类上提供类级 Block 初始化 DSL，按既有 `initByXxx` 语义命名，例如 `+(JobsRetNSUserActivityByNSStringBlock)initByActivityType`，调用方写 `NSUserActivity.initByActivityType(activityType)`；`[NSUserActivity.alloc initWithActivityType:activityType]` 只允许留在该类级 DSL 的实现内部。初始化完成后直接继续实例 `byXxx(...)` 链，不能再以局部变量重复起链。
@@ -316,9 +328,9 @@ description: 当任务涉及 Objective-C、iOS 页面主题配色、系统类创
 - `CAKeyframeAnimation`、`CAShapeLayer`、手势子类等多层继承对象同样执行“最具体类型在前”：先调用 `byValues/byCalculationMode`、`byPath`、`byDirection/byRotation` 等子类 DSL，再调用 `byKeyPath/byFrame` 等中间父类 DSL，最后调用 `byDuration/byDelegate/byTarget` 等更通用 DSL。自动合链脚本不得改变这一静态类型拓扑；编译命中类型降级后，要反扫所有同类链，不只修首个文件。
 - 在本地 Pod 里写 `UITableView`、`UIButton`、`UITextField`、`UILabel` 等 JobsOCDSL 链时，编译通过不是唯一目标，还要检查链条类型是否中途被父类 DSL 降级。例如 `UITableView` 先调 `bySeparatorStyle`、`byDelegate`、`byDataSource`、`byShowsVerticalScrollIndicator` 等本层 / `UIScrollView` 层能力，再调 `byBgColor`、`addOn`、`byAdd` 等 `UIView` 层能力；不要把父类 DSL 插在中间导致后续子类 DSL 失效。
 - 写 DSL 示例、Xcode 代码片段和工程配置文档时，点语法以行为最小单位提行书写，方便按行删除或注释。跟在某一行 DSL 后面的解释统一用两根双斜杠 `//`；单独成行的段落说明统一用三根双斜杠 `///`。
-- 写 Objective-C 代码、DSL 示例、懒加载 getter 或常见 UI 配置前，先核对实际封装 API，再查看 `~/Library/Developer/Xcode/UserData/CodeSnippets` 下是否已有可复用的 Xcode 代码块；代码块未过时时，优先沿用其命名、占位符和链式组织方式。
-- 如果本轮更新了 OC 侧封装、DSL、JobsMake、Block typedef 或固定写法，必须同步检查并反哺 `~/Library/Developer/Xcode/UserData/CodeSnippets` 里的相关 `.codesnippet`，让代码块示例跟真实 API 保持一致；不要让片段继续传播旧封装、旧命名或散落赋值写法。
-- `~/Library/Developer/Xcode/UserData/CodeSnippets` 里的 OC 代码片段默认采用“全暴露写法”：常用配置、事件、装配、约束和兼容分支尽量完整列出，让使用者按需求删除或注释，不让使用者临场补 API。片段必须优先传播 Jobs 封装、JobsMake、JobsOCDSL、JobsModelDSL 和聚合头边界，不能为了示例短而退回裸系统 API。
+- 写 Objective-C 代码、DSL 示例、懒加载 getter 或常见 UI 配置前，先核对实际封装 API，再查看公共 CodeSnippets 中是否已有可复用的 Xcode 代码块；代码块未过时时，优先沿用其命名、占位符和链式组织方式。
+- 如果本轮更新了 OC 侧封装、DSL、JobsMake、Block typedef 或固定写法，必须同步检查并反哺公共 CodeSnippets 里的相关 `.codesnippet`，让代码块示例跟真实 API 保持一致；不要让片段继续传播旧封装、旧命名或散落赋值写法。
+- 公共 CodeSnippets 里的 OC 代码片段默认采用“全暴露写法”：常用配置、事件、装配、约束和兼容分支尽量完整列出，让使用者按需求删除或注释，不让使用者临场补 API。片段必须优先传播 Jobs 封装、JobsMake、JobsOCDSL、JobsModelDSL 和聚合头边界，不能为了示例短而退回裸系统 API。
 - 每次完善或纠错 OC 代码片段后，必须按同一写法反扫 OC 新工程和老工程应用层，重点查 `rowHeight =`、`contentInset =`、`contentInsetAdjustmentBehavior =`、`backgroundColor =`、`delegate =`、`dataSource =` 等已有 DSL 覆盖的裸赋值。命中 Jobs 自己维护的主工程或本地 Pod 代码时改成链式；外援 `Pods/`、`ManualByOCPods@Pods/` 和确认为第三方源码的目录不处理。
 - DSL 示例颗粒度必须细：一个属性、一个状态、一个事件、一个装配动作分别独立成行，不把标题、颜色、字体、图片、内边距等多个意图合并到一行。若同一能力同时存在单参数和二参数写法，默认首选单参数写法；二参数写法只在确实需要表达 `UIControlStateSelected`、`UIControlStateDisabled`、`UIControlStateHighlighted` 等非默认状态差异时使用。
 
@@ -474,7 +486,13 @@ description: 当任务涉及 Objective-C、iOS 页面主题配色、系统类创
 - 一般性 `#import` 优先写系统 / Apple / Darwin / 底层头文件，再写本文件直接依赖的普通头文件；越靠近底层越靠上，例如 ObjC runtime / message、C 系统库、`CoreFoundation`、`Foundation`、`UIKit`、`WebKit`、`AVFoundation` 等系统头按底层到上层排列。
 - Jobs 自己写的代码里，系统 / Apple / Darwin / ObjC runtime 头文件必须写在对应同名 `*.h` 文件的一般性 import 区域，`*.m` / `*.mm` 不单独导入。不限于 `#import <objc/runtime.h>`：例如 `<objc/message.h>`、`<Foundation/Foundation.h>`、`<UIKit/UIKit.h>`、`<WebKit/WebKit.h>`、`<AVFoundation/AVFoundation.h>`、`<AudioToolbox/AudioToolbox.h>`、`<Photos/Photos.h>`、`<Security/Security.h>`、`<CommonCrypto/CommonCrypto.h>`、`<os/lock.h>`、`<pthread.h>`、`<sys/sysctl.h>`、`<stdint.h>`、`<ctype.h>` 等都按这条执行。即使只有实现文件里调用相关 API，也要由同名头文件统一承接。
 - 如果已经写了 `#import <UIKit/UIKit.h>`，则同一个 import 区域不再重复写 `#import <Foundation/Foundation.h>`，因为 `UIKit` 已经包含 `Foundation`。
-- 把导入区按“普通单个 `#import` ”和“完整双通道保护块”视为相邻导入单元：普通↔普通之间不留空行；只要相邻两个单元中任意一个是双通道保护块，两者之间必须且只能保留一行空行。这覆盖普通↔双通道、双通道↔普通、双通道↔双通道三种组合；双通道块内部四段结构仍紧凑连写，不插入空行。
+- OC 文件（`*.h` / `*.m` / `*.mm`）的 `#import` 区段中，相邻的单行 `#import` 必须紧挨排列，中间不得留空行；双引号和尖括号导入均遵守。把“普通单行 `#import`”和“完整双通道保护块”视为相邻导入单元：只要相邻两个单元中任意一个是双通道保护块，两者之间必须且只能保留一行空行。这覆盖普通↔双通道、双通道↔普通、双通道↔双通道三种组合；双通道块内部四段结构仍紧凑连写，不插入空行。
+
+  ```objc
+  #import "SceneDelegate.h"
+  #import "SceneDelegate+UISceneDelegate.h"
+  ```
+
 - OC 新项目中 Jobs 自己维护的 `*.m` 文件，每条 `#import "xxx.h"` 必须独占一行，行尾说明移到独立注释行；相邻的双引号 `#import` 之间不得保留空行，必须紧挨排列。文件头注释与第一条 import 之间、最后一条 import 与正文之间仍各保留一个空行，不把导入区粘到文件头或正文。
 - 上述 `*.m` 双引号 import 排版使用 `scripts/normalize_oc_m_quoted_import_layout.rb <OC 新项目根目录...>` 先干跑，确认范围后加 `--apply`；应用后必须二次干跑到 `changed_files=0 invalid_lines=0 blank_gaps=0`。脚本必须复用 `jobs_oc_ownership.rb` 过滤所有权，继续排除 `Pods/`、`ManualByOCPods@Pods/`、生成目录和他人源码。
 - `#import` 导入区和下面的正文内容区之间必须保留一行空行。正文内容区包括 `NS_ASSUME_NONNULL_BEGIN`、`@interface`、`@implementation`、`@protocol`、`@class`、`typedef`、`NS_INLINE`、`static`、`#pragma` 等；例如 `#import "DefineProperty.h"` 后面不能紧贴 `NS_ASSUME_NONNULL_BEGIN`，必须空一行。

@@ -18,6 +18,9 @@
 "/jobs-obsidian-memory/SKILL.md" filter=jobs-markdown-toc
 "/jobs-podspec/SKILL.md" filter=jobs-markdown-toc
 "/jobs-python/SKILL.md" filter=jobs-markdown-toc
+"/jobs-software-project/SKILL.md" filter=jobs-markdown-toc
+"/jobs-software-project/软件项目开发与交付规范.md" filter=jobs-markdown-toc
+"/jobs-software-project/项目需求与开发评审模板.md" filter=jobs-markdown-toc
 "/jobs-swift/SKILL.md" filter=jobs-markdown-toc
 "/jobs-swift/references/ios-theme-contrast.md" filter=jobs-markdown-toc
 # jobs-markdown-toc:end

@@ -21,7 +21,7 @@ description: 当任务涉及 Codex 的 AGENTS.md、用户级 Skills、JobsCodexC
   - [2.2、允许压缩的内容](#jobs-toc-heading-7)
   - [2.3、禁止以“去重”为名删除](#jobs-toc-heading-8)
 - [三、Markdown 防回退基线](#jobs-toc-heading-9)
-  - [3.1、序号统一使用中文顿号](#jobs-toc-heading-10)
+  - [3.1、正文列表优先小黑点，必要编号保留中文顿号](#jobs-toc-heading-10)
   - [3.2、固定名词链接必须保留](#jobs-toc-heading-11)
   - [3.3、独立文档结构](#jobs-toc-heading-12)
 - [四、审计工作流](#jobs-toc-heading-13)
@@ -49,31 +49,11 @@ description: 当任务涉及 Codex 的 AGENTS.md、用户级 Skills、JobsCodexC
 
 ### <span id="jobs-toc-heading-3" data-jobs-toc="v2">1.1、分开维护两个标准仓库 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-全局指导标准源：
-
-```text
-/Users/jobs/Documents/Github/JobsGenesis/JobsConfigOS/💻JobsCodexConfigs
-└── AGENTS.md
-```
-
-用户级 Skills 标准源与现行基准工作树：
-
-```text
-/Users/jobs/.agents/skills/
-```
-
-该工作树的远端必须是 `https://github.com/JobsKits/JobsSkills`。`JobsCodexConfigs/skills` 只是 `JobsSkills` 子模块挂载，父仓只跟踪 `.gitmodules` 和 gitlink；不得把子模块或历史备份反向覆盖现行基准工作树，也不得把 Obsidian Vault 整体拷进 Skill。
+审计配置前必须先读取同目录附件 [配置路径与核验命令](./配置路径与核验命令.md#config-sources)，据其定位全局指导标准源、现行 Skills 工作树和父仓挂载；全局与专项规则分别维护，保留现行基准及单向部署边界。
 
 ### <span id="jobs-toc-heading-4" data-jobs-toc="v2">1.2、先保护已有工作区 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-审计开始先执行只读检查：
-
-```shell
-git -C /Users/jobs/Documents/Github/JobsGenesis/JobsConfigOS/💻JobsCodexConfigs status --short
-git -C /Users/jobs/Documents/Github/JobsGenesis/JobsConfigOS/💻JobsCodexConfigs diff -- AGENTS.md
-git -C /Users/jobs/.agents/skills status --short
-git -C /Users/jobs/.agents/skills diff
-```
+审计开始先按 [工作区只读检查](./配置路径与核验命令.md#workspace-checks)核对两个仓库的状态与差异。
 
 已有改动属于用户。只修改本任务命中的规则，不回滚、不覆盖、不借审计顺手重写其它 Skill。
 
@@ -108,7 +88,7 @@ git -C /Users/jobs/.agents/skills diff
 - `.command` 防误触、自述、日志、安装 / 更新确认和 `main` 入口规则。
 - <u>[**Swift**](https://www.swift.org/)</u> / [**Objective-C**](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html) DSL、“一镜到底”和返回对象类型约束。
 - Markdown 首次出现专有名词的固定官方链接。
-- 中文序号使用顿号 `、` 的书写习惯。
+- 普通正文列表优先使用小黑点、必要中文编号使用顿号 `、` 的书写习惯。
 - 构建、语法、Dry Run、[**Sourcetree**](https://www.sourcetreeapp.com/) 或 [**CodeGraph**](https://github.com/colbymchenry/codegraph) 等验证步骤。
 - 规则中的例外，例如带行尾注释的 `return` 不应用 `};return`。
 
@@ -116,23 +96,16 @@ git -C /Users/jobs/.agents/skills diff
 
 ## <span id="jobs-toc-heading-9" data-jobs-toc="v2">三、Markdown 防回退基线 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### <span id="jobs-toc-heading-10" data-jobs-toc="v2">3.1、序号统一使用中文顿号 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-10" data-jobs-toc="v2">3.1、正文列表优先小黑点，必要编号保留中文顿号 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-在中文说明、流程和列表中：
-
-```markdown
-1、iOS 逆向究竟在研究什么
-2、Mach-O 为什么重要
-```
-
-不要写成：
+普通正文步骤、并列说明和操作清单按 [Markdown 主规则](../jobs-markdown-docs/SKILL.md)优先使用无序列表：
 
 ```markdown
-1. iOS 逆向究竟在研究什么
-2. Mach-O 为什么重要
+- 先检查运行环境。
+- 再执行当前任务。
 ```
 
-版本号、域名、小数、代码、命令输出和英文原文不受此规则影响。Markdown 原生有序列表语法不是豁免理由；Jobs 文档优先保持中文顿号风格。
+需要表达顺序时保留排列先后，并用文字说明；不以旧的中文数字步骤习惯将小黑点改回编号。只有编号被引用、属于固定条款或用户明确要求时保留必要编号，中文编号使用顿号 `、`。已有章节标题编号、版本号、域名、小数、代码、命令输出及外部原文保持原意，不机械改写；只处理本任务范围内的文档。
 
 ### <span id="jobs-toc-heading-11" data-jobs-toc="v2">3.2、固定名词链接必须保留 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
@@ -186,25 +159,14 @@ zsh ./jobs-codex-config-audit/scripts/audit_codex_configs.zsh
 
 - 全局行为留在 `AGENTS.md`，细节放对应 Skill。
 - 一条规则只选一个主归属；其它位置保留短触发引用，不复制全文。
+- Jobs 自有 Skill 中绑定具体仓库、文件位置或本机固定路径的专项内容，提取为原 Skill 文件夹内、与 `SKILL.md` 同级的独立 `.md` 附件；通用规则留在主文件，原位置保留相对链接与“命中什么范围时必须读取”的入口。附件不是新 Skill，不另建同名 Skill 文件夹；同类路径规则优先合并进已有附件。
+- 提取时保留完整适用范围、动作、禁止边界、例外与验证，修正跨文件链接并独立重排标题编号；不机械拆出通用目录约定、代码示例或资源引用，也不改动第三方 Skill。
 - 不为了减少行数把清晰步骤压成含糊长句。
 - 长文件只有在触发范围清晰且可以独立加载时才拆分 reference；不要把关键硬约束藏到不会被读取的文件。
 
 ### <span id="jobs-toc-heading-17" data-jobs-toc="v2">4.4、验证编辑结果 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-```shell
-python3 /Users/jobs/.codex/skills/.system/skill-creator/scripts/quick_validate.py ./jobs-codex-config-audit
-zsh -n ./jobs-codex-config-audit/scripts/audit_codex_configs.zsh
-zsh ./jobs-codex-config-audit/scripts/audit_codex_configs.zsh
-```
-
-再检查：
-
-```shell
-git -C /Users/jobs/.agents/skills diff --check
-git -C /Users/jobs/.agents/skills diff
-git -C /Users/jobs/Documents/Github/JobsGenesis/JobsConfigOS/💻JobsCodexConfigs diff --check
-git -C /Users/jobs/Documents/Github/JobsGenesis/JobsConfigOS/💻JobsCodexConfigs diff -- AGENTS.md .gitmodules skills
-```
+按同目录附件的 [规则校验与差异检查](./配置路径与核验命令.md#validation-commands)执行 Skill 校验、Shell 语法、只读审计和两个仓库的 Diff 检查。
 
 必须人工阅读最终 Diff，确认没有把“减少字数”误当成“完成优化”。
 
@@ -212,21 +174,17 @@ git -C /Users/jobs/Documents/Github/JobsGenesis/JobsConfigOS/💻JobsCodexConfig
 
 ### <span id="jobs-toc-heading-19" data-jobs-toc="v2">5.1、维护原则 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-全局规则只在 `JobsCodexConfigs/AGENTS.md` 中维护，专项规则只在现行 `JobsSkills` 工作树中维护。修改 `JobsSkills` 后先单独提交、推送子仓，再在 `JobsCodexConfigs` 中更新 `skills` 子模块指针；不在父仓保留第二份直接跟踪的 Skills 文件。
+全局规则在 `JobsCodexConfigs/AGENTS.md` 中维护，专项规则以现行 `JobsSkills` 运行态工作树为基准。每次写入运行态后，必须立即按附件的[即时备份与核验](./配置路径与核验命令.md#deployment-checks)同步本次变更到备份态并验证，不等待任务结束、提交、推送或用户提醒；本地同步已获用户授权，无需重复确认。只有用户明确授权版本发布时，才先单独提交、推送子仓，再更新父仓 `skills` gitlink；父仓仍不直接跟踪 Skills 文件。
 
-每次新增或修改全局 `AGENTS.md`，必须在同一任务结束前按标准源同步到 `/Users/jobs/.codex/AGENTS.md` 并执行 `cmp`，不能仅报告差异后留待用户提醒。同步前保留已有改动，运行态有效独有规则先并回标准源；该本地部署要求不授权 Git 提交、推送、Skills 文件复制或 gitlink 更新。
+每次新增或修改全局 `AGENTS.md`，必须在同一任务结束前按标准源同步到附件指定的运行态目标并执行 `cmp`，不能仅报告差异后留待用户提醒。同步前保留已有改动，运行态有效独有规则先并回标准源；AGENTS 部署与上述 Skills 即时备份分别执行，均不授权 Git 提交、推送或 gitlink 更新。
 
 配置注入脚本只部署 `AGENTS.md`，并扫描现行 `JobsSkills` 生成受控注册块；不复制、删除或覆盖 `JobsSkills` 工作树。
 
 ### <span id="jobs-toc-heading-20" data-jobs-toc="v2">5.2、部署后验证 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-```shell
-cmp ./AGENTS.md /Users/jobs/.codex/AGENTS.md
-git -C /Users/jobs/.agents/skills remote get-url origin
-git -C /Users/jobs/Documents/Github/JobsGenesis/JobsConfigOS/💻JobsCodexConfigs submodule status -- skills
-```
+必须按 [即时备份与核验](./配置路径与核验命令.md#deployment-checks)比较 AGENTS 字节一致性、本次 Skills 变更文件的两态一致性、Skills 远端及父仓子模块指针。
 
-子模块检出可以暂时落后于现行 `JobsSkills` 工作树，但必须显式报告两者提交号；不得用落后的子模块反向覆盖现行基准。
+备份子模块的 HEAD 可以暂时落后于运行态，但本次变更的工作区文件必须即时同步；显式报告两者提交号，不能以 gitlink 相同代替文件一致性核验，也不得用落后的子模块反向覆盖现行基准。
 
 ## <span id="jobs-toc-heading-21" data-jobs-toc="v2">六、每周任务的完成定义 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
@@ -237,7 +195,7 @@ git -C /Users/jobs/Documents/Github/JobsGenesis/JobsConfigOS/💻JobsCodexConfig
 - 重复候选及“合并 / 保留为有意重复”的判断。
 - 被修改规则的语义账本和防回退说明。
 - Skill 校验、Shell 语法和 Diff 检查结果。
-- `AGENTS.md` 部署一致性、`JobsSkills` 远端与子模块指针；未同步时说明原因。
+- `AGENTS.md` 部署一致性、本次 Skills 文件的即时备份核验、`JobsSkills` 远端与子模块指针；未同步时说明具体文件和原因。
 
 ### <span id="jobs-toc-heading-23" data-jobs-toc="v2">6.2、每周审计不得自动做 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
