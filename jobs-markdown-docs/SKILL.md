@@ -85,7 +85,8 @@ description: 当任务涉及已有文档的增量编辑与内容保护（不限�
 - 正文二级标题优先使用中文编号：`## 一、...`、`## 二、...`。
 - 三级标题使用阿拉伯编号：`### 2.1、...`、`### 2.2、...`。
   - 仓库 README 的脚本概述是明确例外：脚本名链接直接作无编号三级标题，不加标题上下导航；目的引用与无编号时序列表的完整约定见 [Git 仓库 README 规范](../jobs-git-repository/SKILL.md#repository-readme-contract)。
-- 中文正文中的步骤、次序和数字列表统一使用顿号 `、`，例如 `1、iOS 逆向究竟在研究什么`；不要写成 `1.iOS ...` 或 `1. iOS ...`。即使 Markdown 支持 `1.` 原生有序列表，Jobs 中文文档仍优先使用 `1、` 并在相邻条目之间保留空行。版本号、小数、域名、代码、命令输出和引用的英文原文不受此规则影响。
+- 中文正文中的普通步骤、并列说明和操作清单优先使用 Markdown 无序列表（源码 `- `，显示为小黑点），不额外添加 `1、`、`2、`、`3、` 或 `1.` 等数字序号。需要表达先后时保留排列顺序，并用“先、再、最后”等文字说明；此约定替代旧的正文数字步骤默认规则。
+- 编号被其它段落引用、属于固定条款或用户明确要求时，才保留必要编号；已有章节标题编号不因此机械删除。版本号、小数、域名、代码、命令输出和外部原文中的编号保持原意。编辑既有文档时只在任务范围内将普通正文列表改成小黑点，保留层级、步骤先后和实质内容，不批量改写无关文档。
 - 长文档按[动态与折叠目录规则](#markdown-toc-filter)维护可点击章节目录，并在流程、状态、权限、规则、异常处理等跨章节引用处补充必要内链；不额外维护一份重复的手写总目录，也不为无关词语堆叠内链。
 - 内链统一使用相对地址：同一文档使用 `#章节锚点`，跨文件使用以当前 Markdown 所在目录为基准的 `./文件.md`、`../目录/文件.md`，必要时追加 `#章节锚点`；不写本机绝对路径或 `file://`。外部官方链接仍使用完整 HTTPS 地址。
 - 除文档主标题和“前言”外，正文每个二级及以下标题末尾都必须追加两个导航链接：第一个返回 `#前言`，第二个跳转到文末 `#🔚`。标题文字本身承载章节锚点；需要稳定的文章内跳转时，在标题文字的非空 HTML 元素上设置唯一、语义明确的 `id`，内链使用同一 `id`，不依赖渲染器自动生成的标题编号或 slug，不另加空锚点。
@@ -109,14 +110,13 @@ description: 当任务涉及已有文档的增量编辑与内容保护（不限�
 - bullet 下方的代码块必须缩进两个空格，让代码块视觉上归属于这条说明；不要让代码块顶到页面左边。
 
   ````markdown
-  - 只要涉及“升级 / 更新 / upgrade / update”，都必须遵守这条规则。
+  - 展示脚本内置自述后，等待用户确认再继续；空格后回车取消。
 
     ```shell
-    ask_any_to_run() {
-      local message="$1"
+    confirm_intro() {
       local answer=""
-      read -r "?${message}（直接回车跳过；输入任意字符后回车执行）：" answer
-      [[ -n "$answer" ]]
+      IFS= read -r "answer?按回车继续；空格后回车取消：" || return 1
+      [[ -z "$answer" ]]
     }
     ```
   ````
@@ -133,6 +133,9 @@ description: 当任务涉及已有文档的增量编辑与内容保护（不限�
   ````
 
 - [**Markdown**](https://markdown.cn) 中的路径、命令、文件名、变量名都用反引号包起来，例如 `LOG_FILE`、`$TMPDIR/脚本名.log`、`README.md`。
+- <span id="document-platform-directory-case">平台写法与目录命名</span>：Jobs 自维护文档的标题、正文、表格、目录树及操作说明统一使用 [**MacOS**](https://www.apple.com/macos/)；自维护平台目录名同样写为 `MacOS/`。自定义英文目录以大写字母开头，例如 `Scripts/`、`Assets/`、`Flutter/`、`Dist/`；中文职责目录沿用中文。
+- 文档里的目录树、路径、链接和命令须与真实文件系统大小写一致；目录改名后同步相关引用并核对目标，不能只改显示名称。`iOS` 等用户指定专名、语言包路径、工具链强制布局、外部 API／参数／官方下载 URL，以及第三方、生成内容和原始引文保留真实写法；例外须有实际依据。工程目录整理按[从零到一工程命名规则](../jobs-software-project/软件项目开发与交付规范.md#directory-naming-case)执行。
+
 
 ### <span id="jobs-toc-heading-5" data-jobs-toc="v2">1.3、外链、表格与流程图 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
@@ -141,6 +144,7 @@ description: 当任务涉及已有文档的增量编辑与内容保护（不限�
 - 外链和文件链接的显示文字使用可读名称，普通文档链接目标中的中文、emoji 优先保留可读 Unicode 字符；已有百分号编码属于 URL 转义，不直接视为字符集损坏，只在确认目标不变时还原中文、emoji 的编码，避免正文暴露长串 `%E...` 或未解析的 `[标签](路径)`。签名 URL、查询串及具有结构含义的保留字符编码不盲目解码，不能为美观改变地址语义。
 - Markdown 链接目标含空格或括号时使用 `[标签](<相对路径>)`，例如 `[脚本说明](<./中文目录 (示例)/README.md>)`；文件名含 ASCII 方括号时转义显示文字中的 `\[`、`\]`，目标仍按真实路径填写。HTML 链接使用带引号的 `href`，不把 Markdown 链接嵌进 HTML 链接标签。修改后以当前文档目录为基准核对本地目标及片段，预览确认显示文字、点击目标和标题中的链接均正确，没有语法泄漏；远程访问及目标平台渲染未验证时如实说明。
 - 表格用于阶段说明、参数说明、目录统计、命令清单；表头短一点，内容能扫读。
+- 标题下仅有“一句说明 + 一张表格”时，表格上方的说明句必须使用 `> ` 块引用，例如 `> 微信等认证身份；不得保存session_key、Token或明文密码。`；标题、引用、表格之间保留空行。只补引用标记，保留说明原文和表格内容；已有引用不重复添加，含多段正文、列表、代码块或多张表的复杂章节不机械套用。
 - Markdown 文档中的业务流程、操作流程、状态流转和交互时序统一使用 [**Mermaid**](https://mermaid.js.org)，以标注 `mermaid` 的 fenced code block 保留可编辑源码；根据表达内容选用 `flowchart`、`stateDiagram-v2` 或 `sequenceDiagram`。属于上一条说明的图与代码围栏同样右缩进两个空格。
 
   ```mermaid
@@ -158,6 +162,7 @@ description: 当任务涉及已有文档的增量编辑与内容保护（不限�
 #### <span id="jobs-toc-heading-6" data-jobs-toc="v2">1.3.1、专有名词固定超链接 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 写 [**Markdown**](https://markdown.cn) / README / AGENTS 这类技术文档时，外部产品和第三方专有名词必须在正文第一次出现时写成 `[**名称**](官方URL)`；下表固定名称必须使用给定链接。需要强调或便于点击时，后续也可以继续加链接。
+- [**PostgreSQL**](https://www.postgresql.org/) 是每次出现均须补链的固定名称：标题、正文和表格中的每一次提及都写为 `[**PostgreSQL**](https://www.postgresql.org/)`，不只处理首次出现；已有正确链接不重复嵌套。代码块、命令、路径、文件名、变量名及 URL 中的机器字面量仍保留原样。
 - 用户指定需要下划线的专有名词，仍须保留加粗超链接；例如 <u>[**Swift**](https://www.swift.org/)</u> 应写成 `<u>[**Swift**](https://www.swift.org/)</u>`。
 - 同一个工具有多个常见写法时，正文优先使用“推荐写法”；括号里的别名只用于识别，不强行改代码块里的命令。
 - 代码块、命令、路径、文件名、变量名里的字面量不要加超链接，例如 `brew install fzf`、`Podfile`、`python3`、`go-task/tap/go-task`。
@@ -168,6 +173,7 @@ description: 当任务涉及已有文档的增量编辑与内容保护（不限�
   | [**Markdown**](https://markdown.cn)                                | `Markdown` / `md`                                 | `https://markdown.cn`                          |
   | <u>[**Swift**](https://www.swift.org/)</u>                          | `Swift`                                           | `https://www.swift.org/`                       |
   | [**Go**](https://go.dev/)                                           | `Go`                                              | `https://go.dev/`                              |
+  | [**PostgreSQL**](https://www.postgresql.org/)                     | `PostgreSQL`                                      | `https://www.postgresql.org/`                  |
   | [**TiDB**](https://docs.pingcap.com/tidb/stable/)                   | `TiDB`                                            | `https://docs.pingcap.com/tidb/stable/`        |
   | [**SnapKit**](https://github.com/SnapKit/SnapKit)                   | `SnapKit`                                         | `https://github.com/SnapKit/SnapKit`           |
   | [**Dart**](https://dart.dev)                                       | `Dart`                                            | `https://dart.dev`                             |
@@ -185,6 +191,7 @@ description: 当任务涉及已有文档的增量编辑与内容保护（不限�
   | [**jenv**](https://www.jenv.be)                                    | `jenv`                                            | `https://www.jenv.be`                          |
   | [**fvm**](https://fvm.app)                                         | `fvm`                                             | `https://fvm.app`                              |
   | [**pnpm**](https://pnpm.io/)                                       | `pnpm`                                            | `https://pnpm.io/`                             |
+  | [**MacOS**](https://www.apple.com/macos/)                       | `MacOS`                                           | `https://www.apple.com/macos/`                  |
   | [**Python**](https://www.python.org)                               | `python` / `python3` / `Python`                   | `https://www.python.org`                       |
   | [**fastlane**](https://fastlane.tools)                             | `fastlane`                                        | `https://fastlane.tools`                       |
   | [**MySQL**](https://www.mysql.com)                                 | `mysql` / `MySQL`                                 | `https://www.mysql.com`                        |
@@ -220,6 +227,7 @@ description: 当任务涉及已有文档的增量编辑与内容保护（不限�
 - 脚本中的单选、多选及菜单优先使用 [**fzf**](https://formulae.brew.sh/formula/fzf)，按 [Shell 选择器与子层返回公约](../jobs-macos-shell/SKILL.md#script-fzf-selection)实现；配套 README 写清真实按键、选择层级及 `←` 返回上一层、默认值、空选 / 取消、依赖和缺失时处理方式，不把模式或列表选择与执行确认混为一谈。
 - 每个 Jobs 自维护 [**Git**](https://git-scm.com/) 父仓、子仓的根目录都必须有 `README.md`，已有原文补齐真实目录结构和本仓脚本功能 / 运行流程，具体范围与版式统一遵循 [Git 仓库 README 规范](../jobs-git-repository/SKILL.md#repository-readme-contract)。
 - 本任务范围内每个独立功能目录和关键目录都维护就近的 `README.md`，说明本目录职责、实际入口和能力边界；上级 README 提供简短功能概述及相对链接。根总览、目录说明与功能说明分层对账，不能只在顶层罗列路径。尊重现有分组，不为文档移动源码或机械地给缓存、第三方、生成目录及无独立职责的小目录补空文档。
+- <span id="single-readme-per-directory">一个目录原则上只维护一份说明文档 `README.md`。</span>同目录内的使用、部署、环境、工程总览、接口说明及 HTML 阅读版等自维护文档，尽可能将实质内容融入该目录 README；仅承担说明或导航的子目录也可按职责融入上级 README，不为能合并的正文继续新建主题空壳。合并前读取并留存原文，保留命令、表格、规则、限制和附件关系，去重后统一标题与锚点；核对内容完整、相对链接、渲染及目录过滤器清单后，删除已被替代的文档和空目录，不留下重复正文或失效转发入口。Skills 加载必需的 `SKILL.md` 及按条件读取的参考附件、`AGENTS.md`、许可证、机器可读契约／配置／锁文件，以及用户明确要求独立交付的原稿或其它固定文件名，按实际用途保留；不得为凑成一个文件破坏工具约定、法律或数据语义，也不据此改写第三方文档。
 - 软件工程项目顶层 `README.md` 的统计要求独立维护在同目录的 [README 项目统计条款](./README规范-项目统计条款.md)。编写或维护项目 README，或处理统计口径、前后端规模、第三方依赖、业务文件占比时，必须先读取该附属规范，再按本文件的格式规则排版；条款保留为独立文件，不合并进本文件。已有 `.codegraph/` 时优先使用其资料，无索引时直接依据源码和项目配置核实，不因统计或绘图主动初始化索引。
 - 每个 Jobs 自维护脚本默认遵守[脚本同名包装与命名主规则](../jobs-macos-shell/SKILL.md#script-package-naming)：完整文件名（含后缀）的目录内放真正脚本及对应 `README.md`，只有用户明确拒绝时才采用其例外。Python 工具、内部辅助及测试脚本不自动豁免；父级或工具总 README 提供导航，不能替代各脚本说明。平台 / 应用宿主前缀与外部语言运行时脚本的区分按该主规则执行。
 - 维护 `OS@Extension` 下的管理入口、目录结构或相关 README 时，必须先读取同目录附件 [OS@Extension 脚本布局](./README规范-OS@Extension脚本布局.md)；只对附件列出的用户明确要求裸露的管理入口应用该专项例外及就近 README，不推广到其它脚本或仓库。

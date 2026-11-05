@@ -82,9 +82,11 @@ description: 当任务涉及 Objective-C、iOS 页面主题配色、系统类创
 - 默认坚持“一个文件一个类”。除非是 `NS_INLINE`、小型 `typedef`、私有枚举、协议声明、极短生命周期的匿名 category，或者确实必须和主类共生的编译期兼容声明，否则不要把多个 `@interface` / `@implementation` 写进同一个 `.h` / `.m` 文件。
 - 控制器文件尤其不能顺手塞 model、cell、view、helper class。发现 `ViewController*.m`、`*VC.m`、`*Cell.m` 里混入独立类时，优先拆成独立的 `类名.h/.m`，并按真实职责放到同目录或 `Model` / `View` / `Cell` 子目录，再由调用方 `#import` 引用。
 - 拆出来的类必须使用真实类名文件名、完整 Jobs 文件头、独立 `@interface` / `@implementation`，公开 API 放 `.h`，实现细节留 `.m`。不要为了省事写在调用方 `.m` 顶部形成“局部类”。
-- 如果新增文件属于 [**Xcode**](https://developer.apple.com/xcode) 主工程源码，必须同步检查并更新 `*.xcodeproj/project.pbxproj` 的文件引用和 target membership；如果属于本地 Pod，则按 Pod 目录、podspec、README 和 `pod install` 规则处理。不能只在磁盘上新建文件就结束。
+- Jobs 自维护 OC 源码的每组 `*.h` / `*.m` / `*.mm` 必须按完整基名建同名文件夹统一管理，同一组文件放在同一个文件夹内；分类保留 `+Category` 全名。此约定覆盖新旧主工程、Demo、测试支持及本地 Pod 的 `Core` / `Support`，不能因同层只有一组而平铺；Pod 根聚合头仍按下文入口头规则放置。
+- 应用 Demo 统一放在主工程既有“业务逻辑 / 功能模块”下，功能目录使用 `Demo@功能名`；同一 Demo 内的控制器、模型、视图和辅助类继续按各自完整基名包装，不把 Demo 或其配套类散放在仓库根目录。OC 新旧工程的确切落点与已点名模块见[项目路径与同步映射](./项目路径与同步映射.md#oc-project-sync)。
+- 新增、移动或重命名 [**Xcode**](https://developer.apple.com/xcode) 主工程源码时，必须同步检查并更新 `*.xcodeproj/project.pbxproj` 的文件引用、Build Phases、文件同步组的例外清单与 target membership；属于本地 Pod 时，按 Pod 目录、podspec、README 和 `pod install` 规则处理。迁移后核对真实文件存在、旧引用已清理且编译归属保持正确；不能只改磁盘或只改虚拟组，也不能长期用 `Recovered References`、`Jobs Stability Support` 等临时根组代替按职责归档。
 - Jobs 自建 Pod 的磁盘根目录统一为 `Pod名@Pods`：`Core` 必须存在，`Support` / `Resource` 按需创建，不强制空目录；入口头、podspec、README、LICENSE 放在根目录，不放进 `Core` / `Resource`。[**CocoaPods**](https://cocoapods.org/) 的 `Development Pods > Pod名` 只是展示分组，不能当成真实资源目录。
-- `Core` 只放代码。Jobs 自建 Pod 的 `Core` 目录下，所有 `*.h` / `*.m` / `*.mm` 源码都必须用完整基名建同名文件夹包裹；同一组 `.h` / `.m` / `.mm` 放进同一个同名文件夹，分类保留 `+Category` 全名，不允许因为同层只有一组就平铺。例如 `Core/JobsFuseAnimation/JobsFuseOuterRingConfig/JobsFuseOuterRingConfig.h` 和 `Core/JobsFuseAnimation/UIView+JobsFuseAnimation/UIView+JobsFuseAnimation.h`。
+- `Core` 只放代码，同样执行上述完整基名目录规则。例如 `Core/JobsFuseAnimation/JobsFuseOuterRingConfig/JobsFuseOuterRingConfig.h` 和 `Core/JobsFuseAnimation/UIView+JobsFuseAnimation/UIView+JobsFuseAnimation.h`。
 - 聚合头 / 模块入口头必须放在 `Pod名@Pods/` 根目录，和 `Core` / `Resource` / `Support` 齐平。入口头一般使用 `Pod名.h`；若 `Core/Pod名/Pod名.h` 带同名 `.m` 或真实 `@interface`，它是源码头，不按聚合头硬搬，必须先解决命名冲突和公开头设计，避免同名 public header 互相覆盖。
 - `Core` 只能有一层真实目录，禁止磁盘上出现 `Pod名@Pods/Core/Core/...`，也不要用 podspec 虚拟 subspec 再包一层 `Core/**/*`。移动目录后同步检查 podspec 递归通配、公开头边界、README 目录结构和 `pod install` 后的 Development Pods 展示。
 
@@ -484,7 +486,13 @@ description: 当任务涉及 Objective-C、iOS 页面主题配色、系统类创
 - 一般性 `#import` 优先写系统 / Apple / Darwin / 底层头文件，再写本文件直接依赖的普通头文件；越靠近底层越靠上，例如 ObjC runtime / message、C 系统库、`CoreFoundation`、`Foundation`、`UIKit`、`WebKit`、`AVFoundation` 等系统头按底层到上层排列。
 - Jobs 自己写的代码里，系统 / Apple / Darwin / ObjC runtime 头文件必须写在对应同名 `*.h` 文件的一般性 import 区域，`*.m` / `*.mm` 不单独导入。不限于 `#import <objc/runtime.h>`：例如 `<objc/message.h>`、`<Foundation/Foundation.h>`、`<UIKit/UIKit.h>`、`<WebKit/WebKit.h>`、`<AVFoundation/AVFoundation.h>`、`<AudioToolbox/AudioToolbox.h>`、`<Photos/Photos.h>`、`<Security/Security.h>`、`<CommonCrypto/CommonCrypto.h>`、`<os/lock.h>`、`<pthread.h>`、`<sys/sysctl.h>`、`<stdint.h>`、`<ctype.h>` 等都按这条执行。即使只有实现文件里调用相关 API，也要由同名头文件统一承接。
 - 如果已经写了 `#import <UIKit/UIKit.h>`，则同一个 import 区域不再重复写 `#import <Foundation/Foundation.h>`，因为 `UIKit` 已经包含 `Foundation`。
-- 把导入区按“普通单个 `#import` ”和“完整双通道保护块”视为相邻导入单元：普通↔普通之间不留空行；只要相邻两个单元中任意一个是双通道保护块，两者之间必须且只能保留一行空行。这覆盖普通↔双通道、双通道↔普通、双通道↔双通道三种组合；双通道块内部四段结构仍紧凑连写，不插入空行。
+- OC 文件（`*.h` / `*.m` / `*.mm`）的 `#import` 区段中，相邻的单行 `#import` 必须紧挨排列，中间不得留空行；双引号和尖括号导入均遵守。把“普通单行 `#import`”和“完整双通道保护块”视为相邻导入单元：只要相邻两个单元中任意一个是双通道保护块，两者之间必须且只能保留一行空行。这覆盖普通↔双通道、双通道↔普通、双通道↔双通道三种组合；双通道块内部四段结构仍紧凑连写，不插入空行。
+
+  ```objc
+  #import "SceneDelegate.h"
+  #import "SceneDelegate+UISceneDelegate.h"
+  ```
+
 - OC 新项目中 Jobs 自己维护的 `*.m` 文件，每条 `#import "xxx.h"` 必须独占一行，行尾说明移到独立注释行；相邻的双引号 `#import` 之间不得保留空行，必须紧挨排列。文件头注释与第一条 import 之间、最后一条 import 与正文之间仍各保留一个空行，不把导入区粘到文件头或正文。
 - 上述 `*.m` 双引号 import 排版使用 `scripts/normalize_oc_m_quoted_import_layout.rb <OC 新项目根目录...>` 先干跑，确认范围后加 `--apply`；应用后必须二次干跑到 `changed_files=0 invalid_lines=0 blank_gaps=0`。脚本必须复用 `jobs_oc_ownership.rb` 过滤所有权，继续排除 `Pods/`、`ManualByOCPods@Pods/`、生成目录和他人源码。
 - `#import` 导入区和下面的正文内容区之间必须保留一行空行。正文内容区包括 `NS_ASSUME_NONNULL_BEGIN`、`@interface`、`@implementation`、`@protocol`、`@class`、`typedef`、`NS_INLINE`、`static`、`#pragma` 等；例如 `#import "DefineProperty.h"` 后面不能紧贴 `NS_ASSUME_NONNULL_BEGIN`，必须空一行。
