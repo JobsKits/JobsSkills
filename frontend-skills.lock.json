@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "installedOn": "2026-11-12",
+  "installer": "Codex skill-installer, pinned GitHub archives; UI UX Pro Max official Codex global template",
+  "skills": [
+    {
+      "name": "ui-ux-pro-max",
+      "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "path": ".claude/skills/ui-ux-pro-max",
+      "commit": "6ae86f61f520d6ca229d2f40e070410638c908c5",
+      "tree": "3b7afa320dd986f0cf6e88784d66fde0323b821c",
+      "contentSha256": "e865e6d3d56762c43ffd7b83bd335e85b0ca5f2754a33e6cebf69bafe3a8dc95",
+      "repository": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourcePath": ".claude/skills/ui-ux-pro-max",
+      "fileCount": 76,
+      "totalBytes": 3651865,
+      "generatedEntry": "cli/src/utils/template.ts: renderSkillFile(loadPlatformConfig(\"codex\"), true)"
+    },
+    {
+      "name": "frontend-design",
+      "repo": "anthropics/skills",
+      "path": "skills/frontend-design",
+      "commit": "2c5958ecac7cee2b583967a2c4981d0f4a75c579",
+      "tree": "4bcffd51f1f2d19946b520405782c0f2c544906a",
+      "contentSha256": "fb832538733dd82ef01fc6a7fde28c3b84d02071ca1e44d5782ea8931963ac78",
+      "repository": "https://github.com/anthropics/skills",
+      "sourcePath": "skills/frontend-design",
+      "fileCount": 2,
+      "totalBytes": 19564
+    },
+    {
+      "name": "web-design-guidelines",
+      "repo": "vercel-labs/agent-skills",
+      "path": "skills/web-design-guidelines",
+      "commit": "1a2c79d4e6c4a2283dc2c614b6538cbe1ed5ca62",
+      "tree": "339e66e210e08989967e7d992ce3906313165f77",
+      "contentSha256": "2ed8a8b5f6e2644711a7945a595c035a231db1cee637fb97b808e2e2e4da0465",
+      "repository": "https://github.com/vercel-labs/agent-skills",
+      "sourcePath": "skills/web-design-guidelines",
+      "fileCount": 1,
+      "totalBytes": 1231,
+      "remoteRules": "https://raw.githubusercontent.com/vercel-labs/web-interface-guidelines/main/command.md"
+    },
+    {
+      "name": "impeccable",
+      "repo": "pbakaus/impeccable",
+      "path": ".agents/skills/impeccable",
+      "commit": "c1e0e5492fbb524f5df84d635ecfae7dc438ec45",
+      "tree": "c1e0e5492fbb524f5df84d635ecfae7dc438ec45",
+      "contentSha256": "1bba9a773e88799b4ba4e32681c2229e5cfde84ec19660c52ef44078fe722659",
+      "repository": "https://github.com/pbakaus/impeccable",
+      "sourcePath": ".agents/skills/impeccable",
+      "fileCount": 65,
+      "totalBytes": 21095912,
+      "engine": {
+        "version": "0.1.22",
+        "platform": "darwin-arm64",
+        "sha256": "afaf25d233e69580ec4566c0bbe07438ed18a67ba6ba8541fc079eadf842fa44",
+        "source": "https://registry.npmjs.org/@impeccable/cli-darwin-arm64/-/cli-darwin-arm64-0.1.22.tgz",
+        "npmIntegrityVerified": true,
+        "bundled": true
+      },
+      "hooksInstalled": false
+    }
+  ]
+}

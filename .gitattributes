@@ -36,4 +36,9 @@
 "/jobs-swift/SKILL.md" filter=jobs-markdown-toc
 "/jobs-swift/references/ios-theme-contrast.md" filter=jobs-markdown-toc
 "/jobs-swift/\351\241\271\347\233\256\350\267\257\345\276\204\344\270\216\345\220\214\346\255\245\346\230\240\345\260\204.md" filter=jobs-markdown-toc
+"/jobs-frontend-experience/SKILL.md" filter=jobs-markdown-toc
+"/jobs-frontend-experience/references/business-patterns.md" filter=jobs-markdown-toc
+"/jobs-frontend-experience/references/experience-contract.md" filter=jobs-markdown-toc
+"/jobs-frontend-experience/references/interaction-patterns.md" filter=jobs-markdown-toc
+"/jobs-frontend-experience/references/web-patterns.md" filter=jobs-markdown-toc
 # jobs-markdown-toc:end
