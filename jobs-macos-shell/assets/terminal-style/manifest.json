@@ -1,0 +1,49 @@
+{
+  "formatVersion": 1,
+  "templates": [
+    {
+      "path": "zsh.guard.txt",
+      "mode": "zsh-reexec",
+      "interpreter": [
+        "/bin/zsh"
+      ],
+      "entry": "jobs_terminal_style_bootstrap \"$0\" \"$@\"",
+      "sha256": "ae0ec27f134cfb9a8d98231b681c3e3e3a8a15a9bb1acec532ac0874a9110714"
+    },
+    {
+      "path": "posix.guard.txt",
+      "mode": "posix-sh-reexec",
+      "interpreter": [
+        "/bin/sh"
+      ],
+      "entry": "jobs_terminal_style_bootstrap \"$0\" \"$@\"",
+      "sha256": "74b5532c3b9c903c0a12b9648a884b285192cefabb117f2c40a7acf90d11f505"
+    },
+    {
+      "path": "zsh-f.guard.txt",
+      "mode": "zsh-no-user-startup-reexec",
+      "interpreter": [
+        "/bin/zsh",
+        "-f"
+      ],
+      "entry": "jobs_terminal_style_bootstrap \"$0\" \"$@\"",
+      "sha256": "43a60dd0401ff506c9988e3d3617457ef943519093c9d3c55e6434ff232ac2b6"
+    }
+  ],
+  "tests": [
+    {
+      "path": "tests/terminal_query_retry_tests.py/terminal_query_retry_tests.py",
+      "mode": "isolated-pty-full-bootstrap",
+      "scenarios": 70,
+      "defaultSource": "zsh.guard.txt",
+      "sha256": "2b76049d6236886050dbfe9c86ab383bc92589cf5d033326ffd9ee5d0595ac50"
+    },
+    {
+      "path": "tests/terminal_style_pty_tests.py/terminal_style_pty_tests.py",
+      "mode": "isolated-pty-lifecycle",
+      "scenarios": 17,
+      "defaultSource": "zsh.guard.txt",
+      "sha256": "fc4adbe45ebf2a306b7bec57627292264cef4152ce7941c4def740f8449eeb8e"
+    }
+  ]
+}

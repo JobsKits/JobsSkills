@@ -33,6 +33,8 @@ description: 当任务涉及 JobsMacEnvVarConfigs、Git 仓库结构、.gitmodul
 
 > 本技能由 `💻JobsCodexConfigs/AGENTS.md` 拆分而来，保留原有 Jobs 工作规范。只有当前任务命中本技能描述时才加载本文件，避免把所有细则长期塞进全局上下文。
 
+- 涉及 [**GitHub Actions**](https://docs.github.com/en/actions) 配置、失败排查或推送后的 Actions 检查验收时，必须同时读取 [workflow 工程与验收边界](../jobs-github-actions/SKILL.md)；普通 Git 操作不据此扩展为 CI 改造。
+
 ## <span id="jobs-toc-heading-2" data-jobs-toc="v2">一、Git 仓库规则 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ### <span id="jobs-toc-heading-3" data-jobs-toc="v2">1.1、🌍JobsMacEnvVarConfigs 仓库 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->

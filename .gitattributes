@@ -9,6 +9,8 @@
 "/jobs-codex-config-audit/\351\205\215\347\275\256\350\267\257\345\276\204\344\270\216\346\240\270\351\252\214\345\221\275\344\273\244.md" filter=jobs-markdown-toc
 "/jobs-dart-flutter/SKILL.md" filter=jobs-markdown-toc
 "/jobs-git-repository/SKILL.md" filter=jobs-markdown-toc
+"/jobs-github-actions/SKILL.md" filter=jobs-markdown-toc
+"/jobs-github-actions/目标平台核验要点.md" filter=jobs-markdown-toc
 "/jobs-git-repository/\350\267\257\345\276\204\347\272\246\345\256\232-JobsMacEnvVarConfigs.md" filter=jobs-markdown-toc
 "/jobs-git-repository/\350\267\257\345\276\204\347\272\246\345\256\232-OC\345\217\214\345\267\245\347\250\213\344\270\216Gitee\345\277\253\347\205\247.md" filter=jobs-markdown-toc
 "/jobs-git-repository/\350\267\257\345\276\204\347\272\246\345\256\232-SourceTree\351\200\220\345\261\202\346\216\250\351\200\201.md" filter=jobs-markdown-toc
@@ -41,4 +43,6 @@
 "/jobs-frontend-experience/references/experience-contract.md" filter=jobs-markdown-toc
 "/jobs-frontend-experience/references/interaction-patterns.md" filter=jobs-markdown-toc
 "/jobs-frontend-experience/references/web-patterns.md" filter=jobs-markdown-toc
+"/jobs-software-project/外源UI技能与恢复.md" filter=jobs-markdown-toc
+"/jobs-macos-shell/安装卸载管理面板基准.md" filter=jobs-markdown-toc
 # jobs-markdown-toc:end

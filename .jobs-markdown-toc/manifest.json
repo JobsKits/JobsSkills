@@ -10,6 +10,8 @@
     "jobs-codex-config-audit/配置路径与核验命令.md",
     "jobs-dart-flutter/SKILL.md",
     "jobs-git-repository/SKILL.md",
+    "jobs-github-actions/SKILL.md",
+    "jobs-github-actions/目标平台核验要点.md",
     "jobs-git-repository/路径约定-JobsMacEnvVarConfigs.md",
     "jobs-git-repository/路径约定-OC双工程与Gitee快照.md",
     "jobs-git-repository/路径约定-SourceTree逐层推送.md",
@@ -34,6 +36,7 @@
     "jobs-software-project/SKILL.md",
     "jobs-software-project/软件项目开发与交付规范.md",
     "jobs-software-project/项目需求与开发评审模板.md",
+    "jobs-software-project/外源UI技能与恢复.md",
     "jobs-swift/SKILL.md",
     "jobs-swift/references/ios-theme-contrast.md",
     "jobs-swift/项目路径与同步映射.md",
@@ -41,6 +44,7 @@
     "jobs-frontend-experience/references/business-patterns.md",
     "jobs-frontend-experience/references/interaction-patterns.md",
     "jobs-frontend-experience/references/experience-contract.md",
-    "jobs-frontend-experience/references/web-patterns.md"
+    "jobs-frontend-experience/references/web-patterns.md",
+    "jobs-macos-shell/安装卸载管理面板基准.md"
   ]
 }

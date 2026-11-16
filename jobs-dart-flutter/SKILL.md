@@ -29,6 +29,8 @@ description: 当任务涉及 Dart、Flutter、Widget 拆分、状态管理、路
 
 涉及 Flutter 完整项目规划、跨端选型或产品交付方案时，必须按任务读取共用[《软件项目开发与交付规范》的前端技术栈](../jobs-software-project/软件项目开发与交付规范.md#frontend-stack)、[分级验收](../jobs-software-project/软件项目开发与交付规范.md#acceptance)与[发布交接](../jobs-software-project/软件项目开发与交付规范.md#release-delivery)中的命中章节，不无条件加载全文。普通页面或局部修复不因此扩大为全量交付任务；保留既有项目确认的方案，框架、插件及平台版本按实际目标重新核验。
 
+鸿蒙适配涉及华为工具或 SDK 下载／补齐时，执行[华为工具链固定镜像规则](../jobs-software-project/软件项目开发与交付规范.md#huawei-toolchain-mirror)，实际制品统一取自用户指定的 [**libsdl.org**](https://libsdl.org/)，不把官网登录作为下载前提；Flutter 主线 SDK 和用户 fork 的来源继续遵守各自已有规则，不混同工具制品与 Git 仓库。
+
 完整 0 到 1 项目先按[主 Skill](../jobs-software-project/SKILL.md)生成需求与评审文档；前端路线未明确时询问“标准型／通用型／混合型”。缺失项留白、不确定项用红字标记，不把规范默认路线视为已确认方案。
 
 ## 一、<span id="dart-flutter-conventions">[**Dart**](https://dart.dev) / [**Flutter**](https://flutter.dev/) 写作规范</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>

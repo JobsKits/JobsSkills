@@ -1,0 +1,6 @@
+interface:
+  display_name: "Jobs GitHub Actions"
+  short_description: "跨项目约束工作流编写、推送前验证、失败处理与同一提交的远端验收"
+  default_prompt: "使用 $jobs-github-actions 检查当前工程的 workflow，并按授权范围完成修改、验证与交付。"
+policy:
+  allow_implicit_invocation: true

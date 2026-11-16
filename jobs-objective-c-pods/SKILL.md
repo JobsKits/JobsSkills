@@ -17,6 +17,7 @@ description: 当任务涉及 Objective-C、iOS 页面主题配色、系统类创
   - [1.1、工程背景与目录边界](#project-boundaries)
   - [1.2、文件组织与类边界](#file-organization)
     - [1.2.1、switch / case 分支注释](#switch-case-comments)
+    - [1.2.2、主工程图片与占位文件](#application-images-and-placeholders)
   - [1.3、Core / Support 文件夹职责](#core-support-boundaries)
   - [1.4、头文件引用边界](#header-boundaries)
   - [1.5、本地 Pod 拆分策略](#pod-splitting)
@@ -105,6 +106,13 @@ description: 当任务涉及 Objective-C、iOS 页面主题配色、系统类创
           break;
   }
   ```
+
+#### 1.2.2、<span id="application-images-and-placeholders">主工程图片与占位文件</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+- OC 新旧主工程中，参与 App 打包的图片及其图片资源容器统一归入 `libs`；两侧实际目录按[项目路径与同步映射](./项目路径与同步映射.md#oc-project-sync)定位。以新工程的目录名称和相对位置对齐老工程，先核对对应内容再移动，不复制覆盖已有改动；迁移须同步工程引用、构建配置、脚本、文档链接与图片加载路径，保留资源内容和名称。
+- 主工程 `libs` 以外的图片仅可作为说明或设计参考显示在 Xcode 导航中，不得属于任何 target，也不得进入 `Resources`、`Copy Files` 或其它构建阶段；例如 `Demo@发帖功能/发帖.png`。检查须覆盖大小写不同的图片扩展名、图片资源容器、文件同步组自动成员，以及目录或 bundle 复制时间接带入的图片；不能只删除显式 `PBXBuildFile`。运行时确实使用的图片先迁入 `libs` 并同步调用方，不能为清零而删掉有效资源。
+- 上述 `libs` 图片归档限制不适用于 Pod 自己的资源；Pod 仍按 `Core` / `Support` / `Resource` 和 podspec 资源声明管理，不移动或排除其合法资源。
+- `.gitkeep` 仅用于 Git 空目录占位，不得显示在 Xcode 导航中，不得成为文件引用、target 成员或进入任何构建、资源复制及打包阶段；文件同步组也须检查实际展示与自动成员。非空目录中的冗余占位可在确认后清除，仍需保留的空目录不得为隐藏文件而丢失；不得修改第三方或生成工程来处理自有工程占位。完成后核对工程引用、构建资源清单和 App 包，不能把“未显式引用”当成已经排除。
 
 ### 1.3、<span id="core-support-boundaries">`Core` / `Support` 文件夹职责</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 

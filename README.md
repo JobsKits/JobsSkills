@@ -95,8 +95,9 @@ Git 对软链接只保存“目标路径字符串”，不保存链接目标的�
 
 ## 六、<span id="software-project-workflow">软件项目从零到一</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-- 独立入口：[jobs-software-project](./jobs-software-project/SKILL.md)，可通过 `$jobs-software-project` 调用，接收原始需求、询问未明确的前端路线、生成留白／红字文档，并在用户补填后进行二次回归。
+- 独立入口：[jobs-software-project](./jobs-software-project/SKILL.md)，可通过 `$jobs-software-project` 调用，接收原始需求、采用默认原生或用户指定的前端路线、生成留白／红字文档，并在用户补填后进行二次回归。
 - [开发与交付规范](./jobs-software-project/软件项目开发与交付规范.md)和[可补填模板](./jobs-software-project/项目需求与开发评审模板.md)由该 Skill 集中维护；文档、Flutter、Python、Shell、OC、Swift 与 Podspec 技能按命中范围引用，不重复保存规范全文。
+- 项目部署按[依赖最新版检查与健康体检](./jobs-software-project/软件项目开发与交付规范.md#deployment-dependency-health)执行；UI 工作按[现用外源技能与换机恢复](./jobs-software-project/外源UI技能与恢复.md)实际采用适用指导，版本依据仍归公约及安装锁。
 
 ## 七、<span id="frontend-design-skills">前端视觉设计与评审 Skills</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
@@ -109,7 +110,7 @@ Git 对软链接只保存“目标路径字符串”，不保存链接目标的�
 | `$frontend-design`／`frontend-design/` | [**Anthropic frontend-design**](https://github.com/anthropics/skills/tree/main/skills/frontend-design) | `2c5958ecac7cee2b583967a2c4981d0f4a75c579` | 视觉方向、字体、配色与构图 |
 | `$web-design-guidelines`／`web-design-guidelines/` | [**Vercel web-design-guidelines**](https://github.com/vercel-labs/agent-skills/tree/main/skills/web-design-guidelines) | `1a2c79d4e6c4a2283dc2c614b6538cbe1ed5ca62` | Web 界面规范检查，使用时联网获取最新规则 |
 
-- 四项均为外部安装的实体目录，保留上游所有权；`.gitignore` 按上述四个精确目录排除内容，仓库仅跟踪本节与安装锁定清单。当前运行态与备份态保存完整实体副本；新机器仅克隆本仓不会自动获得这些被忽略的目录，应依据清单从固定提交重装，并重新核对两态内容。
+- 四项均为外部安装的实体目录，保留上游所有权；`.gitignore` 按上述四个精确目录排除内容，仓库跟踪来源说明与安装锁定清单。新机器仅克隆本仓不会自动获得这些目录，应依据清单从固定提交独立恢复并在目标机器复检；日常只维护现行工作树，不复制到备份态或以两态一致作为完成条件。
 - UI UX Pro Max 的入口由同一提交的官方 Codex 模板以全局模式生成，脚本使用 `~/.agents/skills/ui-ux-pro-max/scripts/search.py`，保留完整数据、脚本与参考资料；不依赖 Claude 专属环境变量。[**UIKit**](https://developer.apple.com/documentation/uikit)／[**Objective-C**](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html) 未列为其专项技术栈，只复用通用设计规则，由既有 Jobs 语言 Skill 落地。
 - Impeccable 保留完整 `agents/`、`reference/` 和 `scripts/`，附带经官方摘要核验的 [**MacOS**](https://www.apple.com/macos/) arm64 引擎 `0.1.22`；未安装自动 hooks，也未运行 live 模式。其它平台可按上游启动器机制获取对应固定版本引擎。
 - 业务体验由既有 `jobs-frontend-experience` 组织，外部 Skill 提供适用的视觉与评审指导，实际代码继续遵守各平台 Jobs Skill 和用户已确认的项目约束。按任务加载，避免将四份规则同时套入每次任务。

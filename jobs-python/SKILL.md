@@ -30,6 +30,8 @@ description: 当任务涉及 Python 跨端图形软件、主题切换、脚本�
 
 涉及 Python 桌面产品规划、跨端打包交付或验收方案时，必须按任务读取共用[《软件项目开发与交付规范》的桌面产品要求](../jobs-software-project/软件项目开发与交付规范.md#desktop)、[分级验收](../jobs-software-project/软件项目开发与交付规范.md#acceptance)与[发布交接](../jobs-software-project/软件项目开发与交付规范.md#release-delivery)中的命中章节，不无条件加载全文。普通脚本或局部修复不因此扩大交付范围；保留既有项目确认方案，Python、打包器、运行依赖及目标系统版本重新核验。
 
+新写或修改 Python 脚本及其 Shell／Batch／[**PowerShell**](https://learn.microsoft.com/powershell/) 入口时，必须先执行[脚本片段必读规则](../jobs-macos-shell/SKILL.md#script-snippet-reference)，按目标平台读取 JobsDocs 对应范本；只借鉴适用的工程写法，保留本技能的 Python 依赖确认、打包与验证边界。
+
 完整 0 到 1 项目先按[主 Skill](../jobs-software-project/SKILL.md)生成需求与评审文档；前端路线未明确时询问“标准型／通用型／混合型”。缺失项留白、不确定项用红字标记，不把规范默认路线视为已确认方案。
 
 ## 一、<span id="python-conventions">[**Python**](https://www.python.org) 写作规范</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>

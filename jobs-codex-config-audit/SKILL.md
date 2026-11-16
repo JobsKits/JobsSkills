@@ -174,17 +174,17 @@ zsh ./jobs-codex-config-audit/scripts/audit_codex_configs.zsh
 
 ### <span id="jobs-toc-heading-19" data-jobs-toc="v2">5.1、维护原则 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-全局规则在 `JobsCodexConfigs/AGENTS.md` 中维护，专项规则以现行 `JobsSkills` 运行态工作树为基准。每次写入运行态后，必须立即按附件的[即时备份与核验](./配置路径与核验命令.md#deployment-checks)同步本次变更到备份态并验证，不等待任务结束、提交、推送或用户提醒；本地同步已获用户授权，无需重复确认。只有用户明确授权版本发布时，才先单独提交、推送子仓，再更新父仓 `skills` gitlink；父仓仍不直接跟踪 Skills 文件。
+全局规则在 `JobsCodexConfigs/AGENTS.md` 中维护，专项规则以现行 `JobsSkills` 运行态工作树为基准。日常新增、修改或删除 Skills 只维护运行态，不直接编辑备份态，也不把运行态文件复制过去，不以两态一致作为任务完成条件。备份态只在首次使用时用于环境部署，后续配置更新通过 Git 拉取；具体保护与核验见附件的[首次部署与 Git 拉取核验](./配置路径与核验命令.md#deployment-checks)。旧人工双向复制入口不再作为备份态的日常更新方式，也不因日常修改或审计差异自动部署、拉取或补齐备份。只有用户明确授权版本发布时，才先单独提交、推送子仓，再更新父仓 `skills` gitlink；父仓仍不直接跟踪 Skills 文件。
 
-每次新增或修改全局 `AGENTS.md`，必须在同一任务结束前按标准源同步到附件指定的运行态目标并执行 `cmp`，不能仅报告差异后留待用户提醒。同步前保留已有改动，运行态有效独有规则先并回标准源；AGENTS 部署与上述 Skills 即时备份分别执行，均不授权 Git 提交、推送或 gitlink 更新。
+每次新增或修改全局 `AGENTS.md`，必须在同一任务结束前按标准源同步到附件指定的运行态目标并执行 `cmp`，不能仅报告差异后留待用户提醒。同步前保留已有改动，运行态有效独有规则先并回标准源；AGENTS 部署不触发 Skills 备份，部署与拉取均不授权 Git 提交、推送或 gitlink 更新。
 
 配置注入脚本只部署 `AGENTS.md`，并扫描现行 `JobsSkills` 生成受控注册块；不复制、删除或覆盖 `JobsSkills` 工作树。
 
 ### <span id="jobs-toc-heading-20" data-jobs-toc="v2">5.2、部署后验证 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-必须按 [即时备份与核验](./配置路径与核验命令.md#deployment-checks)比较 AGENTS 字节一致性、本次 Skills 变更文件的两态一致性、Skills 远端及父仓子模块指针。
+必须按 [首次部署与 Git 拉取核验](./配置路径与核验命令.md#deployment-checks)比较 AGENTS 字节一致性，并核对 Skills 远端及父仓子模块指针；本次实际执行首次环境部署或 Git 拉取时，另核验目标仓库、版本与工作区状态，不要求运行态与备份态文件一致。
 
-备份子模块的 HEAD 可以暂时落后于运行态，但本次变更的工作区文件必须即时同步；显式报告两者提交号，不能以 gitlink 相同代替文件一致性核验，也不得用落后的子模块反向覆盖现行基准。
+备份子模块的 HEAD 和工作区文件允许落后于运行态，不因日常修改或审计发现差异而自动补齐；审计时报告两者提交号，不直接修改备份文件，不以提交号或文件差异触发复制、提交或拉取，也不得用落后的子模块反向覆盖现行基准。
 
 ## <span id="jobs-toc-heading-21" data-jobs-toc="v2">六、每周任务的完成定义 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
@@ -195,7 +195,7 @@ zsh ./jobs-codex-config-audit/scripts/audit_codex_configs.zsh
 - 重复候选及“合并 / 保留为有意重复”的判断。
 - 被修改规则的语义账本和防回退说明。
 - Skill 校验、Shell 语法和 Diff 检查结果。
-- `AGENTS.md` 部署一致性、本次 Skills 文件的即时备份核验、`JobsSkills` 远端与子模块指针；未同步时说明具体文件和原因。
+- `AGENTS.md` 部署一致性、`JobsSkills` 远端与子模块指针；本次实际执行首次环境部署或 Git 拉取时另报版本与工作区核验结果，否则注明“本轮未执行部署 / 拉取”，不将备份落后列为待补同步事项。
 
 ### <span id="jobs-toc-heading-23" data-jobs-toc="v2">6.2、每周审计不得自动做 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
